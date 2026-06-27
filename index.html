@@ -1850,9 +1850,15 @@ h1, h2, h3, h4, .title-font {
 <div class="feedback-overlay" id="feedbackOverlay">
   <div class="feedback-content" id="feedbackContent">
     <div class="feedback-title" id="feedbackTitle"></div>
-    <div class="feedback-explain" id="feedbackExplain"></div>
+    <div class="feedback-explain hidden" id="feedbackExplain"></div>
     <div class="feedback-btn-row">
-      <button class="btn-3d btn-primary btn-sm" id="feedbackNextBtn" onclick="onFeedbackNext()">
+      <button class="btn-3d btn-outline btn-sm hidden" id="feedbackWhyBtn" onclick="onFeedbackWhy()">
+        Why? <i class='bx bx-bulb'></i>
+      </button>
+      <button class="btn-3d btn-gold btn-sm hidden" id="feedbackRetryBtn" onclick="onFeedbackRetry()">
+        Retry <i class='bx bx-refresh'></i>
+      </button>
+      <button class="btn-3d btn-primary btn-sm hidden" id="feedbackNextBtn" onclick="onFeedbackNext()">
         Tiếp tục <i class='bx bx-right-arrow-alt'></i>
       </button>
     </div>
@@ -1897,6 +1903,7 @@ const STATE = {
   bossQuestionIdx: 0,
   bossQuestions: [],
   feedbackCallback: null,
+  feedbackRetryCallback: null,
   memoryFlipped: [],
   memoryMatched: [],
   memoryLocked: false,
@@ -5734,6 +5741,108 @@ function onFeedbackNext() {
     onComplete: () => {
       overlay.classList.remove('show');
       if (STATE.feedbackCallback) { STATE.feedbackCallback(); STATE.feedbackCallback = null; }
+    }
+  });
+}
+
+// Override feedback flow:
+// - Wrong answer => Retry only, no explanation
+// - Correct answer => Why? + Next, explanation shown only on demand
+function showFeedback(isCorrect, explain, isBoss = false) {
+  const overlay = document.getElementById('feedbackOverlay');
+  const content = document.getElementById('feedbackContent');
+  const title = document.getElementById('feedbackTitle');
+  const explainEl = document.getElementById('feedbackExplain');
+  const nextBtn = document.getElementById('feedbackNextBtn');
+  const retryBtn = document.getElementById('feedbackRetryBtn');
+  const whyBtn = document.getElementById('feedbackWhyBtn');
+
+  content.className = 'feedback-content ' + (isCorrect ? 'correct' : 'wrong');
+  title.className = 'feedback-title ' + (isCorrect ? 'correct' : 'wrong');
+  explainEl.classList.add('hidden');
+  explainEl.textContent = explain;
+  nextBtn.classList.add('hidden');
+  retryBtn.classList.add('hidden');
+  whyBtn.classList.add('hidden');
+  whyBtn.disabled = false;
+
+  if (isCorrect) {
+    const praises = ['Chính xác! 🎯', 'Đỉnh của chóp! 🔥', 'Xuất sắc! ⭐', 'Perfect! 💯', 'Quá đỉnh! 🚀'];
+    title.innerHTML = `<i class='bx bxs-check-circle'></i> ${praises[Math.floor(Math.random() * praises.length)]}`;
+    whyBtn.classList.remove('hidden');
+    nextBtn.classList.remove('hidden');
+  } else {
+    const encourages = ['Chưa đúng rồi! 💪', 'Gần lắm! 🔄', 'Thử lại nhé! 🐛'];
+    title.innerHTML = `<i class='bx bxs-x-circle'></i> ${encourages[Math.floor(Math.random() * encourages.length)]}`;
+    retryBtn.classList.remove('hidden');
+  }
+
+  STATE.feedbackCallback = () => {
+    if (isBoss) {
+      STATE.bossQuestionIdx++;
+      const level = LEVELS[STATE.currentLevel - 1];
+      renderBossQuestion(level);
+    } else {
+      STATE.currentQuestionIdx++;
+      const lessonId = STATE.currentLesson;
+      const questions = getQuestionsForLesson(lessonId);
+      const levelNum = parseInt(lessonId.split('.')[0]);
+      const level = LEVELS[levelNum - 1];
+      const lesson = level.lessons.find(l => l.id === lessonId);
+      renderQuestion(questions, lesson, level);
+    }
+  };
+
+  STATE.feedbackRetryCallback = () => {
+    if (isBoss) {
+      const level = LEVELS[STATE.currentLevel - 1];
+      renderBossQuestion(level);
+    } else {
+      const lessonId = STATE.currentLesson;
+      const questions = getQuestionsForLesson(lessonId);
+      const levelNum = parseInt(lessonId.split('.')[0]);
+      const level = LEVELS[levelNum - 1];
+      const lesson = level.lessons.find(l => l.id === lessonId);
+      renderQuestion(questions, lesson, level);
+    }
+  };
+
+  gsap.fromTo(overlay, { y: '100%' }, { y: '0%', duration: 0.4, ease: 'back.out(1.7)' });
+  overlay.classList.add('show');
+}
+
+function onFeedbackWhy() {
+  SFX.click.play();
+  const explainEl = document.getElementById('feedbackExplain');
+  const whyBtn = document.getElementById('feedbackWhyBtn');
+  explainEl.classList.remove('hidden');
+  whyBtn.disabled = true;
+}
+
+function onFeedbackNext() {
+  SFX.click.play();
+  const overlay = document.getElementById('feedbackOverlay');
+  gsap.to(overlay, {
+    y: '100%', duration: 0.3, ease: 'power2.in',
+    onComplete: () => {
+      overlay.classList.remove('show');
+      if (STATE.feedbackCallback) STATE.feedbackCallback();
+      STATE.feedbackCallback = null;
+      STATE.feedbackRetryCallback = null;
+    }
+  });
+}
+
+function onFeedbackRetry() {
+  SFX.click.play();
+  const overlay = document.getElementById('feedbackOverlay');
+  gsap.to(overlay, {
+    y: '100%', duration: 0.3, ease: 'power2.in',
+    onComplete: () => {
+      overlay.classList.remove('show');
+      if (STATE.feedbackRetryCallback) STATE.feedbackRetryCallback();
+      STATE.feedbackCallback = null;
+      STATE.feedbackRetryCallback = null;
     }
   });
 }
