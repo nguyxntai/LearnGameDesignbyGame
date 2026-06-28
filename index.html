@@ -1360,6 +1360,264 @@ h1, h2, h3, h4, .title-font {
   font-weight: 700;
 }
 
+.minigame-shell {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.55), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,243,255,0.95));
+  border: 2px solid rgba(75,63,158,0.12);
+  border-radius: 28px;
+  padding: 22px 18px 18px;
+  box-shadow: 0 20px 44px rgba(75,63,158,0.12);
+}
+
+.minigame-shell::before,
+.minigame-shell::after {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  filter: blur(10px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.minigame-shell::before {
+  top: -40px;
+  left: -20px;
+  background: var(--primary);
+}
+
+.minigame-shell::after {
+  right: -30px;
+  bottom: -60px;
+  background: var(--gold);
+}
+
+.minigame-ornaments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.minigame-ornaments span {
+  position: absolute;
+  color: rgba(75,63,158,0.14);
+  animation: floatSpark 4s ease-in-out infinite;
+}
+
+.minigame-ornaments span:nth-child(1) { top: 12px; right: 18px; font-size: 1.1rem; }
+.minigame-ornaments span:nth-child(2) { top: 56px; right: 54px; font-size: 0.9rem; animation-delay: .6s; }
+.minigame-ornaments span:nth-child(3) { bottom: 24px; left: 16px; font-size: 1rem; animation-delay: 1.2s; }
+
+.minigame-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.minigame-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(75,63,158,0.08);
+  color: var(--primary);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 0 0 1px rgba(75,63,158,0.08);
+}
+
+.minigame-badge i,
+.minigame-badge span:first-child {
+  font-size: 1.15rem;
+}
+
+.minigame-flair {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,182,39,0.22), rgba(75,63,158,0.12));
+  color: var(--primary);
+  font-size: 1.2rem;
+  box-shadow: 0 10px 22px rgba(75,63,158,0.12);
+}
+
+.minigame-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.game-question::before {
+  content: "✦";
+  color: var(--gold);
+  margin-right: 8px;
+}
+
+.game-instruction {
+  background: rgba(255,255,255,0.72);
+  border: 1px dashed rgba(75,63,158,0.18);
+  border-radius: 16px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+.quiz-option,
+.path-card,
+.drag-item,
+.sort-zone,
+.memory-card,
+.slider-card,
+.bubble-option,
+.tap-option,
+.card-chip,
+.target-slot,
+.reorder-item,
+.sws-choice {
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+}
+
+.quiz-option:hover,
+.path-card:hover,
+.drag-item:hover,
+.sort-zone:hover,
+.slider-card:hover,
+.bubble-option:hover,
+.tap-option:hover,
+.card-chip:hover,
+.target-slot:hover,
+.reorder-item:hover,
+.sws-choice:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(75,63,158,0.12);
+}
+
+.bubble-option {
+  position: relative;
+  animation: bubbleBob 3s ease-in-out infinite;
+}
+
+.bubble-option.false { animation-delay: .7s; }
+
+.bubble-option::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.28);
+  opacity: .55;
+}
+
+.tap-option {
+  position: relative;
+  overflow: hidden;
+  animation: targetPulse 2.7s ease-in-out infinite;
+}
+
+.tap-option:nth-child(2n) { animation-delay: .4s; }
+.tap-option:nth-child(3n) { animation-delay: .9s; }
+
+.tap-option::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.35) 40%, transparent 75%);
+  transform: translateX(-120%);
+  animation: shineSweep 3.2s linear infinite;
+}
+
+.path-card,
+.slider-card,
+.reorder-item {
+  position: relative;
+}
+
+.path-card::before,
+.slider-card::before,
+.reorder-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+}
+
+.sort-zone.drag-over {
+  transform: scale(1.02);
+  box-shadow: 0 16px 28px rgba(75,63,158,0.16);
+}
+
+.memory-card.matched {
+  animation: matchedPop .45s ease;
+}
+
+.card-chip.selected,
+.target-slot.filled {
+  box-shadow: 0 12px 22px rgba(75,63,158,0.18);
+}
+
+.recap-card,
+.victory-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.recap-card::after,
+.victory-screen::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% -55% auto;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255,182,39,0.2), transparent 70%);
+  pointer-events: none;
+}
+
+@keyframes bubbleBob {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.02); }
+}
+
+@keyframes targetPulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.03); }
+}
+
+@keyframes shineSweep {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes floatSpark {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(12deg); }
+}
+
+@keyframes matchedPop {
+  0% { transform: scale(.92); }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .minigame-ornaments span,
+  .bubble-option,
+  .tap-option,
+  .tap-option::before {
+    animation: none !important;
+  }
+}
+
 /* Timer bar */
 .timer-bar {
   height: 8px;
@@ -1882,9 +2140,9 @@ const SFX = {
   click: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'], volume: 0.3 }),
   correct: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'], volume: 0.4 }),
   wrong: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2001/2001-preview.mp3'], volume: 0.3 }),
-  levelUp: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/1997/1997-preview.mp3'], volume: 0.5 }),
-  bossIntro: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3'], volume: 0.4 }),
-  victory: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2020/2020-preview.mp3'], volume: 0.5 }),
+  levelUp: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/1997/1997-preview.mp3'], volume: 0.5, pool: 1 }),
+  bossIntro: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3'], volume: 0.4, pool: 1 }),
+  victory: new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2020/2020-preview.mp3'], volume: 0.5, pool: 1 }),
 };
 
 // ============================================================
@@ -1909,10 +2167,44 @@ const STATE = {
   memoryLocked: false,
   selectedCardId: null,
   selectedPairChoices: [],
+  lessonCompletionLock: null,
+  bossResolutionLock: false,
 };
 
 // CountUp instances
 let xpCountUp, coinCountUp;
+
+function playSfx(name, { stopFirst = false } = {}) {
+  const sound = SFX[name];
+  if (!sound) return null;
+  if (stopFirst) sound.stop();
+  return sound.play();
+}
+
+function stopCelebrationSfx() {
+  SFX.levelUp.stop();
+  SFX.victory.stop();
+  SFX.bossIntro.stop();
+}
+
+function renderGameFrame({ icon = 'bx-joystick', badge = 'Mini Game', flair = '✨' }, innerHtml) {
+  return `
+    <div class="minigame-shell">
+      <div class="minigame-ornaments">
+        <span>✦</span>
+        <span>✧</span>
+        <span>★</span>
+      </div>
+      <div class="minigame-head">
+        <div class="minigame-badge"><i class='bx ${icon}'></i> ${badge}</div>
+        <div class="minigame-flair">${flair}</div>
+      </div>
+      <div class="minigame-inner">
+        ${innerHtml}
+      </div>
+    </div>
+  `;
+}
 
 function loadState() {
   const saved = localStorage.getItem('levelup_state_v3');
@@ -2092,7 +2384,7 @@ const LEVELS = [
       { id: '1.2', name: 'Bản đồ thể loại', sub: 'Game Genres', game: 'MEM', icon: 'bx-grid-alt', iconClass: 'game-mem' },
       { id: '1.3', name: 'Ai làm ra game?', sub: 'Dev Team Roles', game: 'MEM', icon: 'bx-group', iconClass: 'game-mem' },
       { id: '1.4', name: 'Ai đứng sau publisher?', sub: 'Publisher Roles', game: 'SRT', icon: 'bx-building-house', iconClass: 'game-srt' },
-      { id: '1.5', name: 'Tổng kết Level 1', sub: 'Universal Truths', game: 'QZ', icon: 'bx-timer', iconClass: 'game-qz' },
+      { id: '1.5', name: 'Tổng kết Level 1', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
     ]
   },
   { id: 2, title: 'Lò Ý Tưởng', subtitle: 'Ideas', icon: '💡', pages: 'tr.23–36',
@@ -2100,11 +2392,11 @@ const LEVELS = [
     boss: { name: 'Pitch Battle', icon: '🎯' },
     lessons: [
       { id: '2.1', name: 'Tìm ý tưởng ở đâu', sub: 'Slot/Wheel Spin', game: 'SPN', icon: 'bx-dice-5', iconClass: 'game-spn' },
-      { id: '2.2', name: 'Gamer muốn gì?', sub: 'Speed Quiz', game: 'QZ', icon: 'bx-user-check', iconClass: 'game-qz' },
+      { id: '2.2', name: 'Gamer muốn gì?', sub: 'Tap Target', game: 'TAP', icon: 'bx-target-lock', iconClass: 'game-tap' },
       { id: '2.3', name: '"Vui" chưa đủ', sub: 'Bug Hunt', game: 'SOD', icon: 'bx-bug', iconClass: 'game-sod' },
       { id: '2.4', name: 'Brainstorm đúng cách', sub: 'Spin & Quiz', game: 'SPN', icon: 'bx-brain', iconClass: 'game-spn' },
       { id: '2.5', name: 'Phá Writer\'s Block', sub: 'Choose Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
-      { id: '2.6', name: 'Tổng kết Level 2', sub: 'True/False', game: 'TF', icon: 'bx-timer', iconClass: 'game-qz' },
+      { id: '2.6', name: 'Tổng kết Level 2', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
     ]
   },
   { id: 3, title: 'Kể Chuyện', subtitle: 'Story', icon: '📖', pages: 'tr.37–56', goal: 'Tam giác Weirdness, viết kết truyện và xây nhân vật.', boss: { name: 'Story Doctor', icon: '🩺' },
@@ -2134,7 +2426,7 @@ const LEVELS = [
       { id: '5.1', name: 'Cá tính nhân vật', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
       { id: '5.2', name: 'Gameplay là gì', sub: 'Tap Target', game: 'TAP', icon: 'bx-target-lock', iconClass: 'game-tap' },
       { id: '5.3', name: 'Đi & Chạy', sub: 'Dial & Run', game: 'BAL', icon: 'bx-run', iconClass: 'game-bal' },
-      { id: '5.4', name: 'Đứng yên cũng phải "sống"', sub: 'Bug Hunt', game: 'SOD', icon: 'bx-search-alt', iconClass: 'game-sod' },
+      { id: '5.4', name: 'Đứng yên cũng phải "sống"', sub: 'Spot the Difference', game: 'SOD', icon: 'bx-search-alt', iconClass: 'game-sod' },
       { id: '5.5', name: 'Nhảy — game đặc trưng Level', sub: 'Dial & Run', game: 'BAL', icon: 'bx-up-arrow-alt', iconClass: 'game-bal' },
       { id: '5.6', name: 'Đu & Bập bênh', sub: 'Dial & Run', game: 'BAL', icon: 'bx-transfer-alt', iconClass: 'game-bal' },
       { id: '5.7', name: 'Rơi & Đổ bóng', sub: 'Dial & Run', game: 'BAL', icon: 'bx-down-arrow-alt', iconClass: 'game-bal' },
@@ -4141,6 +4433,1197 @@ const QUESTIONS = {
   ]
 };
 
+Object.assign(QUESTIONS, {
+  '1.1': [
+    {
+      type: 'SRT',
+      question: '🕹️ Sắp xếp các tựa game theo đúng thứ tự thời gian ra mắt.',
+      instruction: 'Kéo các thẻ vào timeline từ sớm đến muộn.',
+      zones: [{ id: 'timeline', label: '📅 Timeline lịch sử game' }],
+      items: [
+        { id: 'pong', text: 'Pong', correctZone: 'timeline', order: 1 },
+        { id: 'space', text: 'Space Invaders', correctZone: 'timeline', order: 2 },
+        { id: 'mario', text: 'Super Mario Bros.', correctZone: 'timeline', order: 3 },
+        { id: 'wow', text: 'World of Warcraft', correctZone: 'timeline', order: 4 }
+      ],
+      explain: 'Pong (1972) mở đầu thời kỳ arcade, Space Invaders (1978) định hình shooter, Mario (1985) đưa platformer lên ngôi, WoW (2004) mở ra thời đại MMORPG.'
+    },
+    {
+      type: 'SRT',
+      question: '🎯 Tiếp tục sắp xếp nhóm game kinh điển này theo năm phát hành.',
+      instruction: 'Kéo vào đúng thứ tự từ sớm đến muộn.',
+      zones: [{ id: 'timeline', label: '📅 1980 → 2000' }],
+      items: [
+        { id: 'pacman', text: 'Pac-Man', correctZone: 'timeline', order: 1 },
+        { id: 'tetris', text: 'Tetris', correctZone: 'timeline', order: 2 },
+        { id: 'doom', text: 'Doom', correctZone: 'timeline', order: 3 },
+        { id: 'sims', text: 'The Sims', correctZone: 'timeline', order: 4 }
+      ],
+      explain: 'Pac-Man (1980) là icon arcade, Tetris (1984) chứng minh gameplay đơn giản vẫn cực cuốn, Doom (1993) khai sinh FPS hiện đại, The Sims (2000) mở rộng life simulation.'
+    }
+  ],
+  '1.2': [
+    {
+      type: 'MEM',
+      question: '🎮 Ghép game với thể loại đúng của nó.',
+      instruction: 'Lật thẻ để tìm đúng cặp game ↔ thể loại.',
+      pairs: [
+        { a: 'Metal Gear Solid', b: 'Stealth' },
+        { a: 'Tetris', b: 'Puzzle' },
+        { a: 'Super Mario Bros.', b: 'Platformer' },
+        { a: 'Final Fantasy', b: 'RPG' }
+      ],
+      explain: 'Metal Gear Solid nhấn vào tránh bị phát hiện hơn là đối đầu trực diện; Tetris là puzzle dựa trên logic và pattern completion.'
+    },
+    {
+      type: 'MEM',
+      question: '🗺️ Ghép thêm một vài game khác với genre của chúng.',
+      instruction: 'Mỗi thể loại mang một fantasy và kiểu chơi rất khác nhau.',
+      pairs: [
+        { a: 'Call of Duty', b: 'FPS' },
+        { a: 'Age of Empires', b: 'RTS' },
+        { a: 'Guitar Hero', b: 'Rhythm' },
+        { a: 'Gran Turismo', b: 'Racing' }
+      ],
+      explain: 'Nhận diện đúng genre giúp designer hiểu người chơi đang mong đợi kiểu thử thách và cảm giác nào.'
+    }
+  ],
+  '1.3': [
+    {
+      type: 'MEM',
+      question: '👥 Ghép vai trò trong studio với trách nhiệm đúng.',
+      instruction: 'Team làm game là teamwork, không phải solo hero.',
+      pairs: [
+        { a: 'Tester (QA)', b: 'Tìm và báo cáo bug trước phát hành' },
+        { a: 'Producer', b: 'Quản lý tiến độ, ngân sách, con người' },
+        { a: 'Game Designer', b: 'Thiết kế gameplay và luật chơi' },
+        { a: 'Programmer', b: 'Biến thiết kế thành hệ thống chạy được' }
+      ],
+      explain: 'QA nên tham gia từ sớm để phát hiện lỗi khi còn dễ sửa; Producer không trực tiếp thiết kế gameplay như Designer.'
+    },
+    {
+      type: 'MEM',
+      question: '🧩 Ghép thêm các vai trò sáng tạo khác trong đội ngũ.',
+      instruction: 'Mỗi vai trò giải quyết một lát cắt rất riêng của trải nghiệm.',
+      pairs: [
+        { a: 'Artist', b: 'Vẽ nhân vật, bối cảnh, UI' },
+        { a: 'Sound Designer', b: 'Tạo hiệu ứng âm thanh' },
+        { a: 'Writer', b: 'Viết cốt truyện và lời thoại' },
+        { a: 'Composer', b: 'Sáng tác nhạc nền' }
+      ],
+      explain: 'Một game hoàn chỉnh cần hình ảnh, âm thanh, câu chuyện và hệ thống vận hành cùng nhau.'
+    }
+  ],
+  '1.4': [
+    {
+      type: 'SRT',
+      question: '🏢 Kéo các vai trò vào đúng phía Studio hoặc Publisher.',
+      instruction: 'Phân loại ai làm game và ai đưa game ra thị trường.',
+      zones: [
+        { id: 'studio', label: '🏠 Studio / Dev Team' },
+        { id: 'publisher', label: '🏢 Publisher' }
+      ],
+      items: [
+        { id: 'designer', text: 'Game Designer', correctZone: 'studio' },
+        { id: 'programmer', text: 'Programmer', correctZone: 'studio' },
+        { id: 'product', text: 'Product Manager', correctZone: 'publisher' },
+        { id: 'artpub', text: 'Art Director', correctZone: 'publisher' }
+      ],
+      explain: 'Art Director phía publisher giám sát chất lượng hình ảnh xuyên nhiều dự án; Product Manager đại diện góc nhìn thị trường và thương mại.'
+    },
+    {
+      type: 'SRT',
+      question: '💼 Tiếp tục phân vai cho đúng nhóm chức năng.',
+      instruction: 'Studio tạo sản phẩm, Publisher lo chiến lược phát hành.',
+      zones: [
+        { id: 'studio', label: '🎮 Studio' },
+        { id: 'publisher', label: '📣 Publisher' }
+      ],
+      items: [
+        { id: 'writer', text: 'Writer', correctZone: 'studio' },
+        { id: 'qa', text: 'QA Tester', correctZone: 'studio' },
+        { id: 'marketing', text: 'Marketing', correctZone: 'publisher' },
+        { id: 'bizdev', text: 'Business Development', correctZone: 'publisher' }
+      ],
+      explain: 'Publisher là cầu nối giữa studio và thị trường: marketing, business development, product direction.'
+    }
+  ],
+  '1.5': [
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Designer là người duy nhất tạo ra game".',
+      correct: false,
+      explain: 'Làm game luôn là việc của một tập thể nhiều vai trò khác nhau.'
+    },
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Một game không có rating ESRB vẫn có thể bán ở Mỹ một cách bình thường ở hầu hết nhà bán lẻ".',
+      correct: false,
+      explain: 'Ở mức tổng quát, hầu hết nhà bán lẻ lớn tại Mỹ đều yêu cầu rating trước khi nhận bán.'
+    }
+  ],
+  'boss_1': [
+    {
+      type: 'QZ',
+      question: 'Ai là người chịu trách nhiệm chính cho việc tìm và báo cáo bug trước phát hành?',
+      options: ['A. Producer', 'B. Tester (QA)', 'C. Product Manager', 'D. Marketing'],
+      correct: 1,
+      explain: 'QA là vai trò đảm bảo chất lượng và phát hiện lỗi càng sớm càng tốt.'
+    },
+    {
+      type: 'QZ',
+      question: 'Metal Gear Solid thường được xếp vào thể loại nào?',
+      options: ['A. Puzzle', 'B. Racing', 'C. Stealth', 'D. RTS'],
+      correct: 2,
+      explain: 'Điểm cốt lõi của Metal Gear Solid là tránh bị phát hiện hơn là đối đầu trực diện.'
+    },
+    {
+      type: 'QZ',
+      question: 'Vai trò nào thuộc phía publisher thay vì studio?',
+      options: ['A. Programmer', 'B. Writer', 'C. Product Manager', 'D. QA Tester'],
+      correct: 2,
+      explain: 'Product Manager là đại diện góc nhìn thị trường và định hướng sản phẩm.'
+    },
+    {
+      type: 'QZ',
+      question: 'Tựa game nào ra mắt sớm nhất trong nhóm sau?',
+      options: ['A. Doom', 'B. The Sims', 'C. Pac-Man', 'D. World of Warcraft'],
+      correct: 2,
+      explain: 'Pac-Man ra mắt năm 1980, sớm hơn Doom, The Sims và WoW.'
+    },
+    {
+      type: 'QZ',
+      question: 'Phát biểu nào đúng nhất về việc làm game?',
+      options: ['A. Chỉ cần Designer giỏi là đủ', 'B. Publisher là người trực tiếp code game', 'C. Game là sản phẩm của teamwork đa vai trò', 'D. QA chỉ cần xuất hiện ở tuần cuối'],
+      correct: 2,
+      explain: 'Không ai làm game một mình; game là sản phẩm của nhiều chuyên môn phối hợp.'
+    }
+  ],
+  '2.1': [
+    {
+      type: 'SPN',
+      question: '🎰 Kết hợp 2 concept thành một game pitch hợp lý nhất.',
+      instruction: 'Chọn pitch giữ được core loop của cả hai từ khóa.',
+      wheel1: ['🏴‍☠️ Cướp biển', '🧟 Zombie', '🏫 Trường học', '🚀 Không gian'],
+      wheel2: ['🗼 Tower Defense', '🏎️ Đua xe', '😱 Kinh dị', '🧩 Puzzle'],
+      scenarios: [
+        {
+          combo: ['🏴‍☠️ Cướp biển', '🗼 Tower Defense'],
+          options: [
+            'A. Chỉ đổi skin tháp thành cướp biển',
+            'B. Cướp biển bảo vệ đảo báu bằng pháo đài tự chế trước hạm đội địch',
+            'C. Game bắn súng thông thường có thuyền',
+            'D. Chỉ kể chuyện cướp biển bằng cutscene'
+          ],
+          correct: 1,
+          explain: 'Pitch tốt phải giữ được cơ chế lõi phòng thủ/xây dựng chứ không chỉ ghép theme.'
+        }
+      ]
+    },
+    {
+      type: 'SPN',
+      question: '🎰 Thử thêm một combo khác và chọn pitch tốt nhất.',
+      instruction: 'Ưu tiên pitch biến bối cảnh thành gameplay, không chỉ trang trí.',
+      scenarios: [
+        {
+          combo: ['🧟 Zombie', '🏎️ Đua xe'],
+          options: [
+            'A. Đua xe sinh tồn xuyên thành phố zombie, vừa lái vừa né đàn zombie tràn đường',
+            'B. Game đua xe bình thường có zombie đứng xem',
+            'C. Chỉ có xe trong cutscene mở đầu',
+            'D. Bắn zombie nhưng xe không ảnh hưởng gameplay'
+          ],
+          correct: 0,
+          explain: 'Pitch tốt giữ tốc độ, né tránh và áp lực đường đua làm trung tâm thay vì chỉ thêm zombie làm nền.'
+        }
+      ]
+    }
+  ],
+  '2.2': [
+    {
+      type: 'TAP',
+      question: 'Điều gì khiến gamer quay lại chơi tiếp nhiều nhất?',
+      options: [
+        'A. Chỉ đồ họa đẹp',
+        'B. Cảm giác tiến bộ và thử thách vừa sức',
+        'C. Chỉ vì game dễ',
+        'D. Chỉ vì trailer hay'
+      ],
+      correct: 1,
+      explain: 'Người chơi quay lại vì cảm giác đang tiến bộ và bị thử thách công bằng, không chỉ vì presentation.'
+    },
+    {
+      type: 'TAP',
+      question: 'Nhận định nào đúng hơn về thứ gamer muốn?',
+      options: [
+        'A. Gamer luôn muốn game dễ nhất có thể',
+        'B. Gamer thích càng khó càng tốt dù vô lý',
+        'C. Gamer muốn thử thách công bằng; quá dễ sẽ gây chán',
+        'D. Gamer chỉ quan tâm phần thưởng cuối'
+      ],
+      correct: 2,
+      explain: 'Thử thách phải công bằng và đọc được; quá dễ thì nhạt, quá vô lý thì bực.'
+    }
+  ],
+  '2.3': [
+    {
+      type: 'SOD',
+      question: '🐞 Tìm câu sai về khái niệm "fun" trong game.',
+      instruction: 'Chọn phát biểu sai.',
+      statements: [
+        { text: 'Game vui là game đơn giản, dễ hiểu.', isBug: true },
+        { text: 'Fun có thể đến từ thử thách và cảm giác thành tựu.' },
+        { text: 'Fun còn có thể đến từ bất ngờ và tương tác xã hội.' },
+        { text: 'Một game vui không chỉ được quyết định bởi bề ngoài.' }
+      ],
+      explain: 'Fun là một cụm cảm giác phức hợp: thử thách, bất ngờ, thành tựu, social, khám phá... chứ không chỉ là sự đơn giản.'
+    },
+    {
+      type: 'SOD',
+      question: '🐞 Tìm điểm sai trong nhận định sau.',
+      instruction: 'Chọn nhận định sai.',
+      statements: [
+        { text: 'Chỉ cần đồ họa đẹp là game sẽ vui.', isBug: true },
+        { text: 'Gameplay quyết định phần lớn chất lượng tương tác.' },
+        { text: 'Visual tốt có thể hỗ trợ nhưng không thay thế được game feel.' },
+        { text: 'Designer cần nghĩ về trải nghiệm người chơi, không chỉ bề mặt.' }
+      ],
+      explain: 'Đồ họa đẹp không tự biến một core loop dở thành game vui.'
+    }
+  ],
+  '2.4': [
+    {
+      type: 'SPN',
+      question: '🎰 Chọn nhận định đúng về brainstorm hiệu quả.',
+      instruction: 'Sau khi quay, chọn cách làm phù hợp nhất.',
+      scenarios: [
+        {
+          combo: ['🧠 Brainstorm', '👥 Team'],
+          options: [
+            'A. Chỉ một người nghĩ, cả nhóm làm theo',
+            'B. Nhiều góc nhìn, chưa phán xét ý tưởng ngay khi mới nêu',
+            'C. Loại bỏ ý tưởng khác mình càng sớm càng tốt',
+            'D. Chỉ nói những gì chắc chắn làm được ngay'
+          ],
+          correct: 1,
+          explain: 'Brainstorm tốt cần mở rộng vùng ý tưởng trước khi bước vào giai đoạn lọc.'
+        }
+      ]
+    },
+    {
+      type: 'SPN',
+      question: '🎰 Với combo "Trường học" + "Kinh dị", pitch nào hợp lý nhất?',
+      instruction: 'Chọn pitch biến cả hai yếu tố thành gameplay.',
+      scenarios: [
+        {
+          combo: ['🏫 Trường học', '😱 Kinh dị'],
+          options: [
+            'A. Chỉ đổi nền sang trường học bỏ hoang',
+            'B. Sinh tồn trong trường học bị ma ám, giải đố để mở khóa phòng và thoát thân',
+            'C. Bắn zombie trong trường học',
+            'D. Visual novel có nhãn kinh dị nhưng không dùng không gian trường học'
+          ],
+          correct: 1,
+          explain: 'Pitch tốt dùng chính cấu trúc trường học làm không gian puzzle và nguồn áp lực.'
+        }
+      ]
+    }
+  ],
+  '2.5': [
+    {
+      type: 'CYP',
+      question: 'Bạn đang bí ý tưởng nhiều giờ liền. Nên làm gì?',
+      instruction: 'Chọn hướng xử lý giúp mở lại đầu óc.',
+      paths: [
+        { text: 'Ngồi lì thêm 3 tiếng cho tới khi nghĩ ra bằng được.', correct: false, result: 'Sai. Ép quá lâu ở một chỗ thường chỉ làm block nặng hơn.' },
+        { text: 'Tạm dừng, đổi môi trường làm việc rồi quay lại sau.', correct: true, result: 'Đúng. Đổi nhịp và đổi môi trường thường giúp ý tưởng lưu thông trở lại.' },
+        { text: 'Xóa hết những gì đã nghĩ vì chắc chắn đều dở.', correct: false, result: 'Sai. Block không có nghĩa mọi thứ trước đó vô dụng.' }
+      ],
+      explain: 'Writer’s block thường giảm đi khi bạn đổi trạng thái, thay vì chỉ cố ép thêm.'
+    },
+    {
+      type: 'CYP',
+      question: 'Cách nào giúp khơi lại góc nhìn mới nhanh nhất?',
+      instruction: 'Chọn nước đi có khả năng tạo “ma sát sáng tạo” tích cực.',
+      paths: [
+        { text: 'Chơi hoặc xem một game khác hẳn thể loại đang làm.', correct: true, result: 'Đúng. Nhìn từ một thể loại khác dễ bật ra kết hợp mới.' },
+        { text: 'Đọc lại cùng một reference cũ thêm 10 lần.', correct: false, result: 'Sai. Reference cũ hữu ích nhưng dễ khiến bạn quay vòng.' },
+        { text: 'Ngưng hẳn mọi thứ và không ghi chú gì nữa.', correct: false, result: 'Sai. Nghỉ là tốt, nhưng vẫn nên giữ dòng suy nghĩ để quay lại.' }
+      ],
+      explain: 'Một góc nhìn khác thể loại thường giúp bạn phá mô thức quen thuộc nhanh hơn.'
+    }
+  ],
+  '2.6': [
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Ý tưởng tốt phải hoàn toàn mới, chưa ai nghĩ ra".',
+      correct: false,
+      explain: 'Ý tưởng tốt thường là sự kết hợp mới của những thứ đã quen thuộc.'
+    },
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Brainstorm nhóm luôn tốt hơn brainstorm một mình".',
+      correct: false,
+      explain: 'Tùy giai đoạn. Brainstorm cá nhân giúp mở rộng, nhóm giúp lọc và phát triển.'
+    }
+  ],
+  'boss_2': [
+    {
+      type: 'QZ',
+      question: 'Pitch nào là dấu hiệu của một ý tưởng được kết hợp tốt?',
+      options: ['A. Chỉ đổi skin', 'B. Chỉ đổi tên', 'C. Theme và core loop gắn với nhau', 'D. Chỉ có cutscene hay'],
+      correct: 2,
+      explain: 'Ý tưởng mạnh là ý tưởng mà bối cảnh và cơ chế đỡ nhau thay vì đứng tách rời.'
+    },
+    {
+      type: 'QZ',
+      question: 'Điều gamer thường muốn hơn cả là gì?',
+      options: ['A. Game dễ nhất có thể', 'B. Thử thách công bằng và cảm giác tiến bộ', 'C. Chỉ đồ họa đẹp', 'D. Chỉ cốt truyện dài'],
+      correct: 1,
+      explain: 'Fair challenge + progression là động lực quay lại rất mạnh.'
+    },
+    {
+      type: 'QZ',
+      question: 'Nhận định nào sai về “fun”?',
+      options: ['A. Có thể đến từ bất ngờ', 'B. Có thể đến từ thành tựu', 'C. Chỉ cần đơn giản là đủ', 'D. Có thể đến từ social play'],
+      correct: 2,
+      explain: 'Fun không đồng nghĩa với đơn giản; nó là tổ hợp nhiều yếu tố.'
+    },
+    {
+      type: 'QZ',
+      question: 'Khi bí ý tưởng, bước nào hợp lý hơn?',
+      options: ['A. Ép bản thân ngồi lì', 'B. Tạm dừng và đổi môi trường', 'C. Xóa hết ghi chú', 'D. Ngưng hẳn mọi reference'],
+      correct: 1,
+      explain: 'Đổi trạng thái giúp tư duy rời khỏi vòng lặp bế tắc.'
+    },
+    {
+      type: 'QZ',
+      question: 'Brainstorm hiệu quả thường bắt đầu bằng điều gì?',
+      options: ['A. Phán xét sớm', 'B. Một người áp đặt ý tưởng', 'C. Mở rộng trước, lọc sau', 'D. Chỉ giữ ý tưởng an toàn'],
+      correct: 2,
+      explain: 'Mở rộng rồi mới hội tụ là nguyên tắc cơ bản của brainstorm tốt.'
+    }
+  ],
+  '3.1': [
+    {
+      type: 'BAL',
+      question: '📐 Chỉnh tỷ lệ quen thuộc và mới lạ để câu chuyện không bị quá sáo hay quá khó vào.',
+      sliders: [
+        { label: 'Mức quen thuộc', min: 0, max: 100, value: 58, targetRange: [45, 70] },
+        { label: 'Mức mới lạ', min: 0, max: 100, value: 54, targetRange: [40, 70] }
+      ],
+      avatar: '📖',
+      previewLabel: 'Weirdness balance',
+      previewHint: 'Giữ một “mỏ neo” quen thuộc nhưng vẫn đủ lạ để gợi tò mò.',
+      explain: '100% quen thuộc thì dễ nhàm; 100% mới lạ thì khó tiếp cận. Weirdness tốt là có điểm bám cho người chơi nhưng vẫn đủ khác biệt.'
+    },
+    {
+      type: 'BAL',
+      question: '📐 Với một ý tưởng cực lạ, nên cân lại thế nào để người chơi vẫn bám theo được?',
+      sliders: [
+        { label: 'Điểm tựa quen thuộc', min: 0, max: 100, value: 66, targetRange: [55, 85] },
+        { label: 'Độ dị tổng thể', min: 0, max: 100, value: 42, targetRange: [25, 55] }
+      ],
+      avatar: '🧪',
+      previewLabel: 'Audience readability',
+      previewHint: 'Ý tưởng càng dị càng cần một điểm neo dễ hiểu.',
+      explain: 'Một câu chuyện 100% mới lạ khiến người chơi không có gì để bám; cần ít nhất một yếu tố quen thuộc làm điểm tựa.'
+    }
+  ],
+  '3.2': [
+    {
+      type: 'CYP',
+      question: 'Boss cuối đã bị hạ. Bạn chọn kiểu kết thúc nào?',
+      instruction: 'Chọn ending thường được đánh giá cao hơn.',
+      paths: [
+        { text: 'Happy ending hoàn hảo, không ai mất gì, mọi thứ sạch sẽ tuyệt đối.', correct: false, result: 'Sai. Quá gượng ép dễ làm mất chiều sâu.' },
+        { text: 'Giải quyết xung đột chính nhưng vẫn để lại dư âm và cái giá nhân vật phải trả.', correct: true, result: 'Đúng. Đây là kiểu kết vừa thỏa mãn vừa đọng lại.' },
+        { text: 'Cắt đen màn hình để bán phần 2 ngay.', correct: false, result: 'Sai. Cliffhanger rẻ tiền thường làm người chơi hụt hẫng.' }
+      ],
+      explain: 'Kết truyện tốt không nhất thiết phải hạnh phúc tuyệt đối; nó cần giải quyết xung đột chính nhưng vẫn chân thực với hành trình nhân vật.'
+    },
+    {
+      type: 'CYP',
+      question: 'Lỗi thường gặp nhất ở phần ending là gì?',
+      instruction: 'Chọn hướng kết dễ khiến người chơi thất vọng.',
+      paths: [
+        { text: 'Dành thời gian cho hậu quả và cảm xúc sau cao trào.', correct: false, result: 'Không sai; đây là điều nên có.' },
+        { text: 'Giải quyết mọi thứ quá vội ở 1 cutscene ngắn cuối cùng.', correct: true, result: 'Đúng. Đây là lỗi “rush ending” rất phổ biến.' },
+        { text: 'Cho nhân vật thay đổi theo những gì họ đã trải qua.', correct: false, result: 'Không sai; đây là dấu hiệu ending có chiều sâu.' }
+      ],
+      explain: 'Người chơi cần thời gian “thở” sau cao trào để hấp thụ ý nghĩa của kết thúc.'
+    }
+  ],
+  '3.3': [
+    {
+      type: 'CRD',
+      question: '👤 Gắn đúng thành phần để tạo một nhân vật có chiều sâu.',
+      cards: [
+        { id: 'goal', text: 'Mục tiêu rõ ràng' },
+        { id: 'motivation', text: 'Động lực cá nhân' },
+        { id: 'flaw', text: 'Điểm yếu / flaw' }
+      ],
+      targets: [
+        { id: 'wants', label: 'Nhân vật muốn gì?' },
+        { id: 'why', label: 'Vì sao họ muốn điều đó?' },
+        { id: 'human', label: 'Điều gì làm họ dễ tổn thương?' }
+      ],
+      mapping: { wants: 'goal', why: 'motivation', human: 'flaw' },
+      explain: 'Nhân vật mạnh không chỉ có sức mạnh; họ cần mục tiêu, động lực và flaw để thành người thật thay vì hình nộm.'
+    },
+    {
+      type: 'CRD',
+      question: '👤 Ghép đúng để tránh tạo ra một nhân vật bị “bìa các-tông”.',
+      cards: [
+        { id: 'inner', text: 'Có lý do nội tâm cho hành động' },
+        { id: 'script', text: 'Chỉ hành động vì cốt truyện cần' },
+        { id: 'conflict', text: 'Có mâu thuẫn giữa điều muốn và điều cần' }
+      ],
+      targets: [
+        { id: 'keep1', label: 'Nên giữ' },
+        { id: 'avoid', label: 'Nên tránh' },
+        { id: 'keep2', label: 'Tăng chiều sâu' }
+      ],
+      mapping: { keep1: 'inner', avoid: 'script', keep2: 'conflict' },
+      explain: 'Thiếu động lực cá nhân rõ ràng là con đường nhanh nhất biến nhân vật thành cliché.'
+    }
+  ],
+  '3.4': [
+    {
+      type: 'SOD',
+      question: '🐞 Tìm câu thoại không phù hợp với game cho trẻ em.',
+      instruction: 'Chọn câu có hàm ý quá bạo lực hoặc lệch tông.',
+      statements: [
+        { text: 'Mình sẽ cố gắng thêm một lần nữa để cứu bạn.', isBug: false },
+        { text: 'Không sao, tụi mình cùng tìm cách nhé.', isBug: false },
+        { text: 'Ta sẽ nghiền nát kẻ thù thành từng mảnh máu me.', isBug: true },
+        { text: 'Đừng bỏ cuộc, vẫn còn hy vọng.', isBug: false }
+      ],
+      explain: 'Viết cho trẻ em không có nghĩa là nông, nhưng cần lọc bỏ cách diễn đạt không phù hợp.'
+    },
+    {
+      type: 'SOD',
+      question: '🐞 Tìm nhận định sai về việc viết cho mọi lứa tuổi.',
+      instruction: 'Chọn phát biểu sai.',
+      statements: [
+        { text: 'Trẻ em vẫn cần chiều sâu cảm xúc.', isBug: false },
+        { text: 'Có thể kể về mất mát, tình bạn, trưởng thành nếu xử lý tinh tế.', isBug: false },
+        { text: 'Viết cho trẻ em nghĩa là phải thật đơn giản và ngây ngô.', isBug: true },
+        { text: 'Lọc nội dung không phù hợp quan trọng hơn việc “dìm” trí tuệ người xem.', isBug: false }
+      ],
+      explain: 'Sai lầm lớn là coi writing for kids = dumbing down.'
+    }
+  ],
+  '3.5': [
+    {
+      type: 'CYP',
+      question: 'Bạn làm game theo một IP nổi tiếng. Điều gì quan trọng nhất?',
+      instruction: 'Chọn cách xử lý đúng với license.',
+      paths: [
+        { text: 'Bẻ hẳn tính cách nhân vật gốc nếu gameplay cần, fan sẽ quen thôi.', correct: false, result: 'Sai. Đây là cách làm mất niềm tin của fan nhanh nhất.' },
+        { text: 'Tôn trọng luật lệ thế giới và tính cách nhân vật gốc đã được công nhận.', correct: true, result: 'Đúng. License trước hết là bài toán tôn trọng canon.' },
+        { text: 'Viết thêm thật nhiều giải thích để biện minh cho việc lệch canon.', correct: false, result: 'Sai. Càng phải biện minh càng cho thấy quyết định gốc có vấn đề.' }
+      ],
+      explain: 'Khi làm game license, bạn phải giữ đúng “luật lệ” của IP gốc thay vì bẻ canon chỉ để tiện gameplay.'
+    },
+    {
+      type: 'CYP',
+      question: 'Lỗi thường gặp khi viết game license là gì?',
+      instruction: 'Chọn sai lầm thiết kế phổ biến.',
+      paths: [
+        { text: 'Thêm tình huống đi ngược hoàn toàn tính cách gốc chỉ để hợp cơ chế.', correct: true, result: 'Đúng. Đây là lỗi license rất điển hình.' },
+        { text: 'Tìm cách diễn giải gameplay từ chính cá tính và quy tắc sẵn có của IP.', correct: false, result: 'Không sai; đây mới là hướng tốt.' },
+        { text: 'Hỏi “fan sẽ thấy nhân vật này hành xử như vậy có hợp không?”.', correct: false, result: 'Không sai; đây là câu hỏi rất nên dùng.' }
+      ],
+      explain: 'Sai lầm lớn nhất là bẻ cong nhân vật/thế giới gốc chỉ để phục vụ một ý tưởng gameplay tiện tay.'
+    }
+  ],
+  '3.6': [
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Câu chuyện trong game không quan trọng bằng gameplay".',
+      correct: false,
+      explain: 'Tùy game. Với nhiều thể loại story-driven, câu chuyện là một trụ cột ngang hàng gameplay.'
+    },
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Tam giác Weirdness chỉ áp dụng cho cốt truyện, không áp dụng cho nhân vật".',
+      correct: false,
+      explain: 'Weirdness áp dụng được cho cả nhân vật, thế giới và cơ chế.'
+    }
+  ],
+  'boss_3': [
+    {
+      type: 'QZ',
+      question: 'Một câu chuyện 100% quen thuộc, 0% mới lạ thường gây cảm giác gì?',
+      options: ['A. Khó tiếp cận', 'B. Nhàm chán, dễ đoán', 'C. Hoàn hảo nhất', 'D. Quá dị'],
+      correct: 1,
+      explain: 'Thiếu mới lạ khiến câu chuyện trở nên sáo và ít kích thích tò mò.'
+    },
+    {
+      type: 'QZ',
+      question: 'Yếu tố nào làm nhân vật bớt “bìa các-tông” nhất?',
+      options: ['A. Chỉ ngoại hình đẹp', 'B. Chỉ sức mạnh', 'C. Động lực cá nhân rõ ràng', 'D. Chỉ thoại ngầu'],
+      correct: 2,
+      explain: 'Động lực cá nhân là phần khiến hành động của nhân vật có nghĩa.'
+    },
+    {
+      type: 'QZ',
+      question: 'Kết truyện nào thường được đánh giá cao hơn?',
+      options: ['A. Cắt đen ngay để bán sequel', 'B. Happy ending gượng ép', 'C. Giải quyết xung đột chính nhưng còn dư âm', 'D. Bỏ mặc mọi mâu thuẫn'],
+      correct: 2,
+      explain: 'Một ending tốt nên vừa thỏa mãn vừa để lại dư âm cảm xúc.'
+    },
+    {
+      type: 'QZ',
+      question: 'Khi viết cho trẻ em, điều nào là sai?',
+      options: ['A. Lọc nội dung không phù hợp', 'B. Giữ chiều sâu cảm xúc', 'C. Đồng nhất trẻ em với writing ngây ngô', 'D. Tránh ngôn ngữ phản cảm'],
+      correct: 2,
+      explain: 'Sai lầm là xem writing for kids như một dạng “làm ngu đi”.'
+    },
+    {
+      type: 'QZ',
+      question: 'Khi làm game license, designer cần ưu tiên điều gì?',
+      options: ['A. Bẻ canon nếu tiện gameplay', 'B. Tôn trọng canon và tính cách gốc', 'C. Bỏ qua fan cứng', 'D. Chỉ cần giải thích bằng cutscene'],
+      correct: 1,
+      explain: 'License đòi hỏi tôn trọng thế giới và nhân vật gốc trước tiên.'
+    }
+  ],
+  '4.1': [
+    {
+      type: 'DSP',
+      question: '📄 Kéo các khối nội dung vào đúng vùng của One-Sheet.',
+      instruction: 'Mỗi khối nên đứng ở đúng chỗ trong tài liệu pitch ngắn.',
+      zones: [
+        { id: 'title', label: 'Tên game / Hook' },
+        { id: 'comps', label: 'Comps' },
+        { id: 'usp', label: 'USP' },
+        { id: 'audience', label: 'Đối tượng người chơi' }
+      ],
+      items: [
+        { id: 'name', text: 'Tên game', correctZone: 'title' },
+        { id: 'hook', text: '1 câu hook', correctZone: 'title' },
+        { id: 'compare', text: 'Game so sánh', correctZone: 'comps' },
+        { id: 'unique', text: 'Điểm bán hàng độc nhất', correctZone: 'usp' },
+        { id: 'target', text: 'Target audience', correctZone: 'audience' }
+      ],
+      explain: 'One-Sheet phải truyền được game là gì, bán cho ai, khác gì và nên được nhớ vì điều gì.'
+    },
+    {
+      type: 'DSP',
+      question: '📄 Kéo USP tốt và USP dở vào đúng nhóm.',
+      instruction: 'Loại bỏ những thứ “mọi game nên có” khỏi cột USP.',
+      zones: [
+        { id: 'keep', label: 'Giữ lại làm USP' },
+        { id: 'drop', label: 'Loại khỏi USP' }
+      ],
+      items: [
+        { id: 'pretty', text: 'Đồ họa đẹp', correctZone: 'drop' },
+        { id: 'story', text: 'Cốt truyện hấp dẫn', correctZone: 'drop' },
+        { id: 'mechanic', text: 'Cơ chế co-op đổi vai thời gian thực', correctZone: 'keep' },
+        { id: 'twist', text: 'Hệ thống xây căn cứ trên lưng quái vật di động', correctZone: 'keep' }
+      ],
+      explain: '“Đồ họa đẹp” hay “cốt truyện hay” không phải USP; đó là kỳ vọng nền. USP phải là điểm khác biệt thật.'
+    }
+  ],
+  '4.2': [
+    {
+      type: 'MEM',
+      question: '🏷️ Ghép ESRB rating với mô tả đúng.',
+      instruction: 'Tìm đúng cặp rating ↔ mức nội dung.',
+      pairs: [
+        { a: 'M (Mature 17+)', b: 'Bạo lực mạnh, máu me, nội dung trưởng thành' },
+        { a: 'T (Teen)', b: 'Bạo lực và chủ đề gợi ý ở mức vừa phải' },
+        { a: 'E10+', b: 'Nội dung phù hợp 10 tuổi trở lên' },
+        { a: 'E', b: 'Mọi lứa tuổi' }
+      ],
+      explain: 'ESRB không phải trang trí; nó định khung kỳ vọng nội dung và ảnh hưởng khả năng phát hành bán lẻ.'
+    },
+    {
+      type: 'MEM',
+      question: '🏷️ Ghép thêm rating với nhóm người chơi phù hợp.',
+      instruction: 'Nhớ đúng khung tuổi cơ bản.',
+      pairs: [
+        { a: 'T', b: 'Teen' },
+        { a: 'M', b: 'Mature 17+' },
+        { a: 'E10+', b: 'Everyone 10+' },
+        { a: 'E', b: 'Everyone' }
+      ],
+      explain: 'Hiểu rating giúp designer tránh thiết kế lệch đối tượng mục tiêu ngay từ đầu.'
+    }
+  ],
+  '4.3': [
+    {
+      type: 'DSP',
+      question: '📑 Kéo 3 ví dụ vào đúng cấu trúc Rule of Threes.',
+      instruction: 'Dùng đúng 3 ví dụ để ý không bị loãng.',
+      zones: [
+        { id: 'example1', label: 'Ví dụ 1' },
+        { id: 'example2', label: 'Ví dụ 2' },
+        { id: 'example3', label: 'Ví dụ 3' }
+      ],
+      items: [
+        { id: 'intro', text: 'Ví dụ mở khái niệm', correctZone: 'example1' },
+        { id: 'compare', text: 'Ví dụ để so sánh', correctZone: 'example2' },
+        { id: 'reinforce', text: 'Ví dụ củng cố', correctZone: 'example3' }
+      ],
+      explain: 'Rule of Threes giữ tài liệu vừa đủ rõ vừa không dài dòng.'
+    },
+    {
+      type: 'DSP',
+      question: '📑 Kéo nội dung cần có vào trang 1 của Ten-Pager.',
+      instruction: 'Chọn đúng các thành phần title page.',
+      zones: [
+        { id: 'page1', label: 'Trang 1 / Title Page' },
+        { id: 'later', label: 'Để sang phần sau' }
+      ],
+      items: [
+        { id: 'title', text: 'Tên game', correctZone: 'page1' },
+        { id: 'platform', text: 'Hệ máy dự kiến', correctZone: 'page1' },
+        { id: 'audience', text: 'Độ tuổi mục tiêu', correctZone: 'page1' },
+        { id: 'rating', text: 'Rating ESRB dự kiến', correctZone: 'page1' },
+        { id: 'deepcombat', text: 'Chi tiết combat frame-by-frame', correctZone: 'later' }
+      ],
+      explain: 'Ten-Pager là tài liệu pitch tổng quan; title page cần đủ thông tin định vị game ngay lập tức.'
+    }
+  ],
+  '4.4': [
+    {
+      type: 'DSP',
+      question: '📚 Kéo đặc điểm vào đúng cột Ten-Pager hoặc GDD.',
+      instruction: 'Phân biệt tài liệu pitch và tài liệu sản xuất.',
+      zones: [
+        { id: 'tenpager', label: 'Ten-Pager' },
+        { id: 'gdd', label: 'GDD' }
+      ],
+      items: [
+        { id: 'pitch', text: 'Tóm tắt tổng quan để pitch', correctZone: 'tenpager' },
+        { id: 'detail', text: 'Mô tả chi tiết từng hệ thống', correctZone: 'gdd' },
+        { id: 'investor', text: 'Giúp người ngoài nắm nhanh ý tưởng', correctZone: 'tenpager' },
+        { id: 'production', text: 'Giúp team cùng xây game', correctZone: 'gdd' }
+      ],
+      explain: 'Ten-Pager bán ý tưởng; GDD giúp cả team biết phải làm gì.'
+    },
+    {
+      type: 'DSP',
+      question: '📚 Kéo đúng nhóm người đọc chính của GDD.',
+      instruction: 'Ai là người dùng GDD nhiều nhất?',
+      zones: [
+        { id: 'core', label: 'Đọc GDD thường xuyên' },
+        { id: 'notcore', label: 'Không phải người đọc chính' }
+      ],
+      items: [
+        { id: 'designer', text: 'Designer', correctZone: 'core' },
+        { id: 'programmer', text: 'Programmer', correctZone: 'core' },
+        { id: 'artist', text: 'Artist', correctZone: 'core' },
+        { id: 'investor', text: 'Nhà đầu tư ngoài team', correctZone: 'notcore' }
+      ],
+      explain: 'GDD là tài liệu vận hành nội bộ cho team phát triển nhiều hơn là cho người pitch bên ngoài.'
+    }
+  ],
+  '4.5': [
+    {
+      type: 'ROP',
+      question: '📈 Sắp đúng progression curve cơ bản của một level.',
+      steps: [
+        { id: 'intro', text: 'Giới thiệu cơ chế dễ' },
+        { id: 'ramp', text: 'Tăng dần thử thách' },
+        { id: 'peak', text: 'Đỉnh khó trước Boss' },
+        { id: 'relief', text: 'Giảm nhẹ / ăn mừng sau Boss' }
+      ],
+      correctOrder: ['intro', 'ramp', 'peak', 'relief'],
+      explain: 'Progression tốt tăng dần áp lực nhưng vẫn cho người chơi nhịp “thở”.'
+    },
+    {
+      type: 'ROP',
+      question: '📈 Sắp lại để tránh lỗi tăng độ khó đột ngột.',
+      steps: [
+        { id: 'teach', text: 'Dạy cơ chế mới' },
+        { id: 'practice', text: 'Cho luyện trong môi trường an toàn' },
+        { id: 'combine', text: 'Kết hợp với thử thách cũ' },
+        { id: 'exam', text: 'Kiểm tra ở áp lực cao' }
+      ],
+      correctOrder: ['teach', 'practice', 'combine', 'exam'],
+      explain: 'Nhảy cóc từ dạy sang bài thi khó ngay là cách tốt nhất để người chơi bỏ game.'
+    }
+  ],
+  '4.6': [
+    {
+      type: 'ROP',
+      question: '🥁 Sắp đúng một đoạn Beat Chart mẫu.',
+      steps: [
+        { id: 'a_intro', text: 'Giới thiệu cơ chế A' },
+        { id: 'a_practice', text: 'Luyện cơ chế A' },
+        { id: 'ab_mix', text: 'Kết hợp A + B' },
+        { id: 'boss', text: 'Boss dùng A + B' }
+      ],
+      correctOrder: ['a_intro', 'a_practice', 'ab_mix', 'boss'],
+      explain: 'Beat Chart là công cụ lập nhịp độ: dạy, luyện, phối hợp, rồi kiểm tra.'
+    },
+    {
+      type: 'ROP',
+      question: '🥁 Sắp lại thứ tự nhịp độ hợp lý cho một chương gameplay.',
+      steps: [
+        { id: 'new', text: 'Đưa cơ chế mới' },
+        { id: 'rest', text: 'Nhịp nghỉ ngắn / đọc tình huống' },
+        { id: 'challenge', text: 'Đẩy cao trào thử thách' },
+        { id: 'payoff', text: 'Payoff / màn tổng hợp' }
+      ],
+      correctOrder: ['new', 'rest', 'challenge', 'payoff'],
+      explain: 'Beat Chart không chỉ là độ khó, mà còn là nhịp thở và nhịp cảm xúc.'
+    }
+  ],
+  '4.7': [
+    {
+      type: 'CYP',
+      question: 'Đồng nghiệp phản đối ý tưởng của bạn trong họp. Bạn làm gì?',
+      instruction: 'Chọn cách hành xử chuyên nghiệp hơn.',
+      paths: [
+        { text: 'Cắt lời và phản bác ngay để bảo vệ ý tưởng.', correct: false, result: 'Sai. Phản xạ phòng thủ tức thì dễ biến tranh luận thành cái tôi.' },
+        { text: 'Lắng nghe, hỏi rõ lý do rồi mới cân nhắc phản hồi.', correct: true, result: 'Đúng. Đây là tinh thần “đừng làm Schmuck”.' },
+        { text: 'Im lặng nhưng về sau than phiền với người khác.', correct: false, result: 'Sai. Né đối thoại trực tiếp không giải quyết được vấn đề.' }
+      ],
+      explain: 'Khiêm tốn và cầu tiến là một phần năng lực nghề nghiệp của designer.'
+    },
+    {
+      type: 'CYP',
+      question: 'Bạn nhận feedback tiêu cực về thiết kế của mình. Hành xử “Schmuck” là gì?',
+      instruction: 'Chọn hành vi nên tránh.',
+      paths: [
+        { text: 'Đổ lỗi cho người khác hoặc phớt lờ feedback.', correct: true, result: 'Đúng. Đây chính là kiểu hành xử “Schmuck”.' },
+        { text: 'Hỏi thêm bối cảnh và xem feedback có gốc hợp lý không.', correct: false, result: 'Không sai; đây là phản ứng nên có.' },
+        { text: 'Tách feedback khỏi cái tôi cá nhân.', correct: false, result: 'Không sai; đây là kỹ năng rất quan trọng.' }
+      ],
+      explain: '“Schmuck” không phải người bị chê, mà là người không biết tiếp nhận và xử lý phản hồi.'
+    }
+  ],
+  '4.8': [
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "GDD chỉ cần viết một lần, không cần cập nhật".',
+      correct: false,
+      explain: 'GDD là tài liệu sống, cần cập nhật liên tục theo quá trình phát triển.'
+    },
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "10 trang là quy định cứng cho Ten-Pager".',
+      correct: false,
+      explain: '10 trang chỉ là guideline tham khảo, không phải luật cứng.'
+    }
+  ],
+  'boss_4': [
+    {
+      type: 'QZ',
+      question: 'USP nào dưới đây là USP dở?',
+      options: ['A. Cơ chế đổi vai co-op thời gian thực', 'B. Đồ họa đẹp', 'C. Xây căn cứ trên lưng quái vật', 'D. Một hệ thống thời tiết ảnh hưởng puzzle'],
+      correct: 1,
+      explain: '“Đồ họa đẹp” là kỳ vọng nền, không phải điểm bán hàng độc nhất.'
+    },
+    {
+      type: 'QZ',
+      question: 'GDD khác Ten-Pager ở điểm cốt lõi nào?',
+      options: ['A. GDD chỉ để marketing', 'B. Ten-Pager luôn dài hơn', 'C. GDD đi vào chi tiết hệ thống để team sản xuất', 'D. Hai tài liệu hoàn toàn giống nhau'],
+      correct: 2,
+      explain: 'Ten-Pager để pitch nhanh; GDD để team cùng xây game.'
+    },
+    {
+      type: 'QZ',
+      question: 'Progression tốt thường bắt đầu bằng gì?',
+      options: ['A. Bài kiểm tra khó ngay', 'B. Giới thiệu cơ chế dễ', 'C. Boss trước, tutorial sau', 'D. Random độ khó'],
+      correct: 1,
+      explain: 'Người chơi cần được dạy và luyện trước khi bị kiểm tra.'
+    },
+    {
+      type: 'QZ',
+      question: 'Beat Chart giúp ích nhiều nhất cho điều gì?',
+      options: ['A. Chỉ tính ngân sách', 'B. Chỉ đặt tên level', 'C. Quản lý nhịp độ dạy, nghỉ, cao trào', 'D. Chỉ làm UI đẹp hơn'],
+      correct: 2,
+      explain: 'Beat Chart là công cụ kiểm soát nhịp gameplay và cảm xúc.'
+    },
+    {
+      type: 'QZ',
+      question: 'Khi nhận feedback tiêu cực, phản ứng chuyên nghiệp hơn là gì?',
+      options: ['A. Đổ lỗi', 'B. Phớt lờ', 'C. Hỏi rõ lý do và cân nhắc', 'D. Công kích ngược'],
+      correct: 2,
+      explain: 'Một designer giỏi biết tiếp nhận phản hồi thay vì chỉ phòng thủ.'
+    }
+  ],
+  '5.1': [
+    {
+      type: 'CYP',
+      question: 'Bạn đang viết nhân vật chính. Nên tránh điều gì?',
+      instruction: 'Chọn hướng thiết kế ít chiều sâu hơn.',
+      paths: [
+        { text: 'Biến nhân vật thành một “badass” rập khuôn không điểm yếu.', correct: true, result: 'Đúng. Đây là lối thiết kế dễ gây chán.' },
+        { text: 'Cho nhân vật có một mặt yếu, dễ tổn thương hoặc ký ức riêng.', correct: false, result: 'Không sai; đây là thứ giữ người chơi ở lại lâu hơn.' },
+        { text: 'Buộc cá tính nhân vật gắn với trải nghiệm cá nhân cụ thể.', correct: false, result: 'Không sai; đây là cách cá tính bớt chung chung.' }
+      ],
+      explain: 'Nhân vật một chiều rất khó khiến người chơi đồng cảm lâu dài.'
+    },
+    {
+      type: 'CYP',
+      question: '“Let’s Get Personal” gợi ý điều gì khi xây cá tính nhân vật?',
+      instruction: 'Chọn hướng khiến cá tính trở nên cụ thể hơn.',
+      paths: [
+        { text: 'Chỉ ghi vài tính từ như “thông minh”, “dũng cảm” là đủ.', correct: false, result: 'Sai. Đó vẫn còn rất chung chung.' },
+        { text: 'Gắn cá tính với một trải nghiệm hay ký ức cá nhân cụ thể.', correct: true, result: 'Đúng. Tính cách có nguồn gốc cụ thể sẽ sống hơn nhiều.' },
+        { text: 'Chỉ cần lời thoại cool, không cần lý do bên dưới.', correct: false, result: 'Sai. Bề mặt không thay được nội tâm.' }
+      ],
+      explain: 'Tính cách mạnh là tính cách có nguyên nhân và dấu vết cá nhân, không chỉ là nhãn mô tả.'
+    }
+  ],
+  '5.2': [
+    {
+      type: 'TAP',
+      question: '“Gameplay” gần nhất với định nghĩa nào?',
+      options: [
+        'A. Chỉ phần đồ họa',
+        'B. Tương tác giữa hành động người chơi và phản hồi hệ thống',
+        'C. Chỉ cốt truyện và thoại',
+        'D. Chỉ phần âm nhạc'
+      ],
+      correct: 1,
+      explain: 'Gameplay là phần người chơi thật sự “chơi”: input, phản hồi, quyết định và hậu quả.'
+    },
+    {
+      type: 'TAP',
+      question: 'Nhận định nào đúng hơn về gameplay?',
+      options: [
+        'A. Câu chuyện hay có thể thay thế cho gameplay dở',
+        'B. Gameplay chỉ là phần phụ sau đồ họa',
+        'C. Gameplay là phần người chơi tương tác trực tiếp nhiều nhất',
+        'D. Gameplay không liên quan game feel'
+      ],
+      correct: 2,
+      explain: 'Người chơi sống trong gameplay nhiều hơn bất kỳ lớp nào khác của game.'
+    }
+  ],
+  '5.3': [
+    {
+      type: 'BAL',
+      question: '🏃 Cân tốc độ đi/chạy để người chơi cảm thấy sự khác biệt rõ nhưng vẫn kiểm soát được.',
+      sliders: [
+        { label: 'Tốc độ đi', min: 0, max: 100, value: 42, targetRange: [35, 55] },
+        { label: 'Tốc độ chạy', min: 0, max: 100, value: 72, targetRange: [60, 85] }
+      ],
+      avatar: '🏃',
+      previewLabel: 'Walk vs Run feel',
+      previewHint: 'Run nên nhanh hơn walk đủ rõ, nhưng đừng biến thành trượt mất kiểm soát.',
+      explain: 'Tốc độ chạy thường nên gấp khoảng 1.5–2 lần tốc độ đi để người chơi cảm nhận rõ khác biệt.'
+    },
+    {
+      type: 'BAL',
+      question: '🏃 Chỉnh gia tốc đầu vào để nhân vật không bị “nặng nề” quá mức.',
+      sliders: [
+        { label: 'Gia tốc khởi động', min: 0, max: 100, value: 64, targetRange: [55, 80] },
+        { label: 'Độ trễ phản hồi input', min: 0, max: 100, value: 18, targetRange: [0, 25] }
+      ],
+      avatar: '⚡',
+      previewLabel: 'Input responsiveness',
+      previewHint: 'Phản hồi nhanh luôn thắng cảm giác “nặng” giả tạo.',
+      explain: 'Gia tốc quá ì khiến nhân vật cho cảm giác trễ input và thiếu responsive.'
+    }
+  ],
+  '5.4': [
+    {
+      type: 'SOD',
+      question: '🐞 Tìm bản idle “chết” hơn trong các mô tả sau.',
+      instruction: 'Chọn phương án khiến nhân vật kém sống nhất.',
+      statements: [
+        { text: 'Đứng im hoàn toàn như tượng, không thở, không nhìn quanh.', isBug: true },
+        { text: 'Có chuyển động thở nhẹ và đổi trọng tâm nhỏ.', isBug: false },
+        { text: 'Thỉnh thoảng liếc mắt hoặc chỉnh tư thế.', isBug: false },
+        { text: 'Giữ chuyển động nhỏ để không gây mỏi mắt.', isBug: false }
+      ],
+      explain: 'Nhân vật đứng im tuyệt đối rất dễ cho cảm giác như lỗi hoặc hình nộm.'
+    },
+    {
+      type: 'SOD',
+      question: '🐞 Tìm nhận định sai về idle animation.',
+      instruction: 'Chọn phát biểu sai.',
+      statements: [
+        { text: 'Có vài biến thể idle sẽ đỡ máy móc hơn chỉ một loop.', isBug: false },
+        { text: 'Idle cũng là nơi bộc lộ cá tính.', isBug: false },
+        { text: 'Chỉ cần một animation idle duy nhất lặp mãi cũng đủ tự nhiên.', isBug: true },
+        { text: 'Idle tốt giúp thế giới có “hơi thở” hơn.', isBug: false }
+      ],
+      explain: 'Nhiều biến thể idle nhỏ giúp tránh cảm giác lặp máy móc khi người chơi đứng yên lâu.'
+    }
+  ],
+  '5.5': [
+    {
+      type: 'BAL',
+      question: '⬆️ Cân cú nhảy để cao vừa đủ nhưng không quá lơ lửng.',
+      sliders: [
+        { label: 'Jump height', min: 0, max: 100, value: 64, targetRange: [55, 80] },
+        { label: 'Gravity', min: 0, max: 100, value: 58, targetRange: [45, 70] }
+      ],
+      avatar: '⬆️',
+      previewLabel: 'Jump arc',
+      previewHint: 'Nhảy vui không nhất thiết giống vật lý thật, mà phải điều khiển đã tay.',
+      explain: 'Tăng jump height mà không cân lại gravity có thể làm cảm giác nhảy trở nên lơ lửng quá mức.'
+    },
+    {
+      type: 'BAL',
+      question: '⬆️ Chỉnh độ “tha thứ” cho input nhảy.',
+      sliders: [
+        { label: 'Jump buffer', min: 0, max: 100, value: 62, targetRange: [50, 80] },
+        { label: 'Độ khắt khe timing', min: 0, max: 100, value: 20, targetRange: [10, 35] }
+      ],
+      avatar: '🎯',
+      previewLabel: 'Input forgiveness',
+      previewHint: 'Một chút forgiving giúp người chơi thấy game “hiểu mình” hơn.',
+      explain: 'Jump buffer làm cú nhảy mượt và dễ tin cậy hơn dù timing không hoàn hảo tuyệt đối.'
+    }
+  ],
+  '5.6': [
+    {
+      type: 'BAL',
+      question: '🎢 Chỉnh cơ chế đu / bập bênh để người chơi đọc timing được.',
+      sliders: [
+        { label: 'Biên độ chuyển động', min: 0, max: 100, value: 46, targetRange: [35, 60] },
+        { label: 'Tốc độ đổi pha', min: 0, max: 100, value: 48, targetRange: [35, 60] }
+      ],
+      avatar: '🎢',
+      previewLabel: 'Swing timing',
+      previewHint: 'Người chơi phải nhìn ra nhịp trước khi họ giỏi được.',
+      explain: 'Chuyển động quá gắt hoặc quá rộng dễ biến trò chơi thành đoán mò hơn là đọc nhịp.'
+    },
+    {
+      type: 'BAL',
+      question: '🎢 Cân pattern để timing có thể học được thay vì quá random.',
+      sliders: [
+        { label: 'Độ đều chu kỳ', min: 0, max: 100, value: 72, targetRange: [60, 85] },
+        { label: 'Mức ngẫu nhiên', min: 0, max: 100, value: 18, targetRange: [0, 25] }
+      ],
+      avatar: '⏱️',
+      previewLabel: 'Pattern readability',
+      previewHint: 'Pattern rõ tạo ra kỹ năng, random mù tạo ra bực bội.',
+      explain: 'Nếu người chơi không đọc được quy luật, họ khó cảm thấy thành công đến từ kỹ năng của mình.'
+    }
+  ],
+  '5.7': [
+    {
+      type: 'BAL',
+      question: '⬇️ Cân cảm giác rơi để vừa có trọng lượng vừa dễ đọc điểm tiếp đất.',
+      sliders: [
+        { label: 'Tốc độ rơi', min: 0, max: 100, value: 58, targetRange: [45, 70] },
+        { label: 'Độ rõ bóng đổ', min: 0, max: 100, value: 74, targetRange: [60, 90] }
+      ],
+      avatar: '🌑',
+      previewLabel: 'Falling readability',
+      previewHint: 'Bóng đổ mạnh hơn = dễ ước lượng vị trí hạ cánh hơn.',
+      explain: 'Shadow là công cụ readability cực mạnh khi người chơi phải đo độ cao và điểm tiếp đất.'
+    },
+    {
+      type: 'BAL',
+      question: '⬇️ Với cảnh rơi cao, nên ưu tiên đọc được điểm hạ cánh hơn là “mơ hồ điện ảnh”.',
+      sliders: [
+        { label: 'Khả năng đọc điểm chạm đất', min: 0, max: 100, value: 76, targetRange: [65, 95] },
+        { label: 'Độ mơ hồ chiều cao', min: 0, max: 100, value: 16, targetRange: [0, 25] }
+      ],
+      avatar: '🕳️',
+      previewLabel: 'Landing confidence',
+      previewHint: 'Ít “chết oan” hơn luôn là trade-off tốt.',
+      explain: 'Người chơi cần đủ thông tin thị giác để tự tin xử lý platforming.'
+    }
+  ],
+  '5.8': [
+    {
+      type: 'BAL',
+      question: '🌊 Chỉnh chuyển động dưới nước để khác trên cạn nhưng vẫn vui.',
+      sliders: [
+        { label: 'Độ cản nước', min: 0, max: 100, value: 62, targetRange: [50, 75] },
+        { label: 'Khả năng đổi hướng', min: 0, max: 100, value: 54, targetRange: [40, 65] }
+      ],
+      avatar: '🌊',
+      previewLabel: 'Swimming feel',
+      previewHint: 'Khác biệt là cần thiết, nhưng đừng biến nó thành hình phạt.',
+      explain: 'Điều khiển dưới nước nên chậm và trôi hơn, nhưng vẫn phải đủ tin cậy để chơi vui.'
+    },
+    {
+      type: 'BAL',
+      question: '🌊 Cân môi trường nước để có nhịp riêng mà không quá khó chịu.',
+      sliders: [
+        { label: 'Nhịp chậm lại', min: 0, max: 100, value: 60, targetRange: [50, 75] },
+        { label: 'Mức khó điều khiển', min: 0, max: 100, value: 26, targetRange: [15, 40] }
+      ],
+      avatar: '🐠',
+      previewLabel: 'Water control',
+      previewHint: 'Môi trường mới nên khác biệt, không nên gây phạt vô cớ.',
+      explain: 'Giữ nguyên y control trên cạn khi xuống nước thường làm cảm giác thiếu tự nhiên; nhưng đổi cực đoan quá cũng gây bực.'
+    }
+  ],
+  '5.9': [
+    {
+      type: 'CRD',
+      question: '🐾 Gắn đúng đặc trưng cho một bạn bốn chân.',
+      cards: [
+        { id: 'shape', text: 'Silhouette và dáng chạy đọc được từ xa' },
+        { id: 'role', text: 'Vai trò hỗ trợ hoặc săn mồi thể hiện qua hành vi' },
+        { id: 'speed', text: 'Tốc độ phản ánh giống loài và fantasy' }
+      ],
+      targets: [
+        { id: 'look', label: 'Nhận diện hình thể' },
+        { id: 'gameplay', label: 'Vai trò gameplay' },
+        { id: 'motion', label: 'Cảm giác chuyển động' }
+      ],
+      mapping: { look: 'shape', gameplay: 'role', motion: 'speed' },
+      explain: 'Bạn bốn chân cần đọc được cả bằng silhouette, hành vi và nhịp di chuyển.'
+    },
+    {
+      type: 'CRD',
+      question: '🐾 Gắn đúng để thú đồng hành không bị vô hồn.',
+      cards: [
+        { id: 'emotion', text: 'Biểu cảm qua ngôn ngữ cơ thể' },
+        { id: 'follow', text: 'Chỉ chạy theo sau cho đẹp' },
+        { id: 'support', text: 'Tham gia thật vào loop gameplay' }
+      ],
+      targets: [
+        { id: 'alive', label: 'Tạo cảm giác sống' },
+        { id: 'avoid', label: 'Điều cần tránh' },
+        { id: 'useful', label: 'Tạo giá trị gameplay' }
+      ],
+      mapping: { alive: 'emotion', avoid: 'follow', useful: 'support' },
+      explain: 'Animal companion nên vừa có cá tính vừa có vai trò, không chỉ là skin biết chạy.'
+    }
+  ],
+  '5.10': [
+    {
+      type: 'MEM',
+      question: '🧍 Ghép bộ phận cơ thể với vai trò biểu đạt phù hợp.',
+      instruction: 'Nhân vật “sống” nhờ toàn thân cùng tham gia chuyển động.',
+      pairs: [
+        { a: 'Vai và ngực', b: 'Tạo trọng lượng và nhịp thở' },
+        { a: 'Tay', b: 'Thể hiện đà và thăng bằng' },
+        { a: 'Đầu và ánh nhìn', b: 'Dẫn hướng chú ý và cảm xúc' },
+        { a: 'Hông và chân', b: 'Tạo lực đẩy chính cho locomotion' }
+      ],
+      explain: '“Using all of the parts” nghĩa là đừng để animation chỉ sống ở một phần nhỏ của cơ thể.'
+    },
+    {
+      type: 'MEM',
+      question: '🧍 Ghép đúng lý do vì sao nên đa dạng hóa animation theo từng bộ phận.',
+      instruction: 'Tìm đúng cặp ý nghĩa.',
+      pairs: [
+        { a: 'Nhiều điểm chuyển động', b: 'Giảm cảm giác cứng và trượt' },
+        { a: 'Biểu cảm tốt hơn', b: 'Người chơi đọc được cá tính nhanh hơn' }
+      ],
+      explain: 'Khi toàn thân cùng “nói”, nhân vật vừa rõ lực vừa rõ tính.'
+    }
+  ],
+  '5.11': [
+    {
+      type: 'SWS',
+      question: '🤝 Chọn đúng cặp phối hợp cho màn vượt vực.',
+      choices: [
+        { id: 'ping', actor: 'Companion', text: 'Chạy trước và ping điểm bám an toàn' },
+        { id: 'jump', actor: 'Player', text: 'Canh timing rồi nhảy theo điểm đã ping' },
+        { id: 'idle', actor: 'Companion', text: 'Đứng nhìn cho có mặt' },
+        { id: 'random', actor: 'Player', text: 'Nhảy đại không cần tín hiệu' }
+      ],
+      correctPair: ['ping', 'jump'],
+      explain: 'Companion tốt giúp loop gameplay rõ hơn, không chỉ chạy theo cho vui.'
+    },
+    {
+      type: 'SWS',
+      question: '🤝 Trong combat nhẹ, companion nên hỗ trợ thế nào?',
+      choices: [
+        { id: 'distract', actor: 'Companion', text: 'Thu hút địch trong một nhịp ngắn' },
+        { id: 'strike', actor: 'Player', text: 'Tận dụng khoảng hở để tung đòn chính' },
+        { id: 'spam', actor: 'Companion', text: 'Tự xử hết kẻ địch thay người chơi' },
+        { id: 'wait', actor: 'Player', text: 'Đứng chờ vì companion lo được' }
+      ],
+      correctPair: ['distract', 'strike'],
+      explain: 'Companion tốt mở cơ hội cho người chơi tỏa sáng, không cướp spotlight.'
+    }
+  ],
+  '5.12': [
+    {
+      type: 'SRT',
+      question: '👥 Kéo NPC vào đúng nhóm vai trò.',
+      instruction: 'Phân loại Functional / Ambient / Story-driven.',
+      zones: [
+        { id: 'functional', label: 'Functional' },
+        { id: 'ambient', label: 'Ambient' },
+        { id: 'story', label: 'Story-driven' }
+      ],
+      items: [
+        { id: 'vendor', text: 'Người bán hàng', correctZone: 'functional' },
+        { id: 'guard', text: 'Lính gác im lặng', correctZone: 'ambient' },
+        { id: 'mainstory', text: 'Nhân vật cốt truyện chính', correctZone: 'story' }
+      ],
+      explain: 'NPC trong thế giới nên phục vụ các mục đích khác nhau: chức năng, không khí và kể chuyện.'
+    },
+    {
+      type: 'SRT',
+      question: '👥 Kéo đúng kiểu NPC vào đúng ưu tiên thiết kế.',
+      instruction: 'NPC nền không cần đầu tư y như NPC cốt lõi.',
+      zones: [
+        { id: 'high', label: 'Cần đầu tư animation hơn' },
+        { id: 'light', label: 'Có thể nhẹ hơn' }
+      ],
+      items: [
+        { id: 'questgiver', text: 'NPC giao nhiệm vụ quan trọng', correctZone: 'high' },
+        { id: 'ambientnpc', text: 'NPC ambient làm nền', correctZone: 'light' },
+        { id: 'keyally', text: 'Đồng minh cốt truyện', correctZone: 'high' }
+      ],
+      explain: 'NPC ambient nên đủ sống để tạo không khí, nhưng không cần dày animation như nhân vật quan trọng.'
+    }
+  ],
+  '5.13': [
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Animation đẹp quan trọng hơn animation phản hồi đúng input".',
+      correct: false,
+      explain: 'Responsiveness quan trọng hơn vẻ đẹp thuần túy nếu phải chọn.'
+    },
+    {
+      type: 'BUB',
+      question: 'ĐÚNG hay SAI: "Mọi nhân vật trong game nên có cùng tốc độ di chuyển".',
+      correct: false,
+      explain: 'Tốc độ nên phản ánh vai trò và tính cách của từng nhân vật.'
+    }
+  ],
+  'boss_5': [
+    {
+      type: 'QZ',
+      question: 'Điều gì làm cú nhảy “đã tay” hơn?',
+      options: ['A. Input hơi trễ cho nặng', 'B. Phản hồi nhanh và có thể sửa hướng', 'C. Chỉ tăng hiệu ứng lòe loẹt', 'D. Bắt chước vật lý thật tuyệt đối'],
+      correct: 1,
+      explain: 'Jump feel tốt đến từ responsiveness và agency của người chơi.'
+    },
+    {
+      type: 'QZ',
+      question: 'Bóng đổ trong cảnh rơi giúp ích nhiều nhất cho điều gì?',
+      options: ['A. Tăng damage', 'B. Đọc vị trí tiếp đất và độ cao', 'C. Làm nhân vật nhanh hơn', 'D. Thay hẳn animation'],
+      correct: 1,
+      explain: 'Shadow là công cụ readability quan trọng trong platforming.'
+    },
+    {
+      type: 'QZ',
+      question: 'Idle tốt nên làm gì?',
+      options: ['A. Đứng im hoàn toàn', 'B. Phản ánh cá tính bằng chuyển động nhỏ', 'C. Lắc liên tục thật mạnh', 'D. Chỉ xuất hiện trong cutscene'],
+      correct: 1,
+      explain: 'Idle không cần ồn ào, nhưng cần cho nhân vật hơi thở.'
+    },
+    {
+      type: 'QZ',
+      question: 'Companion AI tốt nhất khi nào?',
+      options: ['A. Khi tự chơi hộ', 'B. Khi chỉ làm cảnh', 'C. Khi phối hợp để mở cơ hội cho người chơi', 'D. Khi luôn đi trước bỏ mặc người chơi'],
+      correct: 2,
+      explain: 'AI tốt là AI làm loop phong phú hơn mà vẫn giữ spotlight cho người chơi.'
+    },
+    {
+      type: 'QZ',
+      question: 'Điều khiển dưới nước nên mang cảm giác nào?',
+      options: ['A. Khác vừa đủ nhưng vẫn kiểm soát được', 'B. Bực tối đa để thấy môi trường mới', 'C. Nhanh hơn trên cạn', 'D. Giống hệt trên cạn'],
+      correct: 0,
+      explain: 'Khác biệt có ý nghĩa là tốt; khó chịu vô cớ thì không.'
+    }
+  ]
+});
+
 // Generate default question for lessons without specific content
 function getQuestionsForLesson(lessonId) {
   if (QUESTIONS[lessonId]) return QUESTIONS[lessonId];
@@ -4376,6 +5859,7 @@ function renderLevelMap() {
 // LEVEL DETAIL & LESSON LIST
 // ============================================================
 function openLevel(levelId) {
+  stopCelebrationSfx();
   SFX.click.play();
   STATE.currentLevel = levelId;
   const level = LEVELS[levelId - 1];
@@ -4472,9 +5956,12 @@ function openLevel(levelId) {
 // LESSON / MINIGAME ENGINE
 // ============================================================
 function startLesson(lessonId) {
-  SFX.click.play();
+  stopCelebrationSfx();
+  playSfx('click');
   STATE.currentLesson = lessonId;
   STATE.currentQuestionIdx = 0;
+  STATE.lessonCompletionLock = null;
+  STATE.bossResolutionLock = false;
 
   const questions = getQuestionsForLesson(lessonId);
   const levelNum = parseInt(lessonId.split('.')[0]);
@@ -4531,7 +6018,7 @@ function renderQuestion(questions, lesson, level) {
 }
 
 function renderQuizGame(q) {
-  return `
+  return renderGameFrame({ icon: 'bx-help-circle', badge: 'Quick Quiz', flair: '🧠' }, `
     <div class="game-question">${q.question}</div>
     <div class="quiz-options">
       ${q.options.map((opt, i) => `
@@ -4542,12 +6029,12 @@ function renderQuizGame(q) {
       `).join('')}
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
-  `;
+  `);
 }
 
 // TRUE/FALSE GAME — Speed Quiz style
 function renderTrueFalseGame(q) {
-  return `
+  return renderGameFrame({ icon: 'bx-check-shield', badge: 'True / False', flair: '⚖️' }, `
     <div class="game-question">${q.question}</div>
     <div class="quiz-options" style="display:flex; gap:16px; flex-wrap:wrap;">
       <button class="quiz-option tf-option" onclick="checkTrueFalse(true, ${q.correct}, this)" data-val="true" style="flex:1; min-width:140px; justify-content:center;">
@@ -4560,7 +6047,7 @@ function renderTrueFalseGame(q) {
       </button>
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
-  `;
+  `);
 }
 
 function checkTrueFalse(selected, correct, btnEl) {
@@ -4593,7 +6080,7 @@ function checkTrueFalse(selected, correct, btnEl) {
 }
 
 function renderBubbleGame(q) {
-  return `
+  return renderGameFrame({ icon: 'bx-circle', badge: 'Bubble Burst', flair: '🫧' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-circle'></i> Chạm bong bóng đúng trước khi nó "bay" mất!</div>
     <div class="bubble-options">
@@ -4601,7 +6088,7 @@ function renderBubbleGame(q) {
       <button class="bubble-option false" onclick="checkBubbleAnswer(false, ${q.correct}, this)">SAI</button>
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
-  `;
+  `);
 }
 
 function checkBubbleAnswer(selected, correct, btnEl) {
@@ -4629,7 +6116,7 @@ function checkBubbleAnswer(selected, correct, btnEl) {
 }
 
 function renderBalanceGame(q) {
-  return `
+  return renderGameFrame({ icon: 'bx-slider-alt', badge: 'Dial & Run', flair: '🎛️' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-slider-alt'></i> Kéo thanh để đưa thông số vào vùng mục tiêu rồi chạy thử.</div>
     <div class="slider-game">
@@ -4655,7 +6142,7 @@ function renderBalanceGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
     <div class="hidden" id="balanceData">${encodeURIComponent(JSON.stringify(q))}</div>
-  `;
+  `);
 }
 
 function updateBalanceSlider(idx, value) {
@@ -4691,7 +6178,7 @@ function checkBalanceAnswer() {
 
 function renderTapGame(q) {
   const shuffled = shuffleArray(q.options.map((text, index) => ({ text, index })));
-  return `
+  return renderGameFrame({ icon: 'bx-target-lock', badge: 'Tap Target', flair: '🎯' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-target-lock'></i> Chạm đúng mục tiêu càng nhanh càng tốt.</div>
     <div class="tap-grid">
@@ -4702,7 +6189,7 @@ function renderTapGame(q) {
       `).join('')}
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
-  `;
+  `);
 }
 
 function checkTapAnswer(selected, correct, btnEl) {
@@ -4734,7 +6221,7 @@ function checkTapAnswer(selected, correct, btnEl) {
 
 function renderCardBuilderGame(q) {
   STATE.selectedCardId = null;
-  return `
+  return renderGameFrame({ icon: 'bx-id-card', badge: 'Card Builder', flair: '🃏' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-id-card'></i> Chọn một thẻ rồi gán vào đúng ô mục tiêu.</div>
     <div class="card-match-layout">
@@ -4757,7 +6244,7 @@ function renderCardBuilderGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
     <div class="hidden" id="cardBuilderData">${encodeURIComponent(JSON.stringify(q))}</div>
-  `;
+  `);
 }
 
 function selectCardChip(cardId) {
@@ -4815,7 +6302,7 @@ function renderDocumentSortGame(q) {
 
 function renderReorderGame(q) {
   const steps = shuffleArray(q.steps.map((step, index) => ({ ...step, originalIndex: index })));
-  return `
+  return renderGameFrame({ icon: 'bx-sort-up', badge: 'Reorder Panels', flair: '🧩' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-sort-up'></i> Sắp lại theo đúng thứ tự hợp lý.</div>
     <div class="reorder-list" id="reorderList">
@@ -4834,7 +6321,7 @@ function renderReorderGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
     <div class="hidden" id="reorderData">${encodeURIComponent(JSON.stringify(q))}</div>
-  `;
+  `);
 }
 
 function moveReorderItem(btn, direction) {
@@ -4872,7 +6359,7 @@ function checkReorderAnswer() {
 
 function renderSwitchSolveGame(q) {
   STATE.selectedPairChoices = [];
-  return `
+  return renderGameFrame({ icon: 'bx-link-alt', badge: 'Switch & Solve', flair: '🤝' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-link-alt'></i> Chọn đúng 2 hành động phối hợp theo thứ tự.</div>
     <div class="sws-layout">
@@ -4889,7 +6376,7 @@ function renderSwitchSolveGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
     <div class="hidden" id="switchSolveData">${encodeURIComponent(JSON.stringify(q))}</div>
-  `;
+  `);
 }
 
 function toggleSwitchSolveChoice(choiceId, el) {
@@ -4931,7 +6418,7 @@ function renderSpinGame(q) {
   const scenario = q.scenarios ? q.scenarios[Math.floor(Math.random() * q.scenarios.length)] : q.scenarios[0];
   STATE.currentScenario = scenario;
   
-  return `
+  return renderGameFrame({ icon: 'bx-dice-5', badge: 'Spin & Pitch', flair: '🎰' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-dice-5'></i> ${q.instruction}</div>
     
@@ -4967,7 +6454,7 @@ function renderSpinGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${scenario.explain}</div>
     <div class="hidden" id="spinCombo">${JSON.stringify(scenario.combo)}</div>
-  `;
+  `);
 }
 
 function doSpin() {
@@ -5049,7 +6536,7 @@ function checkSpinAnswer(selected, correct, btnEl) {
 function renderBugHuntGame(q) {
   const shuffledStatements = shuffleArray(q.statements);
   
-  return `
+  return renderGameFrame({ icon: 'bx-bug', badge: 'Bug Hunt', flair: '🐞' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-bug'></i> ${q.instruction}</div>
     
@@ -5064,7 +6551,7 @@ function renderBugHuntGame(q) {
       `).join('')}
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
-  `;
+  `);
 }
 
 function checkBugHunt(el, isBug) {
@@ -5105,7 +6592,7 @@ function checkBugHunt(el, isBug) {
 // CHOOSE YOUR PATH GAME — Chọn đường đi đúng
 // ============================================================
 function renderChoosePathGame(q) {
-  return `
+  return renderGameFrame({ icon: 'bx-git-branch', badge: 'Choose Your Path', flair: '🛤️' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-git-branch'></i> ${q.instruction}</div>
     
@@ -5118,7 +6605,7 @@ function renderChoosePathGame(q) {
       `).join('')}
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
-  `;
+  `);
 }
 
 function checkPath(el, isCorrect, resultEncoded) {
@@ -5191,7 +6678,7 @@ function checkQuizAnswer(selected, correct, btnEl) {
 
 function renderSortGame(q) {
   const shuffledItems = shuffleArray(q.items);
-  return `
+  return renderGameFrame({ icon: 'bx-move', badge: 'Drag to Sort', flair: '🧲' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-hand'></i> ${q.instruction}</div>
     <div class="drag-items" id="dragSource">
@@ -5218,7 +6705,7 @@ function renderSortGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
     <div class="hidden" id="sortData">${JSON.stringify(q)}</div>
-  `;
+  `);
 }
 
 // Drag & Drop handlers
@@ -5355,7 +6842,7 @@ function renderMemoryGame(q) {
   });
   cards = shuffleArray(cards);
 
-  return `
+  return renderGameFrame({ icon: 'bx-brain', badge: 'Memory Match', flair: '🧠' }, `
     <div class="game-question">${q.question}</div>
     <div class="game-instruction"><i class='bx bx-hand'></i> ${q.instruction}</div>
     <div class="memory-grid" id="memoryGrid">
@@ -5370,7 +6857,7 @@ function renderMemoryGame(q) {
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
     <div class="hidden" id="memoryTotal">${q.pairs.length}</div>
-  `;
+  `);
 }
 
 function flipMemoryCard(cardEl) {
@@ -5421,9 +6908,13 @@ function flipMemoryCard(cardEl) {
 // LESSON COMPLETION
 // ============================================================
 function completeLesson(lessonId, level) {
+  if (STATE.lessonCompletionLock === lessonId) return;
+  STATE.lessonCompletionLock = lessonId;
   STATE.completedLessons[lessonId] = true;
+  STATE.currentLesson = null;
+  STATE.currentQuestionIdx = 0;
   saveState();
-  SFX.levelUp.play();
+  playSfx('levelUp', { stopFirst: true });
 
   const screen = document.getElementById('screen-lesson');
   const lesson = level.lessons.find(l => l.id === lessonId);
@@ -5474,8 +6965,11 @@ function completeLesson(lessonId, level) {
 // BOSS BATTLE
 // ============================================================
 function startBoss(levelId) {
-  SFX.bossIntro.play();
+  stopCelebrationSfx();
+  playSfx('bossIntro', { stopFirst: true });
   STATE.currentLevel = levelId;
+  STATE.currentLesson = null;
+  STATE.bossResolutionLock = false;
   const level = LEVELS[levelId - 1];
   STATE.bossQuestions = getBossQuestions(levelId);
   STATE.bossHP = 100;
@@ -5605,6 +7099,8 @@ function checkBossAnswer(selected, correct, btnEl) {
 }
 
 function bossDefeat(level) {
+  if (STATE.bossResolutionLock) return;
+  STATE.bossResolutionLock = true;
   if (bossTimerInterval) clearInterval(bossTimerInterval);
   const screen = document.getElementById('screen-boss');
   mascotSay('Boss vẫn còn máu! Ôn lại rồi thử tiếp nhé. 💪');
@@ -5626,13 +7122,15 @@ function bossDefeat(level) {
 }
 
 function bossVictory(level) {
+  if (STATE.bossResolutionLock) return;
+  STATE.bossResolutionLock = true;
   if (bossTimerInterval) clearInterval(bossTimerInterval);
   STATE.completedLevels[level.id] = true;
   addXP(100);
   addCoin(20);
   saveState();
 
-  SFX.victory.play();
+  playSfx('victory', { stopFirst: true });
 
   // Epic confetti!
   const duration = 3000;
@@ -5684,9 +7182,11 @@ function goToNextLevel(currentLevelId) {
 }
 
 function exitBoss() {
+  stopCelebrationSfx();
   document.getElementById('appShell').classList.remove('boss-theme');
   document.getElementById('boss-particles').style.display = 'none';
   if (bossTimerInterval) clearInterval(bossTimerInterval);
+  STATE.bossResolutionLock = false;
   showScreen('map');
   renderLevelMap();
 }
