@@ -629,10 +629,14 @@ h1, h2, h3, h4, .title-font {
   box-shadow: 0 8px 25px var(--shadow);
 }
 .lesson-card.completed::before { background: var(--success); }
+.lesson-card.skipped::before { background: #FF9F43; }
 .lesson-card.current::before { background: var(--gold); }
 .lesson-card.current {
   border: 2px solid var(--gold);
   background: linear-gradient(135deg, #FFFBEB, #FFF);
+}
+.lesson-card.skipped {
+  background: linear-gradient(135deg, #FFF5E8, #FFFFFF);
 }
 .lesson-card.locked {
   opacity: 0.5;
@@ -1210,12 +1214,87 @@ h1, h2, h3, h4, .title-font {
 }
 
 .bubble-options {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+  align-items: center;
+}
+
+.bubble-arena {
+  position: relative;
+  padding: 20px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.95), rgba(255,255,255,0.35) 28%, transparent 30%),
+    linear-gradient(180deg, #eff8ff 0%, #e6f4ff 40%, #dff7ff 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.75), 0 12px 30px rgba(107, 172, 255, 0.14);
+  overflow: hidden;
+}
+
+.bubble-arena::before,
+.bubble-arena::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.5), transparent 68%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.bubble-arena::before {
+  top: -20px;
+  right: -10px;
+}
+
+.bubble-arena::after {
+  bottom: -30px;
+  left: -30px;
+}
+
+.bubble-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.bubble-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.82);
+  color: var(--primary-dark);
+  font-weight: 800;
+  box-shadow: 0 6px 14px rgba(75,63,158,0.08);
+}
+
+.bubble-shrink-bar {
+  flex: 1;
+  min-width: 180px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(75,63,158,0.1);
+  overflow: hidden;
+}
+
+.bubble-shrink-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6bd5ff 0%, #74a2ff 45%, #ff8cc9 100%);
+  box-shadow: 0 0 12px rgba(116,162,255,0.35);
 }
 
 .bubble-option {
+  position: relative;
   min-height: 130px;
   border-radius: 999px;
   border: none;
@@ -1224,6 +1303,8 @@ h1, h2, h3, h4, .title-font {
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transform-origin: center center;
 }
 
 .bubble-option.true {
@@ -1501,11 +1582,22 @@ h1, h2, h3, h4, .title-font {
 }
 
 .bubble-option {
-  position: relative;
   animation: bubbleBob 3s ease-in-out infinite;
 }
 
 .bubble-option.false { animation-delay: .7s; }
+
+.bubble-option::before {
+  content: "";
+  position: absolute;
+  width: 22%;
+  height: 22%;
+  left: 18%;
+  top: 16%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0.1) 75%, transparent 78%);
+  pointer-events: none;
+}
 
 .bubble-option::after {
   content: "";
@@ -1514,6 +1606,10 @@ h1, h2, h3, h4, .title-font {
   border-radius: 999px;
   border: 2px solid rgba(255,255,255,0.28);
   opacity: .55;
+}
+
+.bubble-option.bubble-danger {
+  box-shadow: 0 0 0 4px rgba(255,93,93,0.15), 0 10px 24px rgba(255,93,93,0.18);
 }
 
 .tap-option {
@@ -1683,6 +1779,8 @@ h1, h2, h3, h4, .title-font {
 .feedback-btn-row {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 8px;
 }
 
@@ -1756,95 +1854,13 @@ h1, h2, h3, h4, .title-font {
   transform: scale(1) translateY(0);
 }
 
-/* ========== BOSS BATTLE ========== */
+/* ========== BOSS THEME ========== */
 .boss-theme {
   background: var(--boss-bg) !important;
 }
 .boss-theme .nav-bar {
-  background: rgba(27,27,47,0.95);
-  color: #fff;
+  background: rgba(255,255,255,0.95);
 }
-.boss-theme .nav-brand { color: var(--boss-accent); }
-.boss-theme .stat-badge { background: rgba(255,255,255,0.1); color: #fff; }
-.boss-theme .game-container {
-  background: linear-gradient(135deg, #2a2a4a, #1e1e3a);
-  color: #fff;
-  border: 2px solid #3d3d5c;
-}
-.boss-theme .game-container::before {
-  background: linear-gradient(90deg, var(--boss-accent), var(--gold), var(--boss-accent));
-}
-.boss-theme .game-question { color: #fff; }
-.boss-theme .quiz-option {
-  background: #2a2a4a;
-  color: #fff;
-  border-color: #3d3d5c;
-}
-.boss-theme .quiz-option:hover {
-  border-color: var(--boss-accent);
-  background: #3d3d5c;
-}
-.boss-theme .quiz-option .opt-letter { background: #3d3d5c; color: #fff; }
-.boss-theme .feedback-content.correct { background: linear-gradient(135deg, #1a3a2a, #1e4030); }
-.boss-theme .feedback-content.wrong { background: linear-gradient(135deg, #3a1a1a, #4a2020); }
-
-.boss-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 24px;
-  padding: 20px;
-}
-.boss-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--boss-accent), #FF5CAD);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  box-shadow: 0 0 30px rgba(232,56,138,0.4);
-  animation: boss-pulse 2s ease-in-out infinite;
-}
-@keyframes boss-pulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(232,56,138,0.4); }
-  50% { box-shadow: 0 0 50px rgba(232,56,138,0.6); }
-}
-.boss-vs {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1rem;
-  color: var(--gold);
-  text-shadow: 0 0 10px rgba(255,182,39,0.5);
-}
-.player-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  box-shadow: 0 0 20px rgba(75,63,158,0.3);
-}
-
-.boss-hp-bar {
-  margin: 0 auto 24px;
-  max-width: 450px;
-}
-.boss-hp-label {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-.boss-hp-label span {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.5rem;
-}
-.boss-hp-label span:first-child { color: var(--boss-accent); }
-.boss-hp-label span:last-child { color: var(--gold); }
 
 /* ========== RECAP / VICTORY CARDS ========== */
 .recap-card {
@@ -1962,6 +1978,503 @@ h1, h2, h3, h4, .title-font {
   .level-row.right { padding-right: 10%; }
   .cartridge { width: 90px; height: 105px; }
   .game-container { padding: 36px; }
+}
+/* ========== BOSS BATTLE REBUILD (Boss.html inspired) ========== */
+.boss-theme .nav-tabs { display: none; }
+.boss-theme .main-content {
+  max-width: none;
+  padding: 0;
+}
+.boss-theme #screen-boss,
+.boss-theme #screen-boss.active {
+  display: block;
+  opacity: 1;
+  min-height: calc(100vh - 74px);
+}
+.boss-theme .mascot-area { display: none; }
+
+.boss-arena {
+  --boss-ink:#3c3c3c; --boss-soft:#777; --boss-line:#e5e5e5;
+  --boss-green:#58cc02; --boss-green-d:#58a700;
+  --boss-blue:#1cb0f6; --boss-blue-d:#1899d6;
+  --boss-purple:#ce82ff; --boss-purple-d:#a560e8;
+  --boss-red:#ff4b4b; --boss-red-d:#ea2b2b;
+  --boss-orange:#ff9600; --boss-yellow:#ffc800;
+  position: relative;
+  min-height: calc(100vh - 74px);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 22%, #ffffff 0%, #eef3fb 60%, #e2e9f5 100%);
+  font-family: 'Nunito', sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.boss-arena * { box-sizing: border-box; }
+.boss-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: none;
+  touch-action: none;
+}
+.boss-ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.boss-card {
+  background: #fff;
+  border: 2px solid var(--boss-line);
+  border-radius: 18px;
+  box-shadow: 0 4px 0 var(--boss-line);
+}
+.boss-top-center {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  transform: none;
+  width: min(420px, calc(100vw - 270px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+.boss-level-tag {
+  align-self: flex-start;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  color: var(--boss-blue-d);
+  padding: 4px 12px;
+  border: 2px solid var(--boss-line);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 3px 0 var(--boss-line);
+}
+.boss-hp-card { padding: 10px 13px; }
+.boss-hp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+.boss-hp-name {
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: .3px;
+  color: var(--boss-ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.boss-hp-name b { color: var(--boss-purple-d); }
+.boss-hp-text {
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--boss-soft);
+}
+.boss-hp-text .n { color: var(--boss-ink); }
+.boss-bar {
+  position: relative;
+  height: 16px;
+  border-radius: 12px;
+  background: #e5e5e5;
+  overflow: hidden;
+  border: 2px solid var(--boss-line);
+}
+.boss-bar > i {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  transition: width .28s cubic-bezier(.2,.8,.2,1);
+  background: linear-gradient(90deg, #a560e8, #ce82ff 45%, #ec4899);
+}
+.boss-bar > i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: translateX(-100%);
+  animation: bossSheen 2.6s linear infinite;
+}
+@keyframes bossSheen { to { transform: translateX(100%); } }
+.boss-hp-card.low .boss-bar > i {
+  background: linear-gradient(90deg, #ea2b2b, #ff4b4b, #ff9600);
+  animation: bossLowPulse .7s ease-in-out infinite alternate;
+}
+@keyframes bossLowPulse { from { filter: brightness(1); } to { filter: brightness(1.18); } }
+.boss-question-card { padding: 10px 13px; }
+.boss-question-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 1.1px;
+  color: var(--boss-blue-d);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.boss-question-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--boss-blue);
+  box-shadow: 0 0 0 3px rgba(28,176,246,.22);
+  animation: bossBlink 1s infinite;
+}
+@keyframes bossBlink { 50% { opacity: .3; } }
+.boss-question-title {
+  font-weight: 800;
+  font-size: clamp(14px, 1.7vw, 18px);
+  line-height: 1.25;
+  color: var(--boss-ink);
+}
+.boss-question-title.pop { animation: bossQPop .45s ease; }
+@keyframes bossQPop {
+  0% { transform: scale(.92); opacity: 0; filter: blur(4px); }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; filter: none; }
+}
+.boss-player-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 226px;
+  padding: 13px 14px;
+}
+.boss-player-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+.boss-player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  background: linear-gradient(135deg, #ffe27a, #ffc800);
+  box-shadow: 0 3px 0 #d9a800;
+}
+.boss-player-name {
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: .5px;
+  color: var(--boss-ink);
+  line-height: 1.05;
+}
+.boss-player-sub {
+  font-size: 11px;
+  color: var(--boss-soft);
+  font-weight: 700;
+}
+.boss-hearts {
+  display: flex;
+  gap: 5px;
+  margin: 2px 0 11px;
+  height: 30px;
+  align-items: center;
+}
+.boss-hearts.low { animation: bossBeat .6s ease-in-out infinite; }
+@keyframes bossBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+.boss-heart {
+  position: relative;
+  width: 30px;
+  height: 28px;
+  display: inline-block;
+}
+.boss-heart .h-bg,
+.boss-heart .h-fill svg {
+  width: 30px;
+  height: 28px;
+  display: block;
+}
+.boss-heart .h-bg path { fill: #e5e5e5; }
+.boss-heart .h-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 28px;
+  overflow: hidden;
+}
+.boss-heart .h-fill path { fill: #ff4b4b; }
+.boss-player-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.boss-player-stat {
+  background: #f7f7f7;
+  border: 2px solid var(--boss-line);
+  border-radius: 12px;
+  padding: 6px 9px;
+  box-shadow: 0 3px 0 var(--boss-line);
+}
+.boss-player-stat .k {
+  font-size: 10px;
+  letter-spacing: .5px;
+  color: var(--boss-soft);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.boss-player-stat .v {
+  font-weight: 900;
+  font-size: 17px;
+  color: var(--boss-ink);
+  line-height: 1.1;
+  margin-top: 1px;
+}
+.boss-player-stat.xp .v { color: var(--boss-green-d); }
+.boss-player-stat.streak .v { color: var(--boss-orange); }
+.boss-combo {
+  position: absolute;
+  top: 44%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-weight: 900;
+  font-size: 24px;
+  color: #fff;
+  background: linear-gradient(90deg, var(--boss-orange), var(--boss-yellow));
+  padding: 8px 16px;
+  border-radius: 14px;
+  box-shadow: 0 4px 0 #d9a800;
+  opacity: 0;
+  transition: opacity .18s;
+  text-align: right;
+  line-height: 1;
+}
+.boss-combo.show { opacity: 1; animation: bossComboBump .25s ease; }
+@keyframes bossComboBump {
+  0% { transform: translateY(-50%) scale(1.35); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+.boss-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: var(--boss-soft);
+  font-weight: 700;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.boss-hint .k {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 2px solid var(--boss-line);
+  border-radius: 8px;
+  color: var(--boss-ink);
+  font-weight: 800;
+  background: #fff;
+  box-shadow: 0 2px 0 var(--boss-line);
+}
+.boss-rage,
+.boss-lowhp {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.boss-rage {
+  background: radial-gradient(circle at 50% 32%, transparent 44%, rgba(255,75,75,.34) 100%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.boss-lowhp {
+  box-shadow: inset 0 0 130px rgba(255,75,75,.4);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.boss-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.97), rgba(232,238,248,.98));
+}
+.boss-overlay.hidden { display: none; }
+.boss-panel-big {
+  width: min(560px, 94vw);
+  text-align: center;
+  animation: bossRise .45s ease;
+}
+@keyframes bossRise {
+  from { transform: translateY(22px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.boss-mascot {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 8px 14px rgba(124,58,237,.25));
+  animation: bossBob 2.4s ease-in-out infinite;
+}
+@keyframes bossBob { 50% { transform: translateY(-10px) rotate(-3deg); } }
+.boss-title {
+  font-weight: 900;
+  font-size: clamp(32px, 7vw, 54px);
+  line-height: 1.02;
+  letter-spacing: .5px;
+  background: linear-gradient(90deg, var(--boss-purple-d), var(--boss-purple), var(--boss-red));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.boss-subtitle {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--boss-blue-d);
+  margin: 4px 0 8px;
+  text-transform: uppercase;
+}
+.boss-desc {
+  color: #4b4b4b;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 18px auto 4px;
+  max-width: 440px;
+  font-weight: 600;
+}
+.boss-desc b { color: var(--boss-purple-d); }
+.boss-rules {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+.boss-rule {
+  background: #fff;
+  border: 2px solid var(--boss-line);
+  border-radius: 16px;
+  padding: 14px 8px;
+  box-shadow: 0 4px 0 var(--boss-line);
+}
+.boss-rule .ico {
+  font-size: 30px;
+  margin-bottom: 6px;
+  display: block;
+}
+.boss-rule .t {
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .5px;
+  margin-bottom: 4px;
+}
+.boss-rule.ok .t { color: var(--boss-green-d); }
+.boss-rule.bad .t { color: var(--boss-red-d); }
+.boss-rule.aim .t { color: var(--boss-blue-d); }
+.boss-rule .d {
+  font-size: 12px;
+  color: var(--boss-soft);
+  line-height: 1.35;
+  font-weight: 600;
+}
+.boss-btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.boss-btn {
+  pointer-events: auto;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 1px;
+  color: #fff;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 16px;
+  transition: transform .08s, box-shadow .08s, filter .15s;
+}
+.boss-btn.green { background: var(--boss-green); box-shadow: 0 6px 0 var(--boss-green-d); }
+.boss-btn.blue { background: var(--boss-blue); box-shadow: 0 6px 0 var(--boss-blue-d); }
+.boss-btn.purple { background: var(--boss-purple); box-shadow: 0 6px 0 var(--boss-purple-d); }
+.boss-btn:hover { filter: brightness(1.05); }
+.boss-btn:active { transform: translateY(6px); box-shadow: 0 0 0 transparent; }
+.boss-result-title {
+  font-weight: 900;
+  font-size: clamp(36px, 8vw, 60px);
+  line-height: 1;
+}
+.boss-result-title.win { color: var(--boss-green-d); }
+.boss-result-title.lose { color: var(--boss-red-d); }
+.boss-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 22px 0;
+}
+.boss-scell {
+  background: #fff;
+  border: 2px solid var(--boss-line);
+  border-radius: 16px;
+  padding: 13px;
+  box-shadow: 0 4px 0 var(--boss-line);
+}
+.boss-scell .k {
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--boss-soft);
+  text-transform: uppercase;
+}
+.boss-scell .v {
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--boss-ink);
+  margin-top: 3px;
+  line-height: 1;
+}
+.boss-scell .v.gold { color: var(--boss-orange); }
+.boss-scell .v.green { color: var(--boss-green-d); }
+.boss-scell .v.blue { color: var(--boss-blue-d); }
+.boss-scell .v.purple { color: var(--boss-purple-d); }
+@media (max-width: 760px) {
+  .boss-player-panel {
+    top: auto;
+    bottom: 72px;
+    right: 10px;
+    width: 184px;
+    padding: 11px;
+  }
+  .boss-top-center {
+    left: 10px;
+    width: min(360px, calc(100vw - 214px));
+    top: 10px;
+  }
+  .boss-hint { font-size: 11px; gap: 7px; bottom: 8px; }
+  .boss-combo { font-size: 19px; right: 8px; padding: 6px 12px; }
+  .boss-rules { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .boss-top-center {
+    width: calc(100vw - 20px);
+  }
+  .boss-player-panel {
+    left: 10px;
+    right: 10px;
+    bottom: 84px;
+    width: auto;
+  }
+  .boss-heart,
+  .boss-heart .h-bg,
+  .boss-heart .h-fill svg {
+    width: 26px;
+    height: 24px;
+  }
+  .boss-heart .h-fill { height: 24px; }
 }
 </style>
 </head>
@@ -2116,6 +2629,9 @@ h1, h2, h3, h4, .title-font {
       <button class="btn-3d btn-gold btn-sm hidden" id="feedbackRetryBtn" onclick="onFeedbackRetry()">
         Retry <i class='bx bx-refresh'></i>
       </button>
+      <button class="btn-3d btn-error btn-sm hidden" id="feedbackSkipBtn" onclick="onFeedbackSkipLesson()">
+        Skip Lesson <i class='bx bx-skip-next-circle'></i>
+      </button>
       <button class="btn-3d btn-primary btn-sm hidden" id="feedbackNextBtn" onclick="onFeedbackNext()">
         Tiếp tục <i class='bx bx-right-arrow-alt'></i>
       </button>
@@ -2155,10 +2671,15 @@ const STATE = {
   currentLevel: null,
   currentLesson: null,
   currentQuestionIdx: 0,
+  wrongAttempts: 0,
   completedLessons: {},
+  skippedLessons: {},
   completedLevels: {},
   bossHP: 100,
+  bossHearts: 3,
   bossQuestionIdx: 0,
+  activeBossWeakPointIdx: 0,
+  bossShotPending: false,
   bossQuestions: [],
   feedbackCallback: null,
   feedbackRetryCallback: null,
@@ -2167,12 +2688,17 @@ const STATE = {
   memoryLocked: false,
   selectedCardId: null,
   selectedPairChoices: [],
+  selectedScreenIconId: null,
+  tppSelection: [],
   lessonCompletionLock: null,
   bossResolutionLock: false,
 };
 
 // CountUp instances
 let xpCountUp, coinCountUp;
+let bubbleBurstTween = null;
+let bossTimerInterval = null;
+let bossWeakPointInterval = null;
 
 function playSfx(name, { stopFirst = false } = {}) {
   const sound = SFX[name];
@@ -2185,6 +2711,31 @@ function stopCelebrationSfx() {
   SFX.levelUp.stop();
   SFX.victory.stop();
   SFX.bossIntro.stop();
+}
+
+function stopBubbleBurstTimer() {
+  if (bubbleBurstTween) {
+    bubbleBurstTween.kill();
+    bubbleBurstTween = null;
+  }
+}
+
+function stopBossLoops() {
+  if (bossTimerInterval) {
+    clearInterval(bossTimerInterval);
+    bossTimerInterval = null;
+  }
+  if (bossWeakPointInterval) {
+    clearInterval(bossWeakPointInterval);
+    bossWeakPointInterval = null;
+  }
+  if (typeof bossBattleUnbindInput === 'function') bossBattleUnbindInput();
+  if (typeof cancelAnimationFrame === 'function' && typeof bossBattleRuntime !== 'undefined') {
+    cancelAnimationFrame(bossBattleRuntime.raf);
+    bossBattleRuntime.raf = 0;
+    bossBattleRuntime.phase = 'idle';
+    bossBattleRuntime.firing = false;
+  }
 }
 
 function renderGameFrame({ icon = 'bx-joystick', badge = 'Mini Game', flair = '✨' }, innerHtml) {
@@ -2212,6 +2763,7 @@ function loadState() {
     try {
       const parsed = JSON.parse(saved);
       Object.assign(STATE, parsed);
+      STATE.skippedLessons = STATE.skippedLessons || {};
       console.log('✅ Đã tải dữ liệu:', parsed);
       
       // Check streak (reset if last played > 1 day ago)
@@ -2240,6 +2792,7 @@ function saveState() {
     coin: STATE.coin,
     streak: STATE.streak,
     completedLessons: STATE.completedLessons,
+    skippedLessons: STATE.skippedLessons,
     completedLevels: STATE.completedLevels,
     currentLevel: STATE.currentLevel,
     lastPlayed: new Date().toISOString(),
@@ -2539,6 +3092,86 @@ const LEVELS = [
 // ============================================================
 // QUESTION BANK — LEVEL 1: CHÀO N00B! (tr.1–22)
 // ============================================================
+Object.assign(LEVELS[5], {
+  goal: 'GÃ³c nhÃ¬n, golden rules vÃ  camera multiplayer.',
+  boss: { name: 'Camera Crisis', icon: 'ðŸ“¸' },
+  lessons: [
+    { id: '6.1', name: 'Tá»•ng quan gÃ³c quay', sub: 'Snap the Shot', game: 'SNS', icon: 'bx-camera', iconClass: 'game-sns' },
+    { id: '6.2', name: 'GÃ³c nhÃ¬n thá»© nháº¥t', sub: 'Snap the Shot', game: 'SNS', icon: 'bx-crosshair', iconClass: 'game-sns' },
+    { id: '6.3', name: 'GÃ³c nhÃ¬n thá»© ba', sub: 'Snap the Shot', game: 'SNS', icon: 'bx-street-view', iconClass: 'game-sns' },
+    { id: '6.4', name: 'Ai cáº§m quyá»n camera?', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
+    { id: '6.5', name: '2.5D / Isometric / Top-Down', sub: 'Memory Match', game: 'MEM', icon: 'bx-grid-alt', iconClass: 'game-mem' },
+    { id: '6.6', name: 'Tunnel Vision & Ä‘áº·c biá»‡t', sub: 'Snap the Shot', game: 'SNS', icon: 'bx-focus', iconClass: 'game-sns' },
+    { id: '6.7', name: 'Shot / Angle / Movement', sub: 'Sort Game', game: 'SRT', icon: 'bx-sort-alt-2', iconClass: 'game-srt' },
+    { id: '6.8', name: 'Luáº­t vÃ ng camera', sub: 'Bug Hunt', game: 'SOD', icon: 'bx-search-alt', iconClass: 'game-sod' },
+    { id: '6.9', name: 'Camera nhiá»u ngÆ°á»i chÆ¡i', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-group', iconClass: 'game-cyp' },
+    { id: '6.10', name: 'Tá»•ng káº¿t Level 6', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
+  ]
+});
+
+Object.assign(LEVELS[6], {
+  boss: { name: 'Input Lag Showdown', icon: 'âš¡' },
+  lessons: [
+    { id: '7.1', name: 'SÆ¡ Ä‘á»“ nÃºt cÆ¡ báº£n', sub: 'Match the Button', game: 'MTB', icon: 'bx-joystick-button', iconClass: 'game-mtb' },
+    { id: '7.2', name: 'Theo nhÃ¢n váº­t hay camera?', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
+    { id: '7.3', name: 'Rung & pháº£n há»“i', sub: 'Match the Button', game: 'MTB', icon: 'bx-vibrate', iconClass: 'game-mtb' },
+    { id: '7.4', name: 'Tá»•ng káº¿t Level 7', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
+  ]
+});
+
+Object.assign(LEVELS[7], {
+  goal: 'HUD, icon, pause screen vÃ  readability.',
+  lessons: [
+    { id: '8.1', name: 'Thanh mÃ¡u & Targeting', sub: 'Decorate the Screen', game: 'DTS', icon: 'bx-plus-medical', iconClass: 'game-dts' },
+    { id: '8.2', name: 'Äáº¡n / TÃºi Ä‘á»“ / Äiá»ƒm sá»‘', sub: 'Decorate the Screen', game: 'DTS', icon: 'bx-briefcase-alt', iconClass: 'game-dts' },
+    { id: '8.3', name: 'Radar & Context Prompt', sub: 'Decorate the Screen', game: 'DTS', icon: 'bx-radar', iconClass: 'game-dts' },
+    { id: '8.4', name: 'MÃ n hÃ¬nh sáº¡ch', sub: 'Spot the Difference', game: 'SOD', icon: 'bx-search-alt', iconClass: 'game-sod' },
+    { id: '8.5', name: 'Icon dá»… hiá»ƒu', sub: 'Icon Decode', game: 'ICD', icon: 'bx-shape-circle', iconClass: 'game-icd' },
+    { id: '8.6', name: 'QTE Ä‘Ãºng cÃ¡ch', sub: 'Match the Button', game: 'MTB', icon: 'bx-joystick-button', iconClass: 'game-mtb' },
+    { id: '8.7', name: 'Äáº·t HUD á»Ÿ Ä‘Ã¢u', sub: 'Decorate the Screen', game: 'DTS', icon: 'bx-layout', iconClass: 'game-dts' },
+    { id: '8.8', name: 'MÃ n hÃ¬nh khÃ¡c ngoÃ i HUD', sub: 'Sort Game', game: 'SRT', icon: 'bx-sort-alt-2', iconClass: 'game-srt' },
+    { id: '8.9', name: 'MÃ n Pause hoÃ n háº£o', sub: 'Decorate the Screen', game: 'DTS', icon: 'bx-pause-circle', iconClass: 'game-dts' },
+    { id: '8.10', name: 'Chá»n Font cho game', sub: 'Memory Match', game: 'MEM', icon: 'bx-font', iconClass: 'game-mem' },
+    { id: '8.11', name: 'Tá»•ng káº¿t Level 8', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
+  ]
+});
+
+Object.assign(LEVELS[8], {
+  goal: 'Theme, pathing, map philosophy vÃ  onboarding.',
+  lessons: [
+    { id: '9.1', name: '10 chá»§ Ä‘á» sÃ¡o rá»—ng', sub: 'Catch the Right Basket', game: 'CATCH', icon: 'bx-basket', iconClass: 'game-catch' },
+    { id: '9.2', name: 'Äáº·t tÃªn hay', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
+    { id: '9.3', name: 'BÃ i há»c tá»« Disneyland', sub: 'Tile Path Puzzle', game: 'TPP', icon: 'bx-map', iconClass: 'game-tpp' },
+    { id: '9.4', name: 'Beat Chart cho Level', sub: 'Reorder Panels', game: 'ROP', icon: 'bx-sort-up', iconClass: 'game-rop' },
+    { id: '9.5', name: 'TÃ¡i sá»­ dá»¥ng tÃ i nguyÃªn', sub: 'Card Builder', game: 'CRD', icon: 'bx-id-card', iconClass: 'game-crd' },
+    { id: '9.6', name: 'Váº½ Map kiá»ƒu Gygax', sub: 'Tile Path Puzzle', game: 'TPP', icon: 'bx-map-pin', iconClass: 'game-tpp' },
+    { id: '9.7', name: 'Váº½ Map kiá»ƒu Arneson', sub: 'Tile Path Puzzle', game: 'TPP', icon: 'bx-network-chart', iconClass: 'game-tpp' },
+    { id: '9.8', name: 'HoÃ n thiá»‡n báº£n Ä‘á»“', sub: 'Tile Path Puzzle', game: 'TPP', icon: 'bx-git-merge', iconClass: 'game-tpp' },
+    { id: '9.9', name: 'CÃ¢u chuyá»‡n áº£o giÃ¡c', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
+    { id: '9.10', name: 'MÃ u sáº¯c dáº«n Ä‘Æ°á»ng', sub: 'Spot the Difference', game: 'SOD', icon: 'bx-search-alt', iconClass: 'game-sod' },
+    { id: '9.11', name: 'Äá»ƒ Training Level cuá»‘i cÃ¹ng', sub: 'Tap Target', game: 'TAP', icon: 'bx-target-lock', iconClass: 'game-tap' },
+    { id: '9.12', name: 'Tá»•ng káº¿t Level 9', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
+  ]
+});
+
+Object.assign(LEVELS[9], {
+  goal: 'Damage, combo, vÅ© khÃ­, feedback vÃ  death design.',
+  boss: { name: 'Combat Tuning Showdown', icon: 'ðŸŽ¯' },
+  lessons: [
+    { id: '10.1', name: 'Táº¥n cÃ´ng cÆ¡ báº£n', sub: 'Dial & Run', game: 'BAL', icon: 'bx-sword', iconClass: 'game-bal' },
+    { id: '10.2', name: 'Combo & nhá»‹p Ä‘Ã¡nh', sub: 'Match the Button', game: 'MTB', icon: 'bx-joystick-button', iconClass: 'game-mtb' },
+    { id: '10.3', name: 'Di chuyá»ƒn trong combat', sub: 'Dial & Run', game: 'BAL', icon: 'bx-run', iconClass: 'game-bal' },
+    { id: '10.4', name: 'PhÃ²ng thá»§', sub: 'Dial & Run', game: 'BAL', icon: 'bx-shield-quarter', iconClass: 'game-bal' },
+    { id: '10.5', name: 'VÅ© khÃ­ táº§m xa', sub: 'Dial & Run', game: 'BAL', icon: 'bx-crosshair', iconClass: 'game-bal' },
+    { id: '10.6', name: 'Chá»n vÅ© khÃ­ phÃ¹ há»£p', sub: 'Card Builder', game: 'CRD', icon: 'bx-id-card', iconClass: 'game-crd' },
+    { id: '10.7', name: 'Run and Gun', sub: 'Dial & Run', game: 'BAL', icon: 'bx-target-lock', iconClass: 'game-bal' },
+    { id: '10.8', name: 'KhÃ´ng chá»‰ lÃ  báº¯n sÃºng', sub: 'Sort Game', game: 'SRT', icon: 'bx-sort-alt-2', iconClass: 'game-srt' },
+    { id: '10.9', name: 'Pháº£n há»“i khi bá»‹ Ä‘Ã¡nh', sub: 'Spot the Difference', game: 'SOD', icon: 'bx-search-alt', iconClass: 'game-sod' },
+    { id: '10.10', name: 'Thiáº¿t káº¿ cÃ¡i cháº¿t', sub: 'Choose Your Path', game: 'CYP', icon: 'bx-git-branch', iconClass: 'game-cyp' },
+    { id: '10.11', name: 'Tá»•ng káº¿t Level 10', sub: 'Bubble True/False', game: 'BUB', icon: 'bx-circle', iconClass: 'game-bub' },
+  ]
+});
+
 const QUESTIONS = {
   // ═══════════════════════════════════════════════════════════
   // LESSON 1.1: Cỗ máy thời gian — Lịch sử video game (SORT GAME)
@@ -5624,6 +6257,240 @@ Object.assign(QUESTIONS, {
   ]
 });
 
+Object.assign(QUESTIONS, {
+  '6.1': [
+    { type: 'SNS', question: 'Game platformer 2D kiểu Mario thường dùng camera nào?', options: [{ visual:'↔️', label:'Side-scrolling' }, { visual:'👁️', label:'First Person' }, { visual:'🧍', label:'Third Person over-shoulder' }, { visual:'⬆️', label:'Top-down' }], correct: 0, explain: 'Platformer 2D cổ điển thường đi với side-scrolling cố định theo trục ngang.' },
+    { type: 'SNS', question: 'Game đối kháng kiểu Street Fighter thường dùng camera nào?', options: [{ visual:'↔️', label:'Side-view cố định' }, { visual:'🎥', label:'Free camera xoay tự do' }, { visual:'👁️', label:'First Person' }, { visual:'🛰️', label:'Isometric cao' }], correct: 0, explain: 'Camera side-view giúp cả hai nhân vật luôn đọc được rõ trên cùng một mặt phẳng hành động.' }
+  ],
+  '6.2': [
+    { type: 'SNS', question: 'Ưu điểm lớn nhất của First Person Camera là gì?', options: [{ visual:'👁️', label:'Immersion cao' }, { visual:'🧥', label:'Thấy hết costume nhân vật' }, { visual:'🗺️', label:'Rộng tầm nhìn chiến thuật nhất' }, { visual:'🎭', label:'Dễ show animation toàn thân' }], correct: 0, explain: 'First Person cho cảm giác “mình là nhân vật” mạnh nhất.' },
+    { type: 'SNS', question: 'Nhược điểm chính của First Person là gì?', options: [{ visual:'🧍', label:'Khó thấy toàn bộ thân và trang bị của mình' }, { visual:'⚡', label:'Không thể tạo tension' }, { visual:'🎮', label:'Không hợp input chuột' }, { visual:'🎯', label:'Không thể ngắm bắn' }], correct: 0, explain: 'FPS rất nhập vai nhưng hạn chế việc thể hiện animation/trang bị toàn thân.' }
+  ],
+  '6.3': [
+    { type: 'SNS', question: 'Vì sao game hành động combat phức tạp thường chọn Third Person?', options: [{ visual:'🧍', label:'Thấy rõ animation tấn công / né' }, { visual:'👁️', label:'Đỡ phải animate nhân vật' }, { visual:'🎬', label:'Vì luôn rẻ hơn' }, { visual:'📉', label:'Vì giảm nhu cầu feedback' }], correct: 0, explain: 'Third Person cho người chơi đọc được đòn đánh, dodge và khoảng cách tốt hơn.' },
+    { type: 'SNS', question: 'Camera Third Person quá gần thường gây vấn đề gì?', options: [{ visual:'🔍', label:'Giảm tầm nhìn xung quanh' }, { visual:'💥', label:'Tăng immersion vô hạn' }, { visual:'🧠', label:'Dễ đọc địch hơn' }, { visual:'🎁', label:'Hiện nhiều thông tin hơn' }], correct: 0, explain: 'Quá gần thì mất awareness, khó phát hiện nguy hiểm từ xa.' }
+  ],
+  '6.4': [
+    { type: 'CYP', question: 'Khi nào nên cho người chơi gần như toàn quyền điều khiển camera?', instruction: 'Chọn bối cảnh hợp lý hơn.', paths: [{ text:'Game thế giới mở cần quan sát linh hoạt.', correct:true, result:'Đúng. Đây là lúc camera tự do phát huy giá trị.' }, { text:'Set-piece điện ảnh cần khóa góc để kể chuyện chính xác.', correct:false, result:'Sai. Đoạn kiểu này thường nên kiểm soát camera chặt hơn.' }, { text:'Cutscene nội dung nhạy cảm nhịp kể.', correct:false, result:'Sai. Cutscene thường không nên thả camera cho người chơi.' }], explain: 'Camera tự do hợp với game cần quan sát linh hoạt; camera khóa hợp với set-piece/cutscene.' },
+    { type: 'CYP', question: 'Khi nào KHÔNG nên thả camera cho người chơi?', instruction: 'Chọn tình huống nên kiểm soát góc nhìn.', paths: [{ text:'Cutscene hoặc cảnh dàn dựng có chủ đích điện ảnh.', correct:true, result:'Đúng. Đây là trường hợp nên kiểm soát góc nhìn.' }, { text:'Khám phá thành phố mở và tự định hướng.', correct:false, result:'Sai. Trường hợp đó thường cần tự do camera nhiều hơn.' }, { text:'Khu vực sandbox không áp đặt mục tiêu.', correct:false, result:'Sai. Sandbox thường hưởng lợi từ camera linh hoạt.' }], explain: 'Nếu mục tiêu là kể đúng một khoảnh khắc hoặc dẫn mắt thật chặt, camera nên bị kiểm soát.' }
+  ],
+  '6.5': [
+    { type: 'MEM', question: 'Ghép kiểu camera với đặc điểm đúng.', instruction: 'Tìm đúng cặp góc nhìn.', pairs: [{ a:'Isometric', b:'Góc chéo cố định phổ biến ở RPG/strategy cổ' }, { a:'Top-Down', b:'Nhìn thẳng từ trên xuống' }, { a:'2.5D', b:'Không gian 3D nhưng hành động chủ yếu theo mặt phẳng' }, { a:'Side-view', b:'Tập trung trục ngang rõ ràng' }], explain: 'Mỗi kiểu camera mang một cách đọc không gian khác nhau cho gameplay.' },
+    { type: 'MEM', question: 'Ghép game fantasy phù hợp với góc nhìn.', instruction: 'Camera phải hợp việc người chơi cần làm.', pairs: [{ a:'Twin-stick shooter', b:'Top-Down' }, { a:'JRPG cổ điển', b:'Isometric / fixed angled' }, { a:'Platformer', b:'Side-view' }, { a:'Beat-em-up 2.5D', b:'2.5D' }], explain: 'Camera nên phục vụ fantasy và decision-making của người chơi chứ không chỉ “đẹp”.' }
+  ],
+  '6.6': [
+    { type: 'SNS', question: '"Tunnel Vision" camera hợp nhất khi nào?', options: [{ visual:'🚇', label:'Ép tập trung vào một hướng / mục tiêu duy nhất' }, { visual:'🌍', label:'Cho world exploration cực rộng' }, { visual:'📦', label:'Menu inventory' }, { visual:'🎨', label:'Chỉ để khoe art' }], correct: 0, explain: 'Tunnel Vision hợp với hành lang, đường ray, hoặc tình huống muốn ép người chơi nhìn một hướng.' },
+    { type: 'SNS', question: 'Camera đặc biệt kiểu “camera trong xe” cần lưu ý điều gì?', options: [{ visual:'🚗', label:'Phải khớp gameplay mới, không gây khó chịu' }, { visual:'🎭', label:'Chỉ cần lạ mắt là đủ' }, { visual:'🔒', label:'Luôn phải giữ y hệt camera đi bộ' }, { visual:'📢', label:'Chỉ cần thêm UI' }], correct: 0, explain: 'Mỗi mode gameplay mới kéo theo yêu cầu camera mới; copy nguyên camera cũ thường gây khó chịu.' }
+  ],
+  '6.7': [
+    { type: 'SRT', question: 'Phân loại các loại shot vào đúng nhóm.', instruction: 'Kéo vào nhóm phù hợp.', zones: [{ id:'shot', label:'Loại shot' }, { id:'effect', label:'Hiệu ứng / mục đích' }], items: [{ id:'close', text:'Close-up', correctZone:'shot' }, { id:'wide', text:'Wide shot', correctZone:'shot' }, { id:'over', text:'Over-the-shoulder', correctZone:'shot' }, { id:'tension', text:'Tạo cảm giác thân mật / ép gần', correctZone:'effect' }], explain: 'Close-up, wide shot, over-the-shoulder đều là loại shot; chúng khác nhau ở mức zoom và mục đích kể chuyện.' },
+    { type: 'SRT', question: 'Phân loại hiệu ứng camera vào đúng nhóm ý nghĩa.', instruction: 'Kéo đúng mục đích.', zones: [{ id:'unstable', label:'Bất ổn / căng thẳng' }, { id:'neutral', label:'Trung tính / rõ ràng' }], items: [{ id:'dutch', text:'Dutch angle', correctZone:'unstable' }, { id:'straight', text:'Straight horizon', correctZone:'neutral' }, { id:'tilt', text:'Nghiêng khung gây mất phương hướng', correctZone:'unstable' }], explain: 'Dutch angle thường được dùng để gợi bất ổn, căng thẳng, hoặc mất phương hướng.' }
+  ],
+  '6.8': [
+    { type: 'SOD', question: 'Tìm lỗi camera trong mô tả sau.', instruction: 'Chọn bug camera rõ nhất.', statements: [{ text:'Nhân vật biến mất sau cột trụ trong vài giây.', isBug:true }, { text:'Camera luôn giữ nhân vật trong khung hình.', isBug:false }, { text:'Camera đọc được hướng di chuyển chính.', isBug:false }, { text:'Mục tiêu lớn được camera ưu tiên nhìn thấy.', isBug:false }], explain: 'Một golden rule rất mạnh: đừng để nhân vật biến mất khỏi khung trong gameplay bình thường.' },
+    { type: 'SOD', question: 'Tìm lỗi dẫn hướng camera.', instruction: 'Chọn phát biểu sai.', statements: [{ text:'Camera không xoay hay gợi hướng về mục tiêu nhiệm vụ mới.', isBug:true }, { text:'Camera hỗ trợ người chơi định hướng sau khi objective đổi.', isBug:false }, { text:'Camera có thể dùng bố cục để dẫn mắt.', isBug:false }, { text:'Camera nên giúp người chơi ít bị lạc hơn.', isBug:false }], explain: 'Nếu objective đổi mà camera không giúp định hướng, người chơi rất dễ mất phương hướng.' }
+  ],
+  '6.9': [
+    { type: 'CYP', question: '2 người chơi tách xa nhau trên cùng một màn hình. Nên xử lý camera thế nào?', instruction: 'Chọn giải pháp hợp lý hơn.', paths: [{ text:'Tự động zoom-out hoặc chia màn hình động theo khoảng cách.', correct:true, result:'Đúng. Đây là cách giữ được cả hai người chơi.' }, { text:'Giữ khung y nguyên, để ai ra ngoài màn thì chịu.', correct:false, result:'Sai. Người chơi bị mất thông tin vị trí rất khó chịu.' }, { text:'Khóa camera vào người chơi 1 và bỏ mặc người chơi 2.', correct:false, result:'Sai. Cách này phá trải nghiệm co-op ngay.' }], explain: 'Camera multiplayer phải hy sinh một phần góc nhìn cá nhân để giữ được thông tin quan trọng cho cả nhóm.' },
+    { type: 'CYP', question: 'Shared camera trong co-op nên ưu tiên điều gì?', instruction: 'Chọn ưu tiên đúng.', paths: [{ text:'Giữ cả hai nhân vật trong khung hình.', correct:true, result:'Đúng. Đây là ưu tiên số một của shared camera.' }, { text:'Cho từng người góc cá nhân đẹp tuyệt đối, dù mất nhau khỏi màn.', correct:false, result:'Sai. Shared camera không thể ưu tiên kiểu đó.' }, { text:'Zoom vào người đang đánh mạnh nhất.', correct:false, result:'Sai. Điều đó làm người còn lại dễ bị bỏ rơi.' }], explain: 'Shared camera là bài toán cân bằng thông tin chung, không phải tối ưu cho cá nhân.' }
+  ],
+  '6.10': [
+    { type: 'BUB', question: 'ĐÚNG hay SAI: "Camera chỉ là công cụ kỹ thuật, không ảnh hưởng gameplay".', correct:false, explain:'Sai. Camera là một trong Ba C cốt lõi và ảnh hưởng trực tiếp cảm giác chơi.' },
+    { type: 'BUB', question: 'ĐÚNG hay SAI: "First Person luôn tốt hơn Third Person".', correct:false, explain:'Sai. Mỗi kiểu camera phù hợp với mục tiêu gameplay khác nhau.' }
+  ],
+  'boss_6': [
+    { type:'QZ', question:'Camera side-scrolling hợp nhất với kiểu game nào?', options:['A. Platformer 2D','B. FPS quân sự','C. Visual novel góc nhìn thứ nhất','D. RTS isometric'], correct:0, explain:'Platformer 2D cổ điển đọc tốt nhất với camera ngang.' },
+    { type:'QZ', question:'Ưu điểm nổi bật nhất của First Person là gì?', options:['A. Thấy toàn thân nhân vật','B. Immersion cao','C. Dễ chia split-screen','D. Luôn rộng tầm nhìn hơn'], correct:1, explain:'FPS mạnh ở cảm giác đắm chìm.' },
+    { type:'QZ', question:'Golden rule camera nào bị vi phạm nếu nhân vật bị cột che mất nhiều giây?', options:['A. Luôn hướng về mục tiêu','B. Không để mất nhân vật khỏi khung','C. Luôn dùng Dutch angle','D. Zoom thật gần'], correct:1, explain:'Người chơi không được bị mất thông tin nhân vật quá lâu.' },
+    { type:'QZ', question:'Shared camera co-op nên ưu tiên điều gì?', options:['A. Góc đẹp cho người 1','B. Giữ cả 2 trong khung','C. Chỉ zoom vào combat','D. Luôn khóa cố định'], correct:1, explain:'Giữ được cả hai người chơi trong khung là ưu tiên hàng đầu.' },
+    { type:'QZ', question:'Tunnel Vision camera hợp nhất khi nào?', options:['A. Open world khám phá tự do','B. Hành lang / đường ray cần ép nhìn một hướng','C. Menu inventory','D. Màn settings'], correct:1, explain:'Tunnel Vision hợp khi cần ép tập trung mạnh vào một hướng hoặc mục tiêu.' }
+  ],
+
+  '7.1': [
+    { type:'MTB', mode:'map', question:'Ghép hành động với nút hợp lý theo chuẩn console.', actions:[{id:'jump', text:'Nhảy'},{id:'sprint', text:'Chạy / Sprint'}], buttons:[{id:'face', label:'Nút mặt trước dưới (A / X)', correctAction:'jump'},{id:'hold', label:'Nút giữ / shoulder phù hợp để sprint', correctAction:'sprint'}], explain:'Nút dễ bấm nhất nên dành cho hành động dùng thường xuyên nhất như nhảy.' },
+    { type:'MTB', mode:'map', question:'Ghép tiếp các hành động cơ bản vào đúng vị trí ưu tiên.', actions:[{id:'attack', text:'Tấn công chính'},{id:'interact', text:'Tương tác'}], buttons:[{id:'main', label:'Nút mặt trước dễ reach', correctAction:'attack'},{id:'secondary', label:'Nút phụ gần tay cái', correctAction:'interact'}], explain:'Button mapping tốt là mapping dễ nhớ, ít quá tải và hợp tần suất sử dụng.' }
+  ],
+  '7.2': [
+    { type:'CYP', question:'"Camera Relative" nghĩa là gì?', instruction:'Chọn mô tả đúng.', paths:[{ text:'Hướng di chuyển phụ thuộc hướng camera đang nhìn.', correct:true, result:'Đúng. Đây là Camera Relative.' },{ text:'Hướng di chuyển luôn theo mặt nhân vật bất kể camera ra sao.', correct:false, result:'Sai. Đó gần Character Relative hơn.' },{ text:'Input đổi theo animation idle.', correct:false, result:'Sai. Không liên quan.' }], explain:'Camera Relative dùng hướng nhìn hiện tại làm hệ quy chiếu cho input.' },
+    { type:'CYP', question:'Game nào hợp với Character Relative hơn?', instruction:'Chọn bối cảnh phù hợp hơn.', paths:[{ text:'Game có fixed camera hoặc camera đổi góc mạnh, cần input ổn định.', correct:true, result:'Đúng. Character Relative giúp input nhất quán hơn trong trường hợp này.' },{ text:'Game thế giới mở free camera luôn xoay sau lưng.', correct:false, result:'Sai. Trường hợp đó thường hợp Camera Relative hơn.' },{ text:'Menu chọn level.', correct:false, result:'Sai. Không phải bài toán relative controls.' }], explain:'Character Relative phù hợp khi bạn không muốn input bị đổi nghĩa chỉ vì camera đổi góc.' }
+  ],
+  '7.3': [
+    { type:'MTB', mode:'map', question:'Ghép phản hồi haptic với tình huống hợp lý.', actions:[{id:'explosion', text:'Vụ nổ / va chạm mạnh'},{id:'constant', text:'Đi bộ bình thường liên tục'}], buttons:[{id:'use', label:'Nên kích hoạt rung', correctAction:'explosion'},{id:'avoid', label:'Không nên rung dày đặc', correctAction:'constant'}], explain:'Haptic nên dành cho khoảnh khắc có tác động rõ, không nên rung liên tục gây mệt.' },
+    { type:'MTB', mode:'qte', question:'QTE haptic check: prompt nào nên hiện rõ cho người chơi?', prompt:'A', promptVisual:'🅰️', buttons:[{label:'A', icon:'🅰️'},{label:'B', icon:'🅱️'},{label:'LT', icon:'🎯'},{label:'RB', icon:'⚙️'}], correct:0, explain:'QTE/haptic tốt phải rõ prompt và không khiến người chơi cảm giác bị lừa.' }
+  ],
+  '7.4': [
+    { type:'BUB', question:'ĐÚNG hay SAI: "Sơ đồ nút phức tạp luôn tốt hơn vì nhiều tùy chọn".', correct:false, explain:'Sai. Đơn giản, dễ nhớ và nhất quán quan trọng hơn số lượng tùy chọn.' },
+    { type:'BUB', question:'ĐÚNG hay SAI: "Camera Relative và Character Relative luôn cho cùng kết quả".', correct:false, explain:'Sai. Chúng tạo ra cảm giác điều khiển khác nhau tùy loại camera.' }
+  ],
+  'boss_7': [
+    { type:'QZ', question:'Nút nào thường được ưu tiên cho hành động "Nhảy" trên console?', options:['A. Nút mặt trước dễ bấm nhất','B. Menu button','C. Thumbstick click','D. Start'], correct:0, explain:'Hành động dùng nhiều nhất nên nằm ở vị trí dễ bấm nhất.' },
+    { type:'QZ', question:'Camera Relative nghĩa là gì?', options:['A. Input theo hướng camera','B. Input theo màu nhân vật','C. Input theo vibration','D. Input ngẫu nhiên'], correct:0, explain:'Camera Relative dùng hướng camera làm hệ quy chiếu.' },
+    { type:'QZ', question:'Lỗi phổ biến khi dùng haptic là gì?', options:['A. Chỉ rung ở vụ nổ','B. Rung liên tục quá nhiều','C. Rõ feedback','D. Rung có chủ đích'], correct:1, explain:'Rung dày đặc khiến người chơi khó chịu và thường tắt hẳn tính năng.' },
+    { type:'QZ', question:'Character Relative phù hợp hơn khi nào?', options:['A. Fixed camera đổi góc mạnh','B. Open world free camera sau lưng','C. Menu pause','D. Cutscene'], correct:0, explain:'Character Relative giúp input nhất quán hơn với fixed camera.' },
+    { type:'QZ', question:'Button mapping tốt thường có đặc điểm gì?', options:['A. Khó nhớ nhưng nhiều nút','B. Dễ nhớ và hợp tần suất dùng','C. Mỗi hành động một nút riêng bất chấp quá tải','D. Chỉ dựa vào độ đẹp của UI'], correct:1, explain:'Mapping tốt giảm tải nhận thức và hợp hành vi chơi thật.' }
+  ],
+
+  '8.1': [
+    { type:'DTS', question:'Đặt Health Bar và Reticle vào vị trí hợp lý.', icons:[{id:'hp', text:'Health Bar'},{id:'reticle', text:'Reticle / Target'}], zones:[{id:'top', label:'Góc trên', left:'18px', top:'18px', correctIcon:'hp'},{id:'center', label:'Giữa màn hình', left:'50%', top:'44%', width:'140px', correctIcon:'reticle'}], explain:'Thanh máu nên ở vùng góc dễ thấy; reticle/targeting phải ở trung tâm tác chiến.' },
+    { type:'DTS', question:'Đặt HUD để dễ thấy mà không che gameplay.', icons:[{id:'enemyhp', text:'Enemy HP'},{id:'playerhp', text:'Player HP'}], zones:[{id:'near_target', label:'Gần mục tiêu', left:'52%', top:'20%', width:'140px', correctIcon:'enemyhp'},{id:'safe_corner', label:'Góc an toàn', left:'18px', top:'18px', correctIcon:'playerhp'}], explain:'HUD tốt đặt đúng nơi mắt đang cần nhìn, nhưng không che vùng hành động chính.' }
+  ],
+  '8.2': [
+    { type:'DTS', question:'Đặt thông tin đạn / túi đồ / điểm số vào khu vực HUD hợp lý.', icons:[{id:'ammo', text:'Ammo Gauge'},{id:'score', text:'Score'}], zones:[{id:'combat_corner', label:'Góc combat', left:'76%', top:'18px', correctIcon:'ammo'},{id:'secondary', label:'Góc phụ', left:'18px', top:'18px', correctIcon:'score'}], explain:'Thông tin combat ưu tiên gần vùng mắt kiểm tra nhanh; score có thể lùi về thứ cấp hơn.' },
+    { type:'DTS', question:'Đặt icon loại đạn và túi đồ ở vị trí dễ đọc.', icons:[{id:'ammoType', text:'Loại đạn hiện tại'},{id:'bag', text:'Túi đồ / inventory access'}], zones:[{id:'weapon_info', label:'Cụm vũ khí', left:'72%', top:'18px', correctIcon:'ammoType'},{id:'menu_edge', label:'Mé ngoài ít gấp', left:'18px', top:'70%', correctIcon:'bag'}], explain:'Thứ người chơi cần khi đang chiến đấu nên gần cụm vũ khí; inventory không cần chiếm spotlight liên tục.' }
+  ],
+  '8.3': [
+    { type:'DTS', question:'Đặt minimap và context prompt vào đúng chỗ.', icons:[{id:'radar', text:'Radar / Minimap'},{id:'prompt', text:'Interact Prompt'}], zones:[{id:'corner', label:'Góc HUD', left:'76%', top:'18px', correctIcon:'radar'},{id:'near_avatar', label:'Gần nhân vật / vật thể', left:'48%', top:'62%', width:'150px', correctIcon:'prompt'}], explain:'Minimap nên ở góc; context prompt chỉ nên hiện gần điểm tương tác.' },
+    { type:'DTS', question:'Đặt prompt sao cho hiện đúng lúc, đúng nơi.', icons:[{id:'prompt', text:'Press A to Open'},{id:'radar', text:'Radar'}], zones:[{id:'target_area', label:'Ngay gần vật thể tương tác', left:'48%', top:'58%', width:'170px', correctIcon:'prompt'},{id:'top_right', label:'Góc trên phải', left:'76%', top:'18px', correctIcon:'radar'}], explain:'Prompt nên xuất hiện cục bộ và biến mất ngay khi người chơi rời xa.' }
+  ],
+  '8.4': [
+    { type:'SOD', question:'Tìm lỗi Clean Screen.', instruction:'Chọn bản HUD quá tải hơn.', statements:[{ text:'Hiện máu, đạn, minimap, quest, combo, leaderboard cùng lúc không ngắt lớp.', isBug:true },{ text:'Chỉ giữ thông tin cần cho tình huống hiện tại.', isBug:false },{ text:'Ẩn bớt UI khi vào cinematic.', isBug:false },{ text:'Giữ vùng giữa màn hình sạch cho gameplay.', isBug:false }], explain:'Clean Screen ưu tiên bớt đi hơn là thêm tất cả mọi thứ cùng lúc.' },
+    { type:'SOD', question:'Tìm phát biểu sai về HUD sạch.', instruction:'Chọn câu sai.', statements:[{ text:'HUD nên hiện mọi thông tin mọi lúc để người chơi không thiếu gì.', isBug:true },{ text:'Thông tin đúng lúc quan trọng hơn thông tin luôn hiện.', isBug:false },{ text:'UI có thể phân tầng theo ngữ cảnh.', isBug:false },{ text:'Mắt người chơi cần vùng hành động chính đủ thoáng.', isBug:false }], explain:'Quá nhiều HUD cùng lúc gây rối mắt và giảm khả năng đọc gameplay.' }
+  ],
+  '8.5': [
+    { type:'ICD', icon:'🔥', question:'Icon này nên gợi nghĩa nào ngay lập tức?', options:['A. Hệ lửa / damage lửa','B. Băng','C. Hồi máu','D. Tàng hình'], correct:0, explain:'Màu và hình nên đi cùng expectation quen thuộc: lửa = đỏ/cam và nóng.' },
+    { type:'ICD', icon:'❄️', question:'Nguyên tắc nào KHÔNG nên làm khi thiết kế icon?', options:['A. Rõ và ít chi tiết nhiễu','B. Nhồi chữ + logo + nhân vật trong một icon nhỏ','C. Dùng màu gợi đúng thuộc tính','D. Tối ưu khả năng nhận diện nhanh'], correct:1, explain:'Icon cần rõ và đọc nhanh, không nên nhồi nhiều lớp thông tin vào kích thước nhỏ.' }
+  ],
+  '8.6': [
+    { type:'MTB', mode:'qte', question:'QTE ngắn: prompt nào xuất hiện?', prompt:'B', promptVisual:'🅱️', buttons:[{label:'A',icon:'🅰️'},{label:'B',icon:'🅱️'},{label:'X',icon:'❎'},{label:'Y',icon:'🔺'}], correct:1, explain:'QTE tốt cần prompt rõ ràng và readable, không đánh đố người chơi.' },
+    { type:'MTB', mode:'qte', question:'QTE nên tạo cảm giác gì nhất?', prompt:'LT', promptVisual:'🎯', buttons:[{label:'LT',icon:'🎯'},{label:'RB',icon:'⚙️'},{label:'Menu',icon:'📋'},{label:'Stick',icon:'🕹️'}], correct:0, explain:'QTE chỉ nên dùng ở khoảnh khắc kịch tính ngắn và phải đọc được rất nhanh.' }
+  ],
+  '8.7': [
+    { type:'DTS', question:'Đặt HUD theo safe zone hợp lý.', icons:[{id:'vital', text:'Vital HUD'},{id:'flavor', text:'Flavor badge'}], zones:[{id:'safe', label:'Safe zone trong viền', left:'20px', top:'20px', correctIcon:'vital'},{id:'outer', label:'Mé ngoài phụ', left:'78%', top:'78%', correctIcon:'flavor'}], explain:'Thông tin quan trọng không nên dính sát viền màn hình vì có thể bị cắt trên một số thiết bị.' },
+    { type:'DTS', question:'Đặt cụm thông tin gần vùng mắt ít phải di chuyển hơn.', icons:[{id:'quest', text:'Objective chip'},{id:'currency', text:'Currency'}], zones:[{id:'near_action', label:'Gần vùng action nhưng không che', left:'62%', top:'14%', correctIcon:'quest'},{id:'secondary_corner', label:'Góc phụ', left:'18px', top:'18px', correctIcon:'currency'}], explain:'Thông tin người chơi check liên tục nên gần vùng nhìn chính hơn thông tin thứ cấp.' }
+  ],
+  '8.8': [
+    { type:'SRT', question:'Phân loại các màn hình UI ngoài gameplay.', instruction:'Kéo vào nhóm UI phù hợp.', zones:[{id:'other', label:'Other Screens'},{id:'live', label:'HUD trực tiếp'}], items:[{id:'menu', text:'Menu chính', correctZone:'other'},{id:'upgrade', text:'Màn nâng cấp', correctZone:'other'},{id:'inventory', text:'Inventory', correctZone:'other'},{id:'reticle', text:'Reticle giữa màn', correctZone:'live'}], explain:'Menu, inventory, upgrade screen đều là UI ngoài gameplay trực tiếp nhưng vẫn cần cùng ngôn ngữ thiết kế.' },
+    { type:'SRT', question:'Phân loại các màn hình nào nên nhất quán phong cách với HUD.', instruction:'Kéo vào nhóm cần cùng visual language.', zones:[{id:'same', label:'Cần cùng visual language'},{id:'not', label:'Không liên quan'}], items:[{id:'pause', text:'Pause Screen', correctZone:'same'},{id:'mainmenu', text:'Main Menu', correctZone:'same'},{id:'settings', text:'Settings', correctZone:'same'},{id:'external', text:'Trình duyệt web ngoài game', correctZone:'not'}], explain:'Các màn hình ngoài HUD vẫn nên cùng một ngôn ngữ thiết kế để người chơi không cảm giác như nhảy sang app khác.' }
+  ],
+  '8.9': [
+    { type:'DTS', question:'Đặt các thành phần cốt lõi cho màn Pause.', icons:[{id:'resume', text:'Tiếp tục'},{id:'settings', text:'Cài đặt'},{id:'exit', text:'Thoát / Menu chính'}], zones:[{id:'main', label:'Nút chính đầu tiên', left:'38%', top:'28%', width:'180px', correctIcon:'resume'},{id:'mid', label:'Tùy chọn phụ', left:'38%', top:'46%', width:'180px', correctIcon:'settings'},{id:'bottom', label:'Lựa chọn rời game', left:'38%', top:'64%', width:'180px', correctIcon:'exit'}], explain:'Pause screen tốt chỉ cần vài lựa chọn cốt lõi và thứ tự ưu tiên rõ.' },
+    { type:'DTS', question:'Pause screen nên tránh điều gì?', icons:[{id:'core', text:'Resume nhanh'},{id:'bloat', text:'12 menu lồng nhau'}], zones:[{id:'good', label:'Nên giữ', left:'20px', top:'24px', correctIcon:'core'},{id:'avoid', label:'Nên tránh', left:'20px', top:'58px', correctIcon:'bloat'}], explain:'Pause screen quá rườm rà làm người chơi khó quay lại game nhanh.' }
+  ],
+  '8.10': [
+    { type:'MEM', question:'Ghép phong cách font với thể loại phù hợp.', instruction:'Mỗi mood font hợp với một fantasy khác nhau.', pairs:[{ a:'Góc cạnh, kim loại', b:'Sci-fi / quân sự' },{ a:'Bo tròn, vui tươi', b:'Game trẻ em / casual' },{ a:'Rune cổ điển', b:'Fantasy' },{ a:'Monospace tối giản', b:'Tech / hacking' }], explain:'Typography là một phần rất mạnh của worldbuilding và readability.' },
+    { type:'MEM', question:'Ghép font feel với trải nghiệm đúng.', instruction:'Chọn đúng cặp.', pairs:[{ a:'Font vui và tròn', b:'Dễ gần, nhẹ áp lực' },{ a:'Font góc cứng', b:'Căng, công nghệ, chiến đấu' },{ a:'Font viết tay', b:'Thân mật / cá nhân' },{ a:'Font serif cổ', b:'Trang trọng / truyền thống' }], explain:'Font không chỉ để đọc; nó còn truyền mood rất nhanh.' }
+  ],
+  '8.11': [
+    { type:'BUB', question:'ĐÚNG hay SAI: "Icon đẹp quan trọng hơn icon dễ hiểu".', correct:false, explain:'Sai. Rõ ràng và dễ nhận diện luôn quan trọng hơn vẻ đẹp thuần túy.' },
+    { type:'BUB', question:'ĐÚNG hay SAI: "HUD nên hiện tất cả thông tin mọi lúc".', correct:false, explain:'Sai. Chỉ hiện đúng lúc cần để giữ Clean Screen.' }
+  ],
+  'boss_8': [
+    { type:'QZ', question:'Health Bar của người chơi nên ưu tiên đặt ở đâu?', options:['A. Giữa màn hình','B. Gần góc trên, tránh che gameplay','C. Ngay trước mặt nhân vật mọi lúc','D. Không cần hiện'], correct:1, explain:'Vùng góc trên là nơi phổ biến vì dễ thấy mà ít che action.' },
+    { type:'QZ', question:'Điều gì là lỗi icon thường gặp?', options:['A. Dùng màu gợi nghĩa','B. Rõ silhouette','C. Nhồi quá nhiều yếu tố trong 1 icon nhỏ','D. Tối ưu đọc nhanh'], correct:2, explain:'Icon nhỏ mà quá nhiều chi tiết sẽ rất khó đọc ở tốc độ chơi game.' },
+    { type:'QZ', question:'Context prompt nên xuất hiện khi nào?', options:['A. Mọi lúc','B. Chỉ khi gần vật thể có thể tương tác','C. Chỉ trong cutscene','D. Chỉ ở menu'], correct:1, explain:'Prompt theo ngữ cảnh chỉ nên hiện đúng lúc và biến mất ngay khi không còn liên quan.' },
+    { type:'QZ', question:'QTE tốt nên như thế nào?', options:['A. Prompt mơ hồ','B. Chết ngay vô báo trước','C. Ngắn, rõ, không lạm dụng','D. Kéo dài cả cutscene'], correct:2, explain:'QTE chỉ nên là điểm nhấn kịch tính ngắn, không phải cực hình.' },
+    { type:'QZ', question:'Pause screen tối thiểu nên có gì?', options:['A. Resume, Settings, Exit/Menu','B. 12 menu lồng nhau','C. Chỉ Exit','D. Chỉ cinematic'], correct:0, explain:'Pause screen tốt rõ ràng và quay lại gameplay nhanh.' }
+  ],
+
+  '9.1': [
+    { type:'CATCH', question:'Item nào nên rơi vào giỏ "Sáo rỗng ⚠️"?', item:'🚇 Cống ngầm', baskets:[{label:'Sáo rỗng ⚠️',icon:'⚠️'},{label:'Mới lạ ✨',icon:'✨'}], correct:0, explain:'Sewer / cống ngầm là một trong những theme bị lạm dụng rất nhiều.' },
+    { type:'CATCH', question:'Item nào nên rơi vào giỏ "Mới lạ ✨"?', item:'🎡 Lễ hội mùa hè', baskets:[{label:'Sáo rỗng ⚠️',icon:'⚠️'},{label:'Mới lạ ✨',icon:'✨'}], correct:1, explain:'Những theme không nằm trong danh sách cliché vẫn còn nhiều đất sáng tạo hơn.' }
+  ],
+  '9.2': [
+    { type:'CYP', question:'Tên level nào hấp dẫn hơn?', instruction:'Chọn tên gợi cảm xúc / bối cảnh rõ hơn.', paths:[{ text:'"Level 3-2"', correct:false, result:'Sai. Đây chỉ là mã số, ít gợi hình dung.' },{ text:'"Vực Sâu Tử Thần"', correct:true, result:'Đúng. Tên này gợi cảm xúc và dễ nhớ hơn nhiều.' },{ text:'"Map B Test Final"', correct:false, result:'Sai. Đây là tên nội bộ hơn là tên dành cho người chơi.' }], explain:'Tên level tốt giúp người chơi nhớ level như một trải nghiệm, không chỉ một index số.' },
+    { type:'CYP', question:'Lỗi đặt tên level thường gặp là gì?', instruction:'Chọn vấn đề nên tránh.', paths:[{ text:'Tên quá dài và không liên quan nội dung level.', correct:true, result:'Đúng. Đây là lỗi đặt tên rất phổ biến.' },{ text:'Tên gợi được bầu không khí của level.', correct:false, result:'Sai. Đây là điều nên hướng tới.' },{ text:'Tên giúp người chơi nhớ được nơi đó.', correct:false, result:'Sai. Đó là tín hiệu tốt.' }], explain:'Tên hay phải vừa có bản sắc vừa bám nội dung thực tế của level.' }
+  ],
+  '9.3': [
+    { type:'TPP', question:'Chọn đúng đường đi có một "weenie" dẫn hướng về đích.', columns:3, nodes:[{id:'start',label:'Start',icon:'🚪'},{id:'hall',label:'Hành lang',icon:'➡️'},{id:'tower',label:'Landmark',icon:'🏰'},{id:'dead',label:'Ngõ cụt',icon:'🧱'},{id:'goal',label:'Goal',icon:'⭐'}], correctPath:['start','hall','tower','goal'], explain:'Weenie là điểm mốc thị giác nổi bật giúp người chơi tự định hướng từ xa.' },
+    { type:'TPP', question:'Đường nào thể hiện cách dẫn hướng kiểu Disneyland tốt hơn?', columns:3, nodes:[{id:'gate',label:'Cổng',icon:'🚪'},{id:'plaza',label:'Plaza',icon:'⛲'},{id:'mount',label:'Mốc lớn',icon:'⛰️'},{id:'maze',label:'Mê cung',icon:'🌫️'},{id:'exit',label:'Đích',icon:'🏁'}], correctPath:['gate','plaza','mount','exit'], explain:'Một mốc lớn và rõ sẽ kéo mắt người chơi đi đúng hướng mà không cần chữ chỉ dẫn.' }
+  ],
+  '9.4': [
+    { type:'ROP', question:'Sắp đúng beat của một level mẫu.', steps:[{id:'threat',text:'Giới thiệu mối nguy mới'},{id:'practice',text:'Luyện tập an toàn'},{id:'mix',text:'Kết hợp với nguy cũ'},{id:'peak',text:'Đỉnh điểm trước Boss'}], correctOrder:['threat','practice','mix','peak'], explain:'Beat chart giúp level có nhịp học và nhịp cao trào rõ ràng.' },
+    { type:'ROP', question:'Sắp đúng nhịp nghỉ trước cao trào.', steps:[{id:'teach',text:'Dạy cơ chế'},{id:'rest',text:'Cho điểm nghỉ ngắn'},{id:'test',text:'Đẩy thử thách chính'},{id:'reward',text:'Cho payoff sau khi vượt qua'}], correctOrder:['teach','rest','test','reward'], explain:'Điểm nghỉ giúp người chơi hồi sức tâm lý trước đoạn khó nhất.' }
+  ],
+  '9.5': [
+    { type:'CRD', question:'Ghép đúng cách tái sử dụng asset thông minh.', cards:[{id:'recolor',text:'Đổi màu / ánh sáng / bối cảnh'},{id:'newplay',text:'Cho asset cũ một cách dùng gameplay mới'},{id:'copypaste',text:'Dùng y nguyên không đổi gì'}], targets:[{id:'smart1',label:'Reuse thông minh 1'},{id:'smart2',label:'Reuse thông minh 2'},{id:'bad',label:'Reuse tệ'}], mapping:{smart1:'recolor',smart2:'newplay',bad:'copypaste'}, explain:'Tái sử dụng tốt là đổi ngữ cảnh hoặc chức năng, không chỉ copy-paste.' },
+    { type:'CRD', question:'Ghép đúng dấu hiệu “copy-paste” tệ và reuse tốt.', cards:[{id:'same',text:'Y nguyên phòng/kẻ địch ở nhiều nơi'},{id:'variant',text:'Biến thể hóa bằng enemy behavior hoặc ánh sáng'},{id:'context',text:'Đổi ngữ cảnh để asset cũ có cảm giác mới'}], targets:[{id:'avoid',label:'Nên tránh'},{id:'good1',label:'Reuse tốt 1'},{id:'good2',label:'Reuse tốt 2'}], mapping:{avoid:'same',good1:'variant',good2:'context'}, explain:'Player nhận ra lặp lại rất nhanh nếu designer không thêm biến thể đủ thông minh.' }
+  ],
+  '9.6': [
+    { type:'TPP', question:'Chọn đường đi thể hiện map kiểu Gygax.', columns:3, nodes:[{id:'entrance',label:'Cửa vào',icon:'🚪'},{id:'corridor',label:'Hành lang rõ',icon:'🧱'},{id:'room',label:'Phòng combat',icon:'⚔️'},{id:'branch',label:'Ngã rẽ tự do',icon:'🌿'},{id:'boss',label:'Boss room',icon:'👹'}], correctPath:['entrance','corridor','room','boss'], explain:'Gygax nhấn vào cấu trúc rõ, chiến thuật và trình tự dày hơn là khám phá tự do.' },
+    { type:'TPP', question:'Map kiểu Gygax hợp nhất với điều gì?', columns:3, nodes:[{id:'start',label:'Start',icon:'📍'},{id:'fight',label:'Dungeon crawler',icon:'⚔️'},{id:'open',label:'Sandbox rộng',icon:'🌍'},{id:'goal',label:'Goal',icon:'🏁'}], correctPath:['start','fight','goal'], explain:'Phong cách Gygax hợp với dungeon-crawler và flow combat rõ cấu trúc.' }
+  ],
+  '9.7': [
+    { type:'TPP', question:'Chọn đường đi thể hiện map kiểu Arneson.', columns:3, nodes:[{id:'start',label:'Start',icon:'🚪'},{id:'hub',label:'Hub',icon:'⭕'},{id:'pathA',label:'Nhánh A',icon:'🛤️'},{id:'pathB',label:'Nhánh B',icon:'🌿'},{id:'goal',label:'Goal',icon:'⭐'}], correctPath:['start','hub','pathA','goal'], explain:'Arneson ưu tiên cảm giác tự do khám phá và nhiều nhánh hơn là ép tuyến tính.' },
+    { type:'TPP', question:'Map Arneson hợp nhất với fantasy nào?', columns:3, nodes:[{id:'open',label:'Open exploration',icon:'🌍'},{id:'strict',label:'Strict corridor combat',icon:'🧱'},{id:'choice',label:'Player choice',icon:'🧭'}], correctPath:['open','choice'], explain:'Arneson hợp với cảm giác sandbox / exploration nơi người chơi tự chọn đường đi nhiều hơn.' }
+  ],
+  '9.8': [
+    { type:'TPP', question:'Ghép path sao cho có critical path và nhánh phụ.', columns:3, nodes:[{id:'spawn',label:'Spawn',icon:'🚪'},{id:'main',label:'Critical Path',icon:'➡️'},{id:'side',label:'Nhánh phụ',icon:'🪙'},{id:'goal',label:'Goal',icon:'🏁'}], correctPath:['spawn','main','goal'], explain:'Critical path là đường tối thiểu bắt buộc; nhánh phụ có thể thưởng thêm khám phá.' },
+    { type:'TPP', question:'Kết hợp Gygax + Arneson nên theo logic nào?', columns:3, nodes:[{id:'combat',label:'Trục chính rõ',icon:'⚔️'},{id:'secret',label:'Khu phụ tự do',icon:'🗝️'},{id:'goal',label:'Goal',icon:'⭐'}], correctPath:['combat','secret','goal'], explain:'Một map hoàn chỉnh có thể dùng trục combat chặt ở phần chính và mở nhánh phụ cho khám phá.' }
+  ],
+  '9.9': [
+    { type:'CYP', question:'"Illusional Narrative" nghĩa là gì?', instruction:'Chọn mô tả đúng.', paths:[{ text:'Tạo cảm giác người chơi có ảnh hưởng lớn dù cấu trúc tổng thể vẫn khá tuyến tính.', correct:true, result:'Đúng. Đây chính là “ảo giác lựa chọn”.' },{ text:'Mọi lựa chọn đều phải dẫn tới ending hoàn toàn khác.', correct:false, result:'Sai. Không cần đến mức đó.' },{ text:'Không có lựa chọn nào cả.', correct:false, result:'Sai. Mấu chốt là cảm giác được chọn.' }], explain:'Illusional Narrative cho người chơi cảm giác được lựa chọn mà không bắt hệ thống phải nổ nhánh vô hạn.' },
+    { type:'CYP', question:'Kỹ thuật nào tạo ảo giác lựa chọn hiệu quả?', instruction:'Chọn hướng làm thực tế hơn.', paths:[{ text:'Cho người chơi chọn thứ tự làm nhiệm vụ phụ trước khi hội tụ.', correct:true, result:'Đúng. Đây là kỹ thuật rất hiệu quả.' },{ text:'Bắt mọi thứ chỉ có một đường duy nhất nhưng giả vờ nhiều lựa chọn bằng UI.', correct:false, result:'Sai. Người chơi sẽ sớm nhận ra.' },{ text:'Viết 20 ending hoàn toàn khác nhau cho mọi nhánh nhỏ.', correct:false, result:'Sai. Rất tốn kém và không phải lúc nào cần.' }], explain:'Cho phép thay đổi thứ tự, cách tiếp cận, hoặc flavor outcome thường đủ để tạo cảm giác agency.' }
+  ],
+  '9.10': [
+    { type:'SOD', question:'Tìm lỗi về màu sắc dẫn đường.', instruction:'Chọn mô tả map tệ hơn.', statements:[{ text:'Lối đúng và ngõ cụt có cùng độ sáng / màu nên rất khó phân biệt.', isBug:true },{ text:'Lối đúng được làm sáng hơn một chút.', isBug:false },{ text:'Landmark có độ tương phản tốt.', isBug:false },{ text:'Vùng quan trọng nổi bật hơn nền.', isBug:false }], explain:'Gray Matters là bài toán dẫn mắt bằng sáng tối / màu sắc chứ không chỉ bằng mũi tên.' },
+    { type:'SOD', question:'Tìm phát biểu sai về dẫn mắt trong map.', instruction:'Chọn câu sai.', statements:[{ text:'Màu và độ sáng có thể dẫn đường mà không cần chữ.', isBug:false },{ text:'Mọi đường nên sáng ngang nhau để công bằng.', isBug:true },{ text:'Landmark mạnh giúp người chơi ít lạc hơn.', isBug:false },{ text:'Đường đúng nên có ưu tiên thị giác hơn ngõ cụt.', isBug:false }], explain:'Nếu mọi đường có trọng số thị giác ngang nhau, designer đang bỏ lỡ một công cụ dẫn hướng rất mạnh.' }
+  ],
+  '9.11': [
+    { type:'TAP', question:'Vì sao nên thiết kế Training Level sau khi game gần hoàn chỉnh?', options:['A. Vì lúc đó mới biết chính xác cần dạy cơ chế nào và thứ tự nào','B. Vì training level không quan trọng','C. Vì art lúc đó đẹp hơn','D. Vì để né bug camera'], correct:0, explain:'Training level xuất hiện đầu tiên với người chơi nhưng lại nên được thiết kế muộn hơn để bám đúng game đã thành hình.' },
+    { type:'TAP', question:'Nhận định nào đúng về Training Level?', options:['A. Nên dạy hết mọi cơ chế ngay từ đầu','B. Chỉ nên dạy cơ chế cơ bản nhất, rồi mở rộng dần theo Beat Chart','C. Không cần training nếu UI đẹp','D. Chỉ cần text tutorial dài'], correct:1, explain:'Onboarding tốt là onboarding theo nhịp, không dồn tất cả vào 5 phút đầu.' }
+  ],
+  '9.12': [
+    { type:'BUB', question:'ĐÚNG hay SAI: "Re-using asset luôn là dấu hiệu thiết kế lười".', correct:false, explain:'Sai. Tái sử dụng thông minh là kỹ năng cần thiết để tối ưu thời gian và ngân sách.' },
+    { type:'BUB', question:'ĐÚNG hay SAI: "Một level chỉ nên có một con đường duy nhất".', correct:false, explain:'Sai. Vẫn có thể có nhánh phụ miễn critical path rõ.' }
+  ],
+  'boss_9': [
+    { type:'QZ', question:'Weenie trong thiết kế kiểu Disneyland là gì?', options:['A. Một bug camera','B. Một mốc thị giác nổi bật để dẫn hướng','C. Một loại enemy','D. Một màn training'], correct:1, explain:'Weenie là điểm mốc nhìn từ xa giúp kéo người chơi đi đúng hướng.' },
+    { type:'QZ', question:'Map kiểu Gygax nhấn vào điều gì?', options:['A. Tự do sandbox tối đa','B. Cấu trúc rõ và mục đích chiến thuật','C. Chỉ art nền','D. Không có critical path'], correct:1, explain:'Gygax thiên về cấu trúc dungeon rõ ràng và chiến thuật hơn.' },
+    { type:'QZ', question:'Critical path là gì?', options:['A. Đường tối thiểu bắt buộc để hoàn thành level','B. Bất kỳ nhánh phụ nào','C. Secret room','D. Mini map'], correct:0, explain:'Critical path là xương sống bắt buộc của level.' },
+    { type:'QZ', question:'Training Level tốt nên làm gì?', options:['A. Dạy hết mọi thứ ngay','B. Dạy dần theo Beat Chart','C. Không cần vì người chơi tự hiểu','D. Chỉ toàn chữ'], correct:1, explain:'Onboarding tốt là dạy đúng lúc, đúng lượng.' },
+    { type:'QZ', question:'Gray Matters nói nhiều nhất về điều gì?', options:['A. Physics','B. Dẫn mắt bằng màu / độ sáng','C. Music','D. Monetization'], correct:1, explain:'Ánh sáng và tương phản là công cụ dẫn đường mạnh trong level design.' }
+  ],
+
+  '10.1': [
+    { type:'BAL', question:'Cân damage đòn cơ bản để còn chỗ tăng độ khó về sau.', sliders:[{label:'Damage cơ bản',min:0,max:100,value:46,targetRange:[35,55]},{label:'Tốc độ đánh',min:0,max:100,value:58,targetRange:[45,70]}], avatar:'⚔️', previewLabel:'Base attack tuning', previewHint:'Đòn cơ bản quá mạnh sẽ bóp chết không gian cân bằng về sau.', explain:'Damage đầu game quá cao làm enemy về sau khó scale hợp lý và combat mất nhịp tăng tiến.' },
+    { type:'BAL', question:'Cân tốc độ vs sức mạnh sao cho đúng fantasy vũ khí.', sliders:[{label:'Sức nặng cảm nhận',min:0,max:100,value:60,targetRange:[45,75]},{label:'Độ responsive',min:0,max:100,value:62,targetRange:[50,80]}], avatar:'🗡️', previewLabel:'Weapon feel', previewHint:'Fantasy vũ khí và nhịp input phải cùng nói một thứ.', explain:'Vũ khí có thể chậm-mạnh hoặc nhanh-yếu, nhưng phải nhất quán với “feel” mà game đang hứa.' }
+  ],
+  '10.2': [
+    { type:'MTB', mode:'qte', question:'Combo 3 hit cần prompt đầu tiên nào?', prompt:'X', promptVisual:'❎', buttons:[{label:'A',icon:'🅰️'},{label:'X',icon:'❎'},{label:'B',icon:'🅱️'},{label:'Y',icon:'🔺'}], correct:1, explain:'Combo tốt cần timing window rõ và prompt readable.' },
+    { type:'MTB', mode:'qte', question:'Nhịp combo nên thưởng điều gì?', prompt:'Y', promptVisual:'🔺', buttons:[{label:'LT',icon:'🎯'},{label:'RB',icon:'⚙️'},{label:'Y',icon:'🔺'},{label:'Menu',icon:'📋'}], correct:2, explain:'Combo không nên đòi chính xác tới mức vô lý; mục tiêu là “đã tay”, không phải tra tấn.' }
+  ],
+  '10.3': [
+    { type:'BAL', question:'Cân tốc độ dodge để cảm giác thoát hiểm rõ hơn di chuyển thường.', sliders:[{label:'Tốc độ dodge',min:0,max:100,value:72,targetRange:[60,85]},{label:'Recovery sau dodge',min:0,max:100,value:30,targetRange:[15,40]}], avatar:'💨', previewLabel:'Dodge feel', previewHint:'Dodge phải tạo cảm giác cứu mạng chứ không chỉ là đi bộ nhanh hơn.', explain:'Dodge nên đủ nhanh để khác biệt rõ, nhưng recovery quá dài sẽ làm người chơi bị động ngay sau khi né.' },
+    { type:'BAL', question:'Cân movement combat để vừa linh hoạt vừa có commit.', sliders:[{label:'Độ linh hoạt khi combat',min:0,max:100,value:64,targetRange:[50,75]},{label:'Mức bị khóa sau hành động',min:0,max:100,value:34,targetRange:[20,45]}], avatar:'🏃', previewLabel:'Combat mobility', previewHint:'Người chơi cần agency nhưng cũng cần đọc được rủi ro cam kết.', explain:'Combat thú vị đến từ trade-off có đọc được giữa cơ động và commitment.' }
+  ],
+  '10.4': [
+    { type:'BAL', question:'Cân block để không thành “che là vô địch”.', sliders:[{label:'% damage giảm khi block',min:0,max:100,value:72,targetRange:[55,85]},{label:'Thưởng cho perfect block',min:0,max:100,value:70,targetRange:[55,85]}], avatar:'🛡️', previewLabel:'Defense tuning', previewHint:'Block mạnh nhưng không nên xóa sạch mọi rủi ro.', explain:'Nếu block giảm 100% mọi thứ mà không có trade-off, lối chơi sẽ rất dễ rơi vào câu giờ.' },
+    { type:'BAL', question:'Cân parry để khuyến khích timing kỹ năng.', sliders:[{label:'Cửa sổ parry',min:0,max:100,value:34,targetRange:[20,45]},{label:'Phần thưởng phản công',min:0,max:100,value:68,targetRange:[55,85]}], avatar:'⏱️', previewLabel:'Parry reward', previewHint:'Parry nên khó hơn block thường nhưng đáng giá hơn.', explain:'Parry hoạt động tốt khi có cửa sổ hợp lý và payoff đủ hấp dẫn để người chơi luyện timing.' }
+  ],
+  '10.5': [
+    { type:'BAL', question:'Cân vũ khí tầm xa để range cao không phá game.', sliders:[{label:'Tầm bắn',min:0,max:100,value:74,targetRange:[60,85]},{label:'Cooldown / recoil',min:0,max:100,value:58,targetRange:[45,75]}], avatar:'🎯', previewLabel:'Ranged balance', previewHint:'Tầm xa an toàn hơn nên thường phải bị giới hạn ở chỗ khác.', explain:'Range cao làm vũ khí mạnh hơn tương đối; cooldown, recoil hoặc accuracy là cách bù trừ tự nhiên.' },
+    { type:'BAL', question:'Cân accuracy khi vừa bắn vừa chạy.', sliders:[{label:'Accuracy lúc đứng yên',min:0,max:100,value:82,targetRange:[70,95]},{label:'Accuracy lúc di chuyển',min:0,max:100,value:48,targetRange:[35,60]}], avatar:'🔫', previewLabel:'Risk vs mobility', previewHint:'Run-and-gun vui hơn khi là trade-off, không phải free upgrade.', explain:'Giảm accuracy khi di chuyển tạo ra quyết định thật giữa an toàn linh hoạt và precision.' }
+  ],
+  '10.6': [
+    { type:'CRD', question:'Ghép thuộc tính với đúng loại vũ khí.', cards:[{id:'heavy',text:'Damage cao / tốc độ chậm'},{id:'light',text:'Damage thấp / tốc độ nhanh'},{id:'range',text:'An toàn từ xa / cần recoil'}], targets:[{id:'hammer',label:'Vũ khí nặng'},{id:'dagger',label:'Vũ khí nhẹ'},{id:'gun',label:'Vũ khí tầm xa'}], mapping:{hammer:'heavy',dagger:'light',gun:'range'}, explain:'Mỗi loại vũ khí nên có profile mạnh/yếu rõ ràng để tạo playstyle khác nhau.' },
+    { type:'CRD', question:'Ghép vũ khí với fantasy chiến đấu phù hợp.', cards:[{id:'combo',text:'Combo liên tục và áp sát'},{id:'sniper',text:'Chậm nhưng uy lực từ xa'},{id:'tank',text:'Chặn tốt, ép nhịp chậm'}], targets:[{id:'knife',label:'Dao / vũ khí nhẹ'},{id:'rifle',label:'Súng bắn tỉa'},{id:'shield',label:'Khiên + nặng'}], mapping:{knife:'combo',rifle:'sniper',shield:'tank'}, explain:'Combat sâu đến từ việc mỗi vũ khí mang một lời hứa khác nhau.' }
+  ],
+  '10.7': [
+    { type:'BAL', question:'Cân run-and-gun để vui nhưng không vô đối.', sliders:[{label:'Khả năng vừa chạy vừa bắn',min:0,max:100,value:68,targetRange:[55,80]},{label:'Mức phạt accuracy khi di chuyển',min:0,max:100,value:42,targetRange:[30,55]}], avatar:'🏃‍♂️', previewLabel:'Run and Gun trade-off', previewHint:'Di động cao nên có cái giá hợp lý.', explain:'Nếu vừa chạy vừa bắn quá chính xác, game sẽ mất nhiều áp lực positioning và cover.' },
+    { type:'BAL', question:'Cân mobility combat để người chơi có lựa chọn thật.', sliders:[{label:'An toàn khi di chuyển',min:0,max:100,value:58,targetRange:[45,70]},{label:'Giá phải trả về sát thương / precision',min:0,max:100,value:46,targetRange:[35,60]}], avatar:'💥', previewLabel:'Mobility balance', previewHint:'Lựa chọn tốt là lựa chọn có lợi và có giá.', explain:'Mobility chỉ thú vị khi không miễn phí hoàn toàn.' }
+  ],
+  '10.8': [
+    { type:'SRT', question:'Phân loại các kiểu combat ngoài bắn súng.', instruction:'Kéo vào nhóm chiến đấu phù hợp.', zones:[{id:'melee',label:'Cận chiến'},{id:'ranged',label:'Tầm xa / khác'},{id:'setup',label:'Bẫy / gài đặt'}], items:[{id:'sword',text:'Chém cận chiến',correctZone:'melee'},{id:'magic',text:'Phép thuật',correctZone:'ranged'},{id:'trap',text:'Bẫy đặt sẵn',correctZone:'setup'}], explain:'Combat tốt không bị khóa vào một verb duy nhất như bắn súng.' },
+    { type:'SRT', question:'Phân loại playstyle combat vào đúng nhóm.', instruction:'Chọn nhóm đúng cho từng lựa chọn chiến đấu.', zones:[{id:'direct',label:'Đối đầu trực tiếp'},{id:'indirect',label:'Gián tiếp / kiểm soát'}], items:[{id:'punch',text:'Đấm / cận chiến trực diện',correctZone:'direct'},{id:'summon',text:'Triệu hồi / phép kiểm soát',correctZone:'indirect'},{id:'mine',text:'Đặt mìn',correctZone:'indirect'}], explain:'Đa dạng combat mở ra nhiều cách giải quyết encounter hơn.' }
+  ],
+  '10.9': [
+    { type:'SOD', question:'Tìm hit feedback kém nhất.', instruction:'Chọn mô tả khiến combat yếu nhất.', statements:[{ text:'Đòn trúng không có hit-stop, flash hay âm phản hồi rõ.', isBug:true },{ text:'Đòn trúng có nhịp dừng cực ngắn và hiệu ứng rõ.', isBug:false },{ text:'Người chơi biết chắc đòn vừa trúng.', isBug:false },{ text:'Âm thanh hỗ trợ cảm giác impact.', isBug:false }], explain:'Thiếu hit feedback làm combat trở nên “xốp” và khó đọc.' },
+    { type:'SOD', question:'Tìm nhận định sai về feedback khi bị đánh.', instruction:'Chọn câu sai.', statements:[{ text:'Hit-stop / flash có thể tăng cảm giác impact.', isBug:false },{ text:'Người chơi không cần biết đòn có trúng hay không.', isBug:true },{ text:'Feedback tốt làm damage số trở nên có cảm giác hơn.', isBug:false },{ text:'Combat không chỉ là con số damage.', isBug:false }], explain:'Người chơi cần biết đòn vừa trúng, trượt hay bị chặn để combat có “feel”.' }
+  ],
+  '10.10': [
+    { type:'CYP', question:'Sau khi chết, nên hồi sinh người chơi ở đâu?', instruction:'Chọn thiết kế đỡ nản hơn mà vẫn có hậu quả.', paths:[{ text:'Checkpoint gần nhất, đủ gần để quay lại nhanh.', correct:true, result:'Đúng. Đây là cách giữ nhịp tốt hơn.' },{ text:'Quay về đầu game để nhớ đời.', correct:false, result:'Sai. Hình phạt quá nặng dễ bẻ gãy nhịp chơi.' },{ text:'Ngẫu nhiên ở đâu cũng được.', correct:false, result:'Sai. Người chơi cần consistency.' }], explain:'Death design tốt tạo hậu quả nhưng không khiến người chơi tốn thời gian vô ích quá mức.' },
+    { type:'CYP', question:'Hình phạt khi chết nên nặng tới đâu?', instruction:'Chọn hướng thiết kế hợp lý hơn.', paths:[{ text:'Đủ để người chơi thấy có hậu quả, nhưng không quá nản.', correct:true, result:'Đúng. Đây là điểm cân bằng tốt.' },{ text:'Phải thật đau để game “hardcore” hơn.', correct:false, result:'Sai. Đau quá mức không đồng nghĩa với thú vị.' },{ text:'Không có hậu quả gì cả trong mọi hoàn cảnh.', correct:false, result:'Sai. Thiếu hậu quả thì cái chết mất ý nghĩa.' }], explain:'Mục tiêu là giữ tension, không phải biến cái chết thành thủ tục hành chính kéo dài.' }
+  ],
+  '10.11': [
+    { type:'BUB', question:'ĐÚNG hay SAI: "Vũ khí mạnh nhất luôn là vũ khí tốt nhất để thêm vào game".', correct:false, explain:'Sai. Cân bằng quan trọng hơn sức mạnh tuyệt đối.' },
+    { type:'BUB', question:'ĐÚNG hay SAI: "Combat hay chỉ cần damage số cao".', correct:false, explain:'Sai. Feedback, nhịp điệu và lựa chọn chiến thuật quan trọng hơn số liệu thô.' }
+  ],
+  'boss_10': [
+    { type:'QZ', question:'Damage đòn cơ bản quá cao ngay đầu game thường gây gì?', options:['A. Tăng không gian cân bằng','B. Giảm không gian scale độ khó về sau','C. Làm combat rõ hơn','D. Không ảnh hưởng gì'], correct:1, explain:'Base damage quá mạnh bóp chết progression về sau.' },
+    { type:'QZ', question:'Run-and-gun nên có trade-off gì để giữ cân bằng?', options:['A. Không cần trade-off','B. Giảm accuracy hoặc tăng recoil khi di chuyển','C. Tăng damage lúc chạy','D. Xóa cooldown'], correct:1, explain:'Mobility cao thường cần cái giá về precision hoặc control.' },
+    { type:'QZ', question:'Vì sao hit feedback quan trọng?', options:['A. Chỉ để đẹp','B. Giúp combat có impact và readable hơn','C. Chỉ để tăng damage số','D. Không ảnh hưởng game feel'], correct:1, explain:'Combat mạnh tay là combat mà người chơi cảm được đòn đánh chạm vào đâu và có hiệu quả gì.' },
+    { type:'QZ', question:'Parry tốt nên thưởng gì?', options:['A. Không gì cả','B. Cơ hội phản công / payoff timing','C. Chỉ đổi màu UI','D. Reset game'], correct:1, explain:'Parry khó hơn block thường nên cần reward xứng đáng.' },
+    { type:'QZ', question:'Checkpoint sau khi chết nên như thế nào?', options:['A. Gần đủ để giữ nhịp','B. Xa nhất có thể','C. Random','D. Chỉ hồi ở menu chính'], correct:0, explain:'Death design tốt giữ tension mà không tốn thời gian vô ích quá mức.' }
+  ]
+});
+
 // Generate default question for lessons without specific content
 function getQuestionsForLesson(lessonId) {
   if (QUESTIONS[lessonId]) return QUESTIONS[lessonId];
@@ -5860,6 +6727,8 @@ function renderLevelMap() {
 // ============================================================
 function openLevel(levelId) {
   stopCelebrationSfx();
+  stopBubbleBurstTimer();
+  stopBossLoops();
   SFX.click.play();
   STATE.currentLevel = levelId;
   const level = LEVELS[levelId - 1];
@@ -5884,18 +6753,21 @@ function openLevel(levelId) {
 
   level.lessons.forEach((lesson, idx) => {
     const isCompleted = STATE.completedLessons[lesson.id];
+    const isSkipped = STATE.skippedLessons[lesson.id];
     // STRICT SEQUENTIAL: only unlock if previous lesson is completed
     const prevDone = idx === 0 || STATE.completedLessons[level.lessons[idx - 1].id];
     const isCurrent = !isCompleted && prevDone;
     const isLocked = !isCompleted && !prevDone;
 
     let cardClass = 'lesson-card';
-    if (isCompleted) cardClass += ' completed';
+    if (isCompleted && isSkipped) cardClass += ' skipped';
+    else if (isCompleted) cardClass += ' completed';
     else if (isCurrent) cardClass += ' current';
     else cardClass += ' locked';
 
     let status = '';
-    if (isCompleted) status = '<i class="bx bxs-check-circle" style="color:var(--success)"></i>';
+    if (isCompleted && isSkipped) status = '<i class="bx bxs-error-circle" style="color:#FF9F43"></i>';
+    else if (isCompleted) status = '<i class="bx bxs-check-circle" style="color:var(--success)"></i>';
     else if (isCurrent) status = '<i class="bx bxs-right-arrow-circle" style="color:var(--gold)"></i>';
     else status = '<i class="bx bxs-lock-alt" style="color:var(--muted)"></i>';
 
@@ -5957,9 +6829,12 @@ function openLevel(levelId) {
 // ============================================================
 function startLesson(lessonId) {
   stopCelebrationSfx();
+  stopBubbleBurstTimer();
+  stopBossLoops();
   playSfx('click');
   STATE.currentLesson = lessonId;
   STATE.currentQuestionIdx = 0;
+  STATE.wrongAttempts = 0;
   STATE.lessonCompletionLock = null;
   STATE.bossResolutionLock = false;
 
@@ -5999,6 +6874,12 @@ function renderQuestion(questions, lesson, level) {
   else if (q.type === 'ROP') gameHtml = renderReorderGame(q);
   else if (q.type === 'TAP') gameHtml = renderTapGame(q);
   else if (q.type === 'SWS') gameHtml = renderSwitchSolveGame(q);
+  else if (q.type === 'SNS') gameHtml = renderSnapShotGame(q);
+  else if (q.type === 'MTB') gameHtml = renderMatchButtonGame(q);
+  else if (q.type === 'DTS') gameHtml = renderDecorateScreenGame(q);
+  else if (q.type === 'ICD') gameHtml = renderIconDecodeGame(q);
+  else if (q.type === 'CATCH') gameHtml = renderCatchGame(q);
+  else if (q.type === 'TPP') gameHtml = renderTilePathGame(q);
   else gameHtml = renderQuizGame(q);
 
   screen.innerHTML = `
@@ -6080,18 +6961,57 @@ function checkTrueFalse(selected, correct, btnEl) {
 }
 
 function renderBubbleGame(q) {
+  setTimeout(() => startBubbleBurstTimer(q), 0);
   return renderGameFrame({ icon: 'bx-circle', badge: 'Bubble Burst', flair: '🫧' }, `
     <div class="game-question">${q.question}</div>
-    <div class="game-instruction"><i class='bx bx-circle'></i> Chạm bong bóng đúng trước khi nó "bay" mất!</div>
-    <div class="bubble-options">
-      <button class="bubble-option true" onclick="checkBubbleAnswer(true, ${q.correct}, this)">ĐÚNG</button>
-      <button class="bubble-option false" onclick="checkBubbleAnswer(false, ${q.correct}, this)">SAI</button>
+    <div class="game-instruction"><i class='bx bx-circle'></i> Chọn đúng trước khi hai bong bóng co nhỏ rồi biến mất.</div>
+    <div class="bubble-arena">
+      <div class="bubble-hud">
+        <div class="bubble-status-chip"><i class='bx bxs-hot'></i> Burst Window</div>
+        <div class="bubble-shrink-bar"><div class="bubble-shrink-fill" id="bubbleShrinkFill"></div></div>
+      </div>
+      <div class="bubble-options">
+        <button class="bubble-option true" onclick="checkBubbleAnswer(true, ${q.correct}, this)">ĐÚNG</button>
+        <button class="bubble-option false" onclick="checkBubbleAnswer(false, ${q.correct}, this)">SAI</button>
+      </div>
     </div>
     <div class="hidden" id="currentExplain">${q.explain}</div>
   `);
 }
 
+function startBubbleBurstTimer(q) {
+  stopBubbleBurstTimer();
+  const options = Array.from(document.querySelectorAll('.bubble-option'));
+  const fill = document.getElementById('bubbleShrinkFill');
+  if (!options.length || !fill) return;
+
+  gsap.set(options, { scale: 1, opacity: 1 });
+  gsap.set(fill, { width: '100%' });
+
+  const duration = q.duration || 4.8;
+  bubbleBurstTween = gsap.timeline({
+    defaults: { ease: 'none' },
+    onComplete: () => {
+      bubbleBurstTween = null;
+      options.forEach(opt => {
+        opt.disabled = true;
+        opt.classList.add('bubble-danger');
+      });
+      SFX.wrong.play();
+      mascotSad();
+      showFeedback(false, `Bóng bay đã biến mất! ${q.explain}`);
+    }
+  });
+
+  bubbleBurstTween.to(fill, { width: '0%', duration }, 0);
+  bubbleBurstTween.to(options, { scale: 0.06, opacity: 0.08, boxShadow: '0 0 0 rgba(0,0,0,0)', duration }, 0);
+  bubbleBurstTween.call(() => {
+    options.forEach(opt => opt.classList.add('bubble-danger'));
+  }, null, duration * 0.72);
+}
+
 function checkBubbleAnswer(selected, correct, btnEl) {
+  stopBubbleBurstTimer();
   const options = document.querySelectorAll('.bubble-option');
   options.forEach(opt => opt.disabled = true);
 
@@ -6407,6 +7327,237 @@ function checkSwitchSolveAnswer() {
     mascotSad();
   }
 
+  showFeedback(allCorrect, data.explain);
+}
+
+function renderSnapShotGame(q) {
+  return renderGameFrame({ icon: 'bx-camera', badge: 'Snap the Shot', flair: '📸' }, `
+    <div class="game-question">${q.question}</div>
+    <div class="game-instruction"><i class='bx bx-camera'></i> Chọn khung hình / góc máy đúng nhất.</div>
+    <div class="tap-grid">
+      ${q.options.map((opt, i) => `
+        <button class="tap-option" onclick="checkTapAnswer(${i}, ${q.correct}, this)" data-idx="${i}">
+          <div style="font-size:1.6rem; margin-bottom:8px;">${opt.visual || '🎥'}</div>
+          <div style="font-weight:700;">${opt.label || opt}</div>
+          ${opt.desc ? `<div style="font-size:.82rem; color:var(--muted); margin-top:4px;">${opt.desc}</div>` : ''}
+        </button>
+      `).join('')}
+    </div>
+    <div class="hidden" id="currentExplain">${q.explain}</div>
+  `);
+}
+
+function renderMatchButtonGame(q) {
+  if (q.mode === 'qte') {
+    return renderGameFrame({ icon: 'bx-joystick-button', badge: 'Match the Button', flair: '⚡' }, `
+      <div class="game-question">${q.question}</div>
+      <div class="game-instruction"><i class='bx bx-timer'></i> Bấm đúng nút / nhịp đúng theo prompt.</div>
+      <div style="text-align:center; margin:18px 0 22px;">
+        <div style="display:inline-flex; min-width:140px; justify-content:center; padding:18px 26px; border-radius:20px; background:linear-gradient(135deg,var(--primary),#6c63ff); color:#fff; font-size:2rem; font-weight:800; box-shadow:0 18px 32px rgba(75,63,158,.24);">
+          ${q.promptVisual || q.prompt}
+        </div>
+      </div>
+      <div class="tap-grid">
+        ${q.buttons.map((btn, i) => `
+          <button class="tap-option" onclick="checkTapAnswer(${i}, ${q.correct}, this)" data-idx="${i}">
+            <div style="font-size:1.5rem; margin-bottom:6px;">${btn.icon || '🎮'}</div>
+            <div style="font-weight:800;">${btn.label}</div>
+          </button>
+        `).join('')}
+      </div>
+      <div class="hidden" id="currentExplain">${q.explain}</div>
+    `);
+  }
+
+  STATE.selectedCardId = null;
+  return renderGameFrame({ icon: 'bx-joystick-button', badge: 'Match the Button', flair: '🎮' }, `
+    <div class="game-question">${q.question}</div>
+    <div class="game-instruction"><i class='bx bx-game'></i> Chọn hành động rồi gán vào nút phù hợp.</div>
+    <div class="card-match-layout">
+      <div class="card-bank">
+        ${q.actions.map(action => `
+          <div class="card-chip" id="card-${action.id}" onclick="selectCardChip('${action.id}')">${action.text}</div>
+        `).join('')}
+      </div>
+      <div class="target-bank">
+        ${q.buttons.map(button => `
+          <div class="target-slot" onclick="assignCardToTarget('${button.id}')">
+            <strong>${button.label}</strong>
+            <div class="slot-answer" data-slot-answer="${button.id}">Chưa gán</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="text-align:center;">
+        <button class="btn-3d btn-primary" onclick="checkMatchButtonAnswer()"><i class='bx bx-check'></i> Kiểm tra</button>
+      </div>
+    </div>
+    <div class="hidden" id="currentExplain">${q.explain}</div>
+    <div class="hidden" id="matchButtonData">${encodeURIComponent(JSON.stringify(q))}</div>
+  `);
+}
+
+function checkMatchButtonAnswer() {
+  const data = JSON.parse(decodeURIComponent(document.getElementById('matchButtonData').textContent));
+  const allCorrect = data.buttons.every(button => {
+    const slotAnswer = document.querySelector(`[data-slot-answer="${button.id}"]`);
+    return slotAnswer && slotAnswer.dataset.cardId === button.correctAction;
+  });
+  if (allCorrect) {
+    playSfx('correct'); addXP(22); addCoin(4); mascotHappy();
+  } else {
+    playSfx('wrong'); mascotSad();
+  }
+  showFeedback(allCorrect, data.explain);
+}
+
+function renderDecorateScreenGame(q) {
+  STATE.selectedScreenIconId = null;
+  return renderGameFrame({ icon: 'bx-layout', badge: 'Decorate the Screen', flair: '🖥️' }, `
+    <div class="game-question">${q.question}</div>
+    <div class="game-instruction"><i class='bx bx-grid-alt'></i> Chọn một HUD element rồi đặt vào đúng vùng trên màn hình.</div>
+    <div class="card-match-layout">
+      <div class="card-bank">
+        ${q.icons.map(icon => `
+          <div class="card-chip" id="screen-icon-${icon.id}" onclick="selectScreenIcon('${icon.id}')">${icon.text}</div>
+        `).join('')}
+      </div>
+      <div class="target-bank" style="display:block;">
+        <div style="position:relative; min-height:260px; border-radius:24px; background:linear-gradient(180deg,#dff2ff,#f6f7ff); border:2px solid rgba(75,63,158,.14); overflow:hidden;">
+          ${q.zones.map(zone => `
+            <button class="target-slot" type="button" onclick="assignScreenIcon('${zone.id}')" style="position:absolute; left:${zone.left}; top:${zone.top}; width:${zone.width || '130px'}; min-height:72px; background:rgba(255,255,255,.82);">
+              <strong>${zone.label}</strong>
+              <div class="slot-answer" data-screen-answer="${zone.id}">Chưa gán</div>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <button class="btn-3d btn-primary" onclick="checkDecorateScreenAnswer()"><i class='bx bx-check'></i> Kiểm tra</button>
+      </div>
+    </div>
+    <div class="hidden" id="currentExplain">${q.explain}</div>
+    <div class="hidden" id="decorateData">${encodeURIComponent(JSON.stringify(q))}</div>
+  `);
+}
+
+function selectScreenIcon(iconId) {
+  STATE.selectedScreenIconId = iconId;
+  document.querySelectorAll('[id^="screen-icon-"]').forEach(el => el.classList.remove('selected'));
+  const iconEl = document.getElementById(`screen-icon-${iconId}`);
+  if (iconEl) iconEl.classList.add('selected');
+  playSfx('click');
+}
+
+function assignScreenIcon(zoneId) {
+  if (!STATE.selectedScreenIconId) return;
+  const slotAnswer = document.querySelector(`[data-screen-answer="${zoneId}"]`);
+  const iconEl = document.getElementById(`screen-icon-${STATE.selectedScreenIconId}`);
+  if (!slotAnswer || !iconEl) return;
+  slotAnswer.textContent = iconEl.textContent;
+  slotAnswer.dataset.cardId = STATE.selectedScreenIconId;
+  slotAnswer.parentElement.classList.add('filled');
+  iconEl.classList.add('matched');
+  iconEl.classList.remove('selected');
+  STATE.selectedScreenIconId = null;
+  playSfx('click');
+}
+
+function checkDecorateScreenAnswer() {
+  const data = JSON.parse(decodeURIComponent(document.getElementById('decorateData').textContent));
+  const allCorrect = data.zones.every(zone => {
+    const slotAnswer = document.querySelector(`[data-screen-answer="${zone.id}"]`);
+    return slotAnswer && slotAnswer.dataset.cardId === zone.correctIcon;
+  });
+  if (allCorrect) {
+    playSfx('correct'); addXP(24); addCoin(4); mascotHappy();
+  } else {
+    playSfx('wrong'); mascotSad();
+  }
+  showFeedback(allCorrect, data.explain);
+}
+
+function renderIconDecodeGame(q) {
+  return renderGameFrame({ icon: 'bx-shape-circle', badge: 'Icon Decode', flair: '🔮' }, `
+    <div class="game-question">${q.question}</div>
+    <div class="game-instruction"><i class='bx bx-show-alt'></i> Đoán nghĩa icon nhanh và rõ.</div>
+    <div style="display:flex; justify-content:center; margin:14px 0 22px;">
+      <div style="width:120px; height:120px; border-radius:50%; background:conic-gradient(var(--gold), #ffd98b, var(--primary), var(--gold)); display:flex; align-items:center; justify-content:center; box-shadow:0 18px 36px rgba(75,63,158,.22);">
+        <div style="width:86px; height:86px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:2.2rem;">${q.icon}</div>
+      </div>
+    </div>
+    <div class="tap-grid">
+      ${q.options.map((opt, i) => `
+        <button class="tap-option" onclick="checkTapAnswer(${i}, ${q.correct}, this)" data-idx="${i}">
+          ${opt}
+        </button>
+      `).join('')}
+    </div>
+    <div class="hidden" id="currentExplain">${q.explain}</div>
+  `);
+}
+
+function renderCatchGame(q) {
+  return renderGameFrame({ icon: 'bx-basket', badge: 'Catch the Right Basket', flair: '🧺' }, `
+    <div class="game-question">${q.question}</div>
+    <div class="game-instruction"><i class='bx bx-down-arrow-alt'></i> Chọn đúng giỏ cho item đang rơi.</div>
+    <div style="text-align:center; margin:18px 0;">
+      <div style="display:inline-flex; padding:18px 24px; border-radius:22px; background:linear-gradient(135deg,#fff,#f4f0ff); border:2px solid rgba(75,63,158,.14); box-shadow:0 18px 30px rgba(75,63,158,.12); font-size:1.3rem; font-weight:800;">
+        ${q.item}
+      </div>
+    </div>
+    <div class="tap-grid">
+      ${q.baskets.map((basket, i) => `
+        <button class="tap-option" onclick="checkTapAnswer(${i}, ${q.correct}, this)" data-idx="${i}">
+          <div style="font-size:1.4rem; margin-bottom:6px;">${basket.icon || '🧺'}</div>
+          ${basket.label}
+        </button>
+      `).join('')}
+    </div>
+    <div class="hidden" id="currentExplain">${q.explain}</div>
+  `);
+}
+
+function renderTilePathGame(q) {
+  STATE.tppSelection = [];
+  return renderGameFrame({ icon: 'bx-map', badge: 'Tile Path Puzzle', flair: '🧭' }, `
+    <div class="game-question">${q.question}</div>
+    <div class="game-instruction"><i class='bx bx-pointer'></i> Chạm các ô theo đúng đường đi / thứ tự hợp lý.</div>
+    <div class="tap-grid" style="grid-template-columns:repeat(${q.columns || 3}, minmax(88px,1fr));">
+      ${q.nodes.map(node => `
+        <button class="tap-option" onclick="toggleTilePath('${node.id}', this)" data-node-id="${node.id}">
+          <div style="font-size:1.3rem; margin-bottom:6px;">${node.icon || '⬜'}</div>
+          ${node.label}
+        </button>
+      `).join('')}
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn-3d btn-primary" onclick="checkTilePathAnswer()"><i class='bx bx-check'></i> Kiểm tra</button>
+    </div>
+    <div class="hidden" id="currentExplain">${q.explain}</div>
+    <div class="hidden" id="tilePathData">${encodeURIComponent(JSON.stringify(q))}</div>
+  `);
+}
+
+function toggleTilePath(nodeId, el) {
+  const idx = STATE.tppSelection.indexOf(nodeId);
+  if (idx >= 0) {
+    STATE.tppSelection.splice(idx, 1);
+    el.classList.remove('selected');
+  } else {
+    STATE.tppSelection.push(nodeId);
+    el.classList.add('selected');
+  }
+  playSfx('click');
+}
+
+function checkTilePathAnswer() {
+  const data = JSON.parse(decodeURIComponent(document.getElementById('tilePathData').textContent));
+  const allCorrect = STATE.tppSelection.length === data.correctPath.length && STATE.tppSelection.every((id, idx) => id === data.correctPath[idx]);
+  if (allCorrect) {
+    playSfx('correct'); addXP(22); addCoin(4); mascotHappy();
+  } else {
+    playSfx('wrong'); mascotSad();
+  }
   showFeedback(allCorrect, data.explain);
 }
 
@@ -6907,40 +8058,53 @@ function flipMemoryCard(cardEl) {
 // ============================================================
 // LESSON COMPLETION
 // ============================================================
-function completeLesson(lessonId, level) {
+function completeLesson(lessonId, level, isSkipped = false) {
   if (STATE.lessonCompletionLock === lessonId) return;
   STATE.lessonCompletionLock = lessonId;
   STATE.completedLessons[lessonId] = true;
+  if (isSkipped) STATE.skippedLessons[lessonId] = true;
+  else delete STATE.skippedLessons[lessonId];
   STATE.currentLesson = null;
   STATE.currentQuestionIdx = 0;
+  STATE.wrongAttempts = 0;
   saveState();
-  playSfx('levelUp', { stopFirst: true });
+  if (!isSkipped) playSfx('levelUp', { stopFirst: true });
 
   const screen = document.getElementById('screen-lesson');
   const lesson = level.lessons.find(l => l.id === lessonId);
   const lessonIdx = level.lessons.indexOf(lesson);
   const nextLesson = level.lessons[lessonIdx + 1];
   const allLessonsDone = level.lessons.every(l => STATE.completedLessons[l.id]);
-
-  screen.innerHTML = `
-    <div class="recap-card animate__animated animate__bounceIn">
-      <div class="recap-icon">🎉</div>
-      <h2 class="recap-title">Lesson hoàn thành!</h2>
-      <p style="color:var(--muted);">${lesson.name}</p>
-      <div class="recap-stats">
-        <div class="recap-stat">
-          <span class="stat-num">+15</span>
-          <span class="stat-label">XP</span>
-        </div>
-        <div class="recap-stat">
-          <span class="stat-num">+2</span>
-          <span class="stat-label">Coin</span>
-        </div>
-      </div>
+  const recapIcon = isSkipped ? '⏭️' : '🎉';
+  const recapTitle = isSkipped ? 'Đã bỏ qua Lesson này' : 'Lesson hoàn thành!';
+  const recapNote = isSkipped
+    ? 'Lesson đã được mở tiến trình để bạn tiếp tục, nhưng nên quay lại học kỹ phần này sau.'
+    : lesson.name;
+  const xpReward = isSkipped ? 0 : 15;
+  const coinReward = isSkipped ? 0 : 2;
+  const recapSkills = isSkipped ? '' : `
       <div class="recap-skills">
         <div class="recap-skill"><i class='bx bxs-check-circle'></i> ${lesson.name}</div>
         <div class="recap-skill"><i class='bx bxs-check-circle'></i> ${lesson.sub}</div>
       </div>
+  `;
+
+  screen.innerHTML = `
+    <div class="recap-card animate__animated animate__bounceIn">
+      <div class="recap-icon">${recapIcon}</div>
+      <h2 class="recap-title">${recapTitle}</h2>
+      <p style="color:var(--muted);">${recapNote}</p>
+      <div class="recap-stats">
+        <div class="recap-stat">
+          <span class="stat-num">+${xpReward}</span>
+          <span class="stat-label">XP</span>
+        </div>
+        <div class="recap-stat">
+          <span class="stat-num">+${coinReward}</span>
+          <span class="stat-label">Coin</span>
+        </div>
+      </div>
+      ${recapSkills}
       <div class="level-options">
         ${nextLesson ? `
         <button class="btn-3d btn-gold" onclick="startLesson('${nextLesson.id}')">
@@ -6958,237 +8122,7 @@ function completeLesson(lessonId, level) {
   `;
 
   // Confetti
-  confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-}
-
-// ============================================================
-// BOSS BATTLE
-// ============================================================
-function startBoss(levelId) {
-  stopCelebrationSfx();
-  playSfx('bossIntro', { stopFirst: true });
-  STATE.currentLevel = levelId;
-  STATE.currentLesson = null;
-  STATE.bossResolutionLock = false;
-  const level = LEVELS[levelId - 1];
-  STATE.bossQuestions = getBossQuestions(levelId);
-  STATE.bossHP = 100;
-  STATE.bossQuestionIdx = 0;
-
-  document.getElementById('appShell').classList.add('boss-theme');
-  document.getElementById('boss-particles').style.display = 'block';
-  initBossParticles();
-
-  mascotSay('Boss Battle! Tập trung! 💪');
-  renderBossQuestion(level);
-  showScreen('boss');
-}
-
-function renderBossQuestion(level) {
-  const idx = STATE.bossQuestionIdx;
-  const questions = STATE.bossQuestions;
-
-  if (STATE.bossHP <= 0) {
-    bossVictory(level);
-    return;
-  }
-  if (idx >= questions.length) {
-    bossDefeat(level);
-    return;
-  }
-
-  const q = questions[idx];
-  const hpPercent = Math.max(0, STATE.bossHP);
-  const screen = document.getElementById('screen-boss');
-
-  screen.innerHTML = `
-    <div class="boss-header animate__animated animate__fadeIn">
-      <div class="boss-avatar">${level.boss.icon}</div>
-      <div class="boss-vs">VS</div>
-      <div class="player-avatar">🎮</div>
-    </div>
-    <div class="boss-hp-bar">
-      <div class="boss-hp-label">
-        <span>BOSS HP</span>
-        <span id="bossHpText">${hpPercent}%</span>
-      </div>
-      <progress class="nes-progress ${hpPercent > 50 ? 'is-error' : hpPercent > 20 ? 'is-warning' : 'is-success'}" 
-                value="${hpPercent}" max="100" id="bossHpBar" style="height:24px;"></progress>
-    </div>
-    <div class="game-container">
-      <div class="game-question">${q.question}</div>
-      <div class="timer-bar"><div class="timer-bar-fill" id="bossTimer" style="width:100%"></div></div>
-      <div class="quiz-options">
-        ${q.options.map((opt, i) => `
-          <button class="quiz-option" onclick="checkBossAnswer(${i}, ${q.correct}, this)" data-idx="${i}">
-            <span class="opt-letter">${String.fromCharCode(65 + i)}</span>
-            <span>${opt.substring(3)}</span>
-          </button>
-        `).join('')}
-      </div>
-      <div class="hidden" id="currentExplain">${q.explain}</div>
-    </div>
-    <div style="text-align:center; margin-top:16px;">
-      <span class="pixel-font" style="color:var(--gold);">Câu ${idx + 1}/${questions.length}</span>
-    </div>
-  `;
-
-  animateScreenIn(screen.querySelector('.game-container'));
-  startBossTimer();
-}
-
-let bossTimerInterval = null;
-function startBossTimer() {
-  if (bossTimerInterval) clearInterval(bossTimerInterval);
-  let timeLeft = 100;
-  const timerEl = document.getElementById('bossTimer');
-  bossTimerInterval = setInterval(() => {
-    timeLeft -= 0.5;
-    if (timerEl) {
-      timerEl.style.width = timeLeft + '%';
-      if (timeLeft < 30) timerEl.classList.add('danger');
-    }
-    if (timeLeft <= 0) {
-      clearInterval(bossTimerInterval);
-      const explain = document.getElementById('currentExplain')?.textContent || '';
-      SFX.wrong.play();
-      mascotSad();
-      showFeedback(false, 'Hết giờ! ' + explain, true);
-    }
-  }, 150);
-}
-
-function checkBossAnswer(selected, correct, btnEl) {
-  if (bossTimerInterval) clearInterval(bossTimerInterval);
-
-  const options = document.querySelectorAll('.quiz-option');
-  options.forEach(opt => {
-    opt.classList.add('disabled');
-    const idx = parseInt(opt.dataset.idx);
-    if (idx === correct) opt.classList.add('correct');
-    if (idx === selected && idx !== correct) opt.classList.add('wrong');
-  });
-
-  const explain = document.getElementById('currentExplain').textContent;
-  const isCorrect = selected === correct;
-
-  // Burst effect
-  const rect = btnEl.getBoundingClientRect();
-  burstAtPoint(rect.left + rect.width / 2, rect.top + rect.height / 2, isCorrect ? '#2BC48A' : '#FF5D5D');
-
-  if (isCorrect) {
-    SFX.correct.play();
-    STATE.bossHP -= 20;
-    addXP(20);
-    addCoin(3);
-    mascotHappy();
-
-    // Animate HP bar
-    const hpBar = document.getElementById('bossHpBar');
-    const hpText = document.getElementById('bossHpText');
-    if (hpBar) {
-      gsap.to(hpBar, { value: Math.max(0, STATE.bossHP), duration: 0.5 });
-      hpText.textContent = Math.max(0, STATE.bossHP) + '%';
-    }
-  } else {
-    SFX.wrong.play();
-    mascotSad();
-  }
-
-  showFeedback(isCorrect, explain, true);
-}
-
-function bossDefeat(level) {
-  if (STATE.bossResolutionLock) return;
-  STATE.bossResolutionLock = true;
-  if (bossTimerInterval) clearInterval(bossTimerInterval);
-  const screen = document.getElementById('screen-boss');
-  mascotSay('Boss vẫn còn máu! Ôn lại rồi thử tiếp nhé. 💪');
-  screen.innerHTML = `
-    <div class="victory-screen">
-      <div class="trophy animate__animated animate__headShake">😵</div>
-      <h2>Boss Chưa Bị Hạ</h2>
-      <p style="color:#ccc;margin-bottom:20px;">${level.boss.name} vẫn còn ${Math.max(0, STATE.bossHP)}% HP.</p>
-      <div class="level-options">
-        <button class="btn-3d btn-boss" onclick="startBoss(${level.id})">
-          Thử lại Boss <i class='bx bx-refresh'></i>
-        </button>
-        <button class="btn-3d btn-outline btn-sm" onclick="exitBoss(); openLevel(${level.id})" style="color:#fff;border-color:#fff;">
-          <i class='bx bx-book-open'></i> Ôn lesson
-        </button>
-      </div>
-    </div>
-  `;
-}
-
-function bossVictory(level) {
-  if (STATE.bossResolutionLock) return;
-  STATE.bossResolutionLock = true;
-  if (bossTimerInterval) clearInterval(bossTimerInterval);
-  STATE.completedLevels[level.id] = true;
-  addXP(100);
-  addCoin(20);
-  saveState();
-
-  playSfx('victory', { stopFirst: true });
-
-  // Epic confetti!
-  const duration = 3000;
-  const end = Date.now() + duration;
-  (function frame() {
-    confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 } });
-    confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 } });
-    if (Date.now() < end) requestAnimationFrame(frame);
-  })();
-
-  mascotSay('ĐỈNH CỦA CHÓP!!! 🎉🎉🎉');
-
-  const screen = document.getElementById('screen-boss');
-  screen.innerHTML = `
-    <div class="victory-screen">
-      <div class="trophy animate__animated animate__tada">🏆</div>
-      <h2>Boss Defeated!</h2>
-      <p style="color:#ccc;margin-bottom:20px;">Level ${level.id}: ${level.title} — Hoàn thành!</p>
-      <div class="badge-earned animate__animated animate__bounceIn" style="animation-delay:0.5s;">
-        <span style="font-size:1.8rem;">${level.icon}</span>
-        <span>Huy hiệu: ${level.title}</span>
-      </div>
-      <div class="recap-stats" style="margin:28px 0;">
-        <div class="recap-stat">
-          <span class="stat-num" style="color:var(--gold);">+100</span>
-          <span class="stat-label" style="color:#aaa;">XP</span>
-        </div>
-        <div class="recap-stat">
-          <span class="stat-num" style="color:var(--gold);">+20</span>
-          <span class="stat-label" style="color:#aaa;">Coin</span>
-        </div>
-      </div>
-      <div class="level-options">
-        <button class="btn-3d btn-gold" onclick="goToNextLevel(${level.id})">
-          Level tiếp theo <i class='bx bx-right-arrow-alt'></i>
-        </button>
-        <button class="btn-3d btn-outline btn-sm" onclick="exitBoss()" style="color:#fff;border-color:#fff;">
-          <i class='bx bx-map-alt'></i> Bản đồ
-        </button>
-      </div>
-    </div>
-  `;
-}
-
-function goToNextLevel(currentLevelId) {
-  exitBoss();
-  if (currentLevelId < 17) openLevel(currentLevelId + 1);
-  else { showScreen('map'); mascotSay('Bạn đã hoàn thành 17 Level! 🎉'); }
-}
-
-function exitBoss() {
-  stopCelebrationSfx();
-  document.getElementById('appShell').classList.remove('boss-theme');
-  document.getElementById('boss-particles').style.display = 'none';
-  if (bossTimerInterval) clearInterval(bossTimerInterval);
-  STATE.bossResolutionLock = false;
-  showScreen('map');
-  renderLevelMap();
+  if (!isSkipped) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 }
 
 // ============================================================
@@ -7219,6 +8153,7 @@ function showFeedback(isCorrect, explain, isBoss = false) {
       const level = LEVELS[STATE.currentLevel - 1];
       renderBossQuestion(level);
     } else {
+      STATE.wrongAttempts = 0;
       STATE.currentQuestionIdx++;
       const lessonId = STATE.currentLesson;
       const questions = getQuestionsForLesson(lessonId);
@@ -7256,6 +8191,7 @@ function showFeedback(isCorrect, explain, isBoss = false) {
   const nextBtn = document.getElementById('feedbackNextBtn');
   const retryBtn = document.getElementById('feedbackRetryBtn');
   const whyBtn = document.getElementById('feedbackWhyBtn');
+  const skipBtn = document.getElementById('feedbackSkipBtn');
 
   content.className = 'feedback-content ' + (isCorrect ? 'correct' : 'wrong');
   title.className = 'feedback-title ' + (isCorrect ? 'correct' : 'wrong');
@@ -7264,7 +8200,26 @@ function showFeedback(isCorrect, explain, isBoss = false) {
   nextBtn.classList.add('hidden');
   retryBtn.classList.add('hidden');
   whyBtn.classList.add('hidden');
+  skipBtn.classList.add('hidden');
   whyBtn.disabled = false;
+  STATE.feedbackCallback = null;
+  STATE.feedbackRetryCallback = null;
+
+  if (isBoss) {
+    title.innerHTML = isCorrect
+      ? `<i class='bx bxs-bolt-circle'></i> Trúng điểm yếu!`
+      : `<i class='bx bxs-shield-x'></i> Boss phản đòn!`;
+    explainEl.classList.remove('hidden');
+    nextBtn.classList.remove('hidden');
+    STATE.feedbackCallback = () => {
+      STATE.bossQuestionIdx++;
+      const level = LEVELS[STATE.currentLevel - 1];
+      renderBossQuestion(level);
+    };
+    gsap.fromTo(overlay, { y: '100%' }, { y: '0%', duration: 0.4, ease: 'back.out(1.7)' });
+    overlay.classList.add('show');
+    return;
+  }
 
   if (isCorrect) {
     const praises = ['Chính xác! 🎯', 'Đỉnh của chóp! 🔥', 'Xuất sắc! ⭐', 'Perfect! 💯', 'Quá đỉnh! 🚀'];
@@ -7272,9 +8227,14 @@ function showFeedback(isCorrect, explain, isBoss = false) {
     whyBtn.classList.remove('hidden');
     nextBtn.classList.remove('hidden');
   } else {
+    STATE.wrongAttempts++;
     const encourages = ['Chưa đúng rồi! 💪', 'Gần lắm! 🔄', 'Thử lại nhé! 🐛'];
     title.innerHTML = `<i class='bx bxs-x-circle'></i> ${encourages[Math.floor(Math.random() * encourages.length)]}`;
     retryBtn.classList.remove('hidden');
+    if (STATE.wrongAttempts >= 2) {
+      explainEl.classList.remove('hidden');
+      skipBtn.classList.remove('hidden');
+    }
   }
 
   STATE.feedbackCallback = () => {
@@ -7316,7 +8276,7 @@ function onFeedbackWhy() {
   const explainEl = document.getElementById('feedbackExplain');
   const whyBtn = document.getElementById('feedbackWhyBtn');
   explainEl.classList.remove('hidden');
-  whyBtn.disabled = true;
+  whyBtn.classList.add('hidden');
 }
 
 function onFeedbackNext() {
@@ -7343,6 +8303,23 @@ function onFeedbackRetry() {
       if (STATE.feedbackRetryCallback) STATE.feedbackRetryCallback();
       STATE.feedbackCallback = null;
       STATE.feedbackRetryCallback = null;
+    }
+  });
+}
+
+function onFeedbackSkipLesson() {
+  SFX.click.play();
+  const overlay = document.getElementById('feedbackOverlay');
+  const lessonId = STATE.currentLesson;
+  const levelNum = parseInt(lessonId.split('.')[0]);
+  const level = LEVELS[levelNum - 1];
+  gsap.to(overlay, {
+    y: '100%', duration: 0.3, ease: 'power2.in',
+    onComplete: () => {
+      overlay.classList.remove('show');
+      STATE.feedbackCallback = null;
+      STATE.feedbackRetryCallback = null;
+      completeLesson(lessonId, level, true);
     }
   });
 }
@@ -7454,6 +8431,7 @@ function showScreen(screenName) {
 
 function confirmExit() {
   if (confirm('Thoát lesson? Tiến trình câu hỏi sẽ không được lưu.')) {
+    stopBubbleBurstTimer();
     const levelNum = parseInt(STATE.currentLesson?.split('.')[0]);
     if (levelNum) openLevel(levelNum);
     else showScreen('map');
@@ -7482,9 +8460,11 @@ function resetProgress() {
     STATE.coin = 0;
     STATE.streak = 0;
     STATE.completedLessons = {};
+    STATE.skippedLessons = {};
     STATE.completedLevels = {};
     STATE.currentLevel = null;
     STATE.currentLesson = null;
+    STATE.wrongAttempts = 0;
     updateStats();
     renderLevelMap();
     showScreen('map');
@@ -7540,7 +8520,1182 @@ async function init() {
   });
 }
 
+// ============================================================
+// BOSS BATTLE REBUILD (Boss.html inspired)
+// ============================================================
+const BOSS_HEART_PATH = "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+const bossBattleRuntime = {
+  root: null,
+  canvas: null,
+  ctx: null,
+  level: null,
+  questions: [],
+  boss: null,
+  player: null,
+  bullets: [],
+  bubbles: [],
+  particles: [],
+  texts: [],
+  stars: [],
+  blobs: [],
+  qIndex: 0,
+  current: null,
+  score: 0,
+  shotsFired: 0,
+  hitsCorrect: 0,
+  hitsWrong: 0,
+  maxCombo: 0,
+  phase: 'idle',
+  firing: false,
+  mx: 0,
+  my: 0,
+  now: 0,
+  shake: 0,
+  lastSpawn: 0,
+  lastShot: 0,
+  pad: 24,
+  topY: 250,
+  bottomPad: 160,
+  W: 0,
+  H: 0,
+  DPR: 1,
+  raf: 0,
+  listeners: [],
+  audio: null,
+  rewardsGranted: false,
+};
+
+function bossBattleOptionLabel(text) {
+  return String(text || '').replace(/^[A-D][\.\)]\s*/, '').trim();
+}
+
+function bossBattleBuildQuestions(levelId) {
+  const raw = getBossQuestions(levelId).filter(q => Array.isArray(q.options) && typeof q.correct === 'number');
+  return raw.map((q, index) => {
+    const correctText = bossBattleOptionLabel(q.options[q.correct]);
+    const wrong = q.options
+      .map((option, optionIndex) => ({ optionIndex, text: bossBattleOptionLabel(option) }))
+      .filter(option => option.optionIndex !== q.correct)
+      .map(option => option.text);
+    return {
+      id: `${levelId}-${index}`,
+      prompt: q.question,
+      answer: correctText,
+      wrong,
+      explain: q.explain || '',
+    };
+  });
+}
+
+function bossBattleHexA(hex, alpha) {
+  const value = parseInt(hex.slice(1), 16);
+  return `rgba(${(value >> 16) & 255},${(value >> 8) & 255},${value & 255},${alpha})`;
+}
+
+function bossBattleFitBubbleText(ctx, text, radius) {
+  const content = String(text || '').trim();
+  const maxWidth = radius * 1.45;
+  const maxHeight = radius * 1.2;
+  const maxLines = 3;
+  const minFontSize = 8;
+  let fontSize = 16;
+
+  function splitLongWord(word) {
+    const chunks = [];
+    let current = '';
+    for (const char of word) {
+      const next = current + char;
+      if (ctx.measureText(next).width <= maxWidth || !current) current = next;
+      else {
+        chunks.push(current);
+        current = char;
+      }
+    }
+    if (current) chunks.push(current);
+    return chunks;
+  }
+
+  function wrapWords() {
+    const words = content.split(/\s+/).flatMap(word => {
+      if (ctx.measureText(word).width <= maxWidth) return [word];
+      return splitLongWord(word);
+    });
+    const lines = [];
+    let current = '';
+    words.forEach(word => {
+      const next = current ? `${current} ${word}` : word;
+      if (ctx.measureText(next).width <= maxWidth) current = next;
+      else {
+        if (current) lines.push(current);
+        current = word;
+      }
+    });
+    if (current) lines.push(current);
+    return lines;
+  }
+
+  while (fontSize >= minFontSize) {
+    ctx.font = `800 ${fontSize}px Nunito`;
+    const lineHeight = Math.round(fontSize * 1.08);
+    let lines = wrapWords();
+    if (lines.length <= maxLines && lines.length * lineHeight <= maxHeight) {
+      return { lines, fontSize, lineHeight };
+    }
+    fontSize--;
+  }
+
+  ctx.font = `800 ${minFontSize}px Nunito`;
+  const lineHeight = Math.round(minFontSize * 1.08);
+  let lines = wrapWords().slice(0, maxLines);
+  if (lines.length) {
+    let lastLine = lines[lines.length - 1];
+    while (lastLine.length > 1 && ctx.measureText(`${lastLine}…`).width > maxWidth) {
+      lastLine = lastLine.slice(0, -1).trimEnd();
+    }
+    lines[lines.length - 1] = `${lastLine}…`;
+  }
+  return { lines, fontSize: minFontSize, lineHeight };
+}
+
+function bossBattleRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function bossBattleInitAudio() {
+  if (!bossBattleRuntime.audio) {
+    try {
+      bossBattleRuntime.audio = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (error) {
+      bossBattleRuntime.audio = null;
+    }
+  }
+  if (bossBattleRuntime.audio && bossBattleRuntime.audio.state === 'suspended') {
+    bossBattleRuntime.audio.resume();
+  }
+}
+
+function bossBattleTone(freq, duration, type = 'square', volume = 0.07, slideTo = null) {
+  const audio = bossBattleRuntime.audio;
+  if (!audio) return;
+  const start = audio.currentTime;
+  const oscillator = audio.createOscillator();
+  const gain = audio.createGain();
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(freq, start);
+  if (slideTo) oscillator.frequency.exponentialRampToValueAtTime(Math.max(1, slideTo), start + duration);
+  gain.gain.setValueAtTime(volume, start);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+  oscillator.connect(gain);
+  gain.connect(audio.destination);
+  oscillator.start(start);
+  oscillator.stop(start + duration);
+}
+
+const bossBattleSfx = {
+  shoot() { bossBattleTone(740, 0.07, 'square', 0.04, 330); },
+  correct() {
+    bossBattleTone(587, 0.09, 'triangle', 0.09, 880);
+    setTimeout(() => bossBattleTone(880, 0.13, 'triangle', 0.08, 1175), 70);
+  },
+  wrong() { bossBattleTone(160, 0.26, 'sawtooth', 0.09, 70); },
+  miss() { bossBattleTone(260, 0.1, 'sine', 0.04, 170); },
+  bossHit() { bossBattleTone(110, 0.13, 'square', 0.07, 55); },
+  win() { [523, 659, 784, 1046, 1318].forEach((freq, i) => setTimeout(() => bossBattleTone(freq, 0.2, 'triangle', 0.1), i * 120)); },
+  lose() { [392, 330, 262, 196].forEach((freq, i) => setTimeout(() => bossBattleTone(freq, 0.26, 'sawtooth', 0.09), i * 150)); },
+};
+
+function bossBattleScreenTemplate(level) {
+  return `
+    <div class="boss-arena" id="bossArena">
+      <canvas class="boss-canvas" id="bossCanvas"></canvas>
+      <div class="boss-ui">
+        <div class="boss-top-center">
+          <div class="boss-level-tag">GAME DESIGN · LEVEL ${level.id}</div>
+          <div class="boss-card boss-hp-card" id="bossBar">
+            <div class="boss-hp-head">
+              <div class="boss-hp-name"><span>${level.boss.icon}</span><b>${level.boss.name.toUpperCase()}</b></div>
+              <div class="boss-hp-text"><span class="n" id="bossHpTxt">100</span>% HP</div>
+            </div>
+            <div class="boss-bar"><i id="bossFill"></i></div>
+          </div>
+          <div class="boss-card boss-question-card">
+            <div class="boss-question-meta"><span class="boss-question-dot"></span><span id="bossQuestionNum">Câu 1 / 5</span> · Chọn đáp án đúng và bắn trúng nó</div>
+            <div class="boss-question-title" id="bossQuestionText">Đang tải câu hỏi...</div>
+          </div>
+        </div>
+
+        <div class="boss-card boss-player-panel">
+          <div class="boss-player-head">
+            <div class="boss-player-avatar">🦊</div>
+            <div>
+              <div class="boss-player-name">PLAYER</div>
+              <div class="boss-player-sub">Học viên Game Design</div>
+            </div>
+          </div>
+          <div class="boss-hearts" id="bossHeartsMount"></div>
+          <div class="boss-player-stats">
+            <div class="boss-player-stat xp"><div class="k">XP Boss</div><div class="v" id="bossScoreTxt">0</div></div>
+            <div class="boss-player-stat streak"><div class="k">Streak</div><div class="v" id="bossStreakTxt">0</div></div>
+          </div>
+        </div>
+
+        <div class="boss-combo" id="bossCombo"></div>
+        <div class="boss-hint">
+          <span><span class="k">Di chuột</span> ngắm</span>
+          <span><span class="k">Giữ</span> để bắn liên tục</span>
+        </div>
+      </div>
+
+      <div class="boss-rage" id="bossRage"></div>
+      <div class="boss-lowhp" id="bossLowHp"></div>
+
+      <div class="boss-overlay" id="bossStartOverlay">
+        <div class="boss-panel-big">
+          <div class="boss-mascot">🦊</div>
+          <div class="boss-subtitle">Gamified Game Design Course</div>
+          <div class="boss-title">BOSS BATTLE</div>
+          <p class="boss-desc">Sẵn sàng chưa? Hạ gục <b>${level.boss.name}</b> bằng kiến thức game design của bạn. Các đáp án sẽ bay khắp màn hình, hãy ngắm pháo và bắn trúng đáp án <b>đúng</b>.</p>
+          <div class="boss-rules">
+            <div class="boss-rule ok"><span class="ico">🎯</span><div class="t">BẮN ĐÚNG</div><div class="d">Boss mất HP, combo tăng và bạn được thưởng XP.</div></div>
+            <div class="boss-rule bad"><span class="ico">💥</span><div class="t">BẮN SAI</div><div class="d">Mất 1 tim, combo bị reset.</div></div>
+            <div class="boss-rule aim"><span class="ico">💨</span><div class="t">BẮN HỤT</div><div class="d">Đạn bay ra ngoài làm bạn mất máu.</div></div>
+          </div>
+          <button class="boss-btn green" id="bossStartBtn">BẮT ĐẦU</button>
+        </div>
+      </div>
+
+      <div class="boss-overlay hidden" id="bossEndOverlay">
+        <div class="boss-panel-big">
+          <div class="boss-mascot" id="bossEndMascot">🏆</div>
+          <div class="boss-subtitle" id="bossEndSub">Kết quả</div>
+          <div class="boss-result-title" id="bossEndTitle">HOÀN THÀNH!</div>
+          <p class="boss-desc" id="bossEndDesc"></p>
+          <div class="boss-stat-grid">
+            <div class="boss-scell"><div class="k">XP</div><div class="v gold" id="bossFinalScore">0</div></div>
+            <div class="boss-scell"><div class="k">Chính xác</div><div class="v green" id="bossFinalAcc">0%</div></div>
+            <div class="boss-scell"><div class="k">Streak cao nhất</div><div class="v blue" id="bossFinalCombo">0</div></div>
+            <div class="boss-scell"><div class="k">Đúng / Sai</div><div class="v purple" id="bossFinalHits">0 / 0</div></div>
+          </div>
+          <div class="boss-btn-row" id="bossEndButtons"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function bossBattleMount(level) {
+  const screen = document.getElementById('screen-boss');
+  screen.innerHTML = bossBattleScreenTemplate(level);
+  bossBattleRuntime.root = document.getElementById('bossArena');
+  bossBattleRuntime.canvas = document.getElementById('bossCanvas');
+  bossBattleRuntime.ctx = bossBattleRuntime.canvas.getContext('2d');
+  bossBattleRuntime.level = level;
+  bossBattleRuntime.questions = bossBattleBuildQuestions(level.id);
+  bossBattleRuntime.phase = 'start';
+  bossBattleRuntime.rewardsGranted = false;
+  showScreen('boss');
+
+  const startBtn = document.getElementById('bossStartBtn');
+  if (startBtn) startBtn.addEventListener('click', bossBattleStartEncounter);
+
+  bossBattleBindInput();
+  bossBattleResize();
+  bossBattleBuildDecor();
+  bossBattleInitState();
+  cancelAnimationFrame(bossBattleRuntime.raf);
+  bossBattleRuntime.lastTs = performance.now();
+  bossBattleRuntime.raf = requestAnimationFrame(bossBattleLoop);
+}
+
+function bossBattleBindInput() {
+  bossBattleUnbindInput();
+  const canvas = bossBattleRuntime.canvas;
+  const move = (event) => {
+    const rect = canvas.getBoundingClientRect();
+    bossBattleRuntime.mx = event.clientX - rect.left;
+    bossBattleRuntime.my = event.clientY - rect.top;
+  };
+  const down = (event) => {
+    if (bossBattleRuntime.phase !== 'playing') return;
+    move(event);
+    bossBattleRuntime.firing = true;
+    bossBattleShoot();
+  };
+  const up = () => { bossBattleRuntime.firing = false; };
+  const resizeHandler = () => bossBattleResize();
+  canvas.addEventListener('pointermove', move);
+  canvas.addEventListener('pointerdown', down);
+  window.addEventListener('pointerup', up);
+  window.addEventListener('pointercancel', up);
+  window.addEventListener('blur', up);
+  window.addEventListener('resize', resizeHandler);
+  bossBattleRuntime.listeners.push(
+    () => canvas.removeEventListener('pointermove', move),
+    () => canvas.removeEventListener('pointerdown', down),
+    () => window.removeEventListener('pointerup', up),
+    () => window.removeEventListener('pointercancel', up),
+    () => window.removeEventListener('blur', up),
+    () => window.removeEventListener('resize', resizeHandler),
+  );
+}
+
+function bossBattleUnbindInput() {
+  while (bossBattleRuntime.listeners.length) {
+    const remove = bossBattleRuntime.listeners.pop();
+    try { remove(); } catch (error) {}
+  }
+}
+
+function bossBattleResize() {
+  const runtime = bossBattleRuntime;
+  if (!runtime.root || !runtime.canvas) return;
+  runtime.DPR = Math.min(window.devicePixelRatio || 1, 2);
+  runtime.W = runtime.root.clientWidth;
+  runtime.H = runtime.root.clientHeight;
+  runtime.canvas.width = runtime.W * runtime.DPR;
+  runtime.canvas.height = runtime.H * runtime.DPR;
+  runtime.canvas.style.width = `${runtime.W}px`;
+  runtime.canvas.style.height = `${runtime.H}px`;
+  runtime.ctx.setTransform(runtime.DPR, 0, 0, runtime.DPR, 0, 0);
+  runtime.pad = 24;
+  runtime.topY = Math.min(250, runtime.H * 0.34);
+  runtime.bottomPad = Math.min(180, runtime.H * 0.28);
+  if (runtime.player) {
+    runtime.player.x = runtime.W / 2;
+    runtime.player.y = runtime.H - 100;
+  }
+  if (runtime.boss) {
+    runtime.boss.x = runtime.W / 2;
+    runtime.boss.baseY = Math.min(180, runtime.H * 0.24);
+  }
+}
+
+function bossBattleBuildDecor() {
+  const runtime = bossBattleRuntime;
+  runtime.stars = [];
+  runtime.blobs = [];
+  const starCount = Math.min(60, Math.floor(runtime.W * runtime.H / 22000));
+  for (let i = 0; i < starCount; i++) {
+    runtime.stars.push({ x: Math.random() * runtime.W, y: Math.random() * runtime.H, r: Math.random() * 1.5 + 0.4, s: Math.random() * 0.3 + 0.05, tw: Math.random() * 6.28 });
+  }
+  const colors = ['#a8e6cf', '#ffd6e0', '#c7ceea', '#ffdfd3', '#d4c5f9', '#fff3b0', '#b5e7ff'];
+  for (let i = 0; i < 7; i++) {
+    runtime.blobs.push({
+      x: Math.random() * runtime.W,
+      y: Math.random() * runtime.H,
+      r: 70 + Math.random() * 95,
+      vx: (Math.random() - 0.5) * 0.12,
+      vy: (Math.random() - 0.5) * 0.12,
+      c: colors[i % colors.length],
+      a: 0.22 + Math.random() * 0.12,
+      tw: Math.random() * 6.28,
+    });
+  }
+}
+
+function bossBattleInitState() {
+  const runtime = bossBattleRuntime;
+  runtime.boss = { x: runtime.W / 2, baseY: Math.min(180, runtime.H * 0.24), y: 180, hp: 100, maxHp: 100, hitFlash: 0, shake: 0, sx: 0, sy: 0 };
+  runtime.player = { x: runtime.W / 2, y: runtime.H - 100, hp: 100, maxHp: 100, angle: -Math.PI / 2, muzzle: 0, flash: 0, combo: 0 };
+  runtime.bullets = [];
+  runtime.bubbles = [];
+  runtime.particles = [];
+  runtime.texts = [];
+  runtime.qIndex = 0;
+  runtime.current = runtime.questions[0] || null;
+  runtime.score = 0;
+  runtime.shotsFired = 0;
+  runtime.hitsCorrect = 0;
+  runtime.hitsWrong = 0;
+  runtime.maxCombo = 0;
+  runtime.firing = false;
+  runtime.shake = 0;
+  runtime.lastSpawn = 0;
+  runtime.lastShot = 0;
+  runtime.mx = runtime.W / 2;
+  runtime.my = runtime.H * 0.4;
+  runtime.player.combo = 0;
+  if (runtime.current) {
+    for (let i = 0; i < 6; i++) bossBattleSpawnBubble(i === 0);
+  }
+  bossBattleUpdateQuestionCard();
+  bossBattleUpdateHUD();
+}
+
+function bossBattleStartEncounter() {
+  if (!bossBattleRuntime.questions.length) {
+    alert('Level này chưa có đủ câu hỏi trắc nghiệm để tạo boss battle.');
+    exitBoss();
+    return;
+  }
+  bossBattleInitAudio();
+  bossBattleInitState();
+  bossBattleRuntime.phase = 'playing';
+  const overlay = document.getElementById('bossStartOverlay');
+  if (overlay) overlay.classList.add('hidden');
+}
+
+function bossBattleGetOptions(question) {
+  const options = [{ text: question.answer, correct: true }, ...question.wrong.map(text => ({ text, correct: false }))];
+  return shuffleArray(options);
+}
+
+function bossBattleSpawnBubble(forceCorrect) {
+  const runtime = bossBattleRuntime;
+  if (!runtime.current) return;
+  const options = bossBattleGetOptions(runtime.current);
+  const hasCorrect = runtime.bubbles.some(bubble => bubble.correct);
+  let option;
+  if (forceCorrect || !hasCorrect) option = { text: runtime.current.answer, correct: true };
+  else option = options[(Math.random() * options.length) | 0];
+  const radius = Math.max(33, Math.min(58, 26 + option.text.length * 2.1));
+  const minX = runtime.pad + radius;
+  const maxX = runtime.W - runtime.pad - radius;
+  const minY = runtime.topY + radius;
+  const maxY = runtime.H - runtime.bottomPad - radius;
+  const x = (maxX <= minX) ? runtime.W / 2 : minX + Math.random() * (maxX - minX);
+  const y = (maxY <= minY) ? (runtime.topY + maxY) / 2 : minY + Math.random() * (maxY - minY);
+  const speed = 0.7 + Math.random() * 1.3;
+  const angle = Math.random() * Math.PI * 2;
+  const palette = ['#58cc02', '#1cb0f6', '#ce82ff', '#ff9600'];
+  runtime.bubbles.push({
+    x,
+    y,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    r: radius,
+    text: option.text,
+    correct: option.correct,
+    hue: palette[(Math.random() * palette.length) | 0],
+    wob: Math.random() * 6.283,
+  });
+}
+
+function bossBattleShoot() {
+  const runtime = bossBattleRuntime;
+  if (runtime.now - runtime.lastShot < 140 || runtime.phase !== 'playing') return;
+  runtime.lastShot = runtime.now;
+  const cx = runtime.player.x;
+  const cy = runtime.player.y - 66;
+  const dx = runtime.mx - cx;
+  const dy = runtime.my - cy;
+  const len = Math.hypot(dx, dy) || 1;
+  runtime.bullets.push({ x: cx, y: cy, vx: dx / len * 15, vy: dy / len * 15, r: 7, trail: [] });
+  runtime.player.angle = Math.atan2(dy, dx);
+  runtime.player.muzzle = 1;
+  runtime.shotsFired++;
+  bossBattleSfx.shoot();
+}
+
+function bossBattleDamagePlayer(amount) {
+  const runtime = bossBattleRuntime;
+  runtime.player.hp = Math.max(0, runtime.player.hp - amount);
+  runtime.player.combo = 0;
+  runtime.player.flash = 1;
+  runtime.shake = Math.max(runtime.shake, amount * 0.6 + 4);
+}
+
+function bossBattleBurst(x, y, color, count, speed) {
+  const runtime = bossBattleRuntime;
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const force = Math.random() * speed + 1;
+    runtime.particles.push({ x, y, vx: Math.cos(angle) * force, vy: Math.sin(angle) * force, life: 550 + Math.random() * 450, max: 1000, color, size: 1.8 + Math.random() * 3, grav: 0.05 });
+  }
+}
+
+function bossBattleRing(x, y, color, radius) {
+  bossBattleRuntime.particles.push({ ring: true, x, y, r: radius, life: 420, max: 420, color });
+}
+
+function bossBattleFloatText(x, y, text, color, size) {
+  bossBattleRuntime.texts.push({ x, y, text, color, size, life: 950, max: 950 });
+}
+
+function bossBattleNextQuestion() {
+  const runtime = bossBattleRuntime;
+  runtime.qIndex = (runtime.qIndex + 1) % runtime.questions.length;
+  runtime.current = runtime.questions[runtime.qIndex];
+  runtime.bubbles.forEach(bubble => bossBattleBurst(bubble.x, bubble.y, '#ce82ff', 7, 3));
+  runtime.bubbles.length = 0;
+  runtime.lastSpawn = runtime.now - 260;
+  bossBattleUpdateQuestionCard();
+}
+
+function bossBattleOnBubbleHit(bubble) {
+  const runtime = bossBattleRuntime;
+  if (bubble.correct) {
+    runtime.player.combo++;
+    runtime.maxCombo = Math.max(runtime.maxCombo, runtime.player.combo);
+    STATE.streak = Math.max(STATE.streak, runtime.player.combo);
+    const damage = 20;
+    runtime.boss.hp = Math.max(0, runtime.boss.hp - damage);
+    runtime.boss.hitFlash = 1;
+    runtime.boss.shake = 13;
+    runtime.shake = Math.max(runtime.shake, 6);
+    runtime.score += 100 * runtime.player.combo;
+    runtime.hitsCorrect++;
+    addXP(20);
+    addCoin(3);
+    bossBattleBurst(bubble.x, bubble.y, '#58cc02', 24, 5);
+    bossBattleRing(bubble.x, bubble.y, '#58cc02', bubble.r);
+    bossBattleFloatText(bubble.x, bubble.y - 26, `-${damage}%`, '#58a700', 24);
+    if (runtime.player.combo >= 3) bossBattleFloatText(bubble.x, bubble.y - 58, `🔥 x${runtime.player.combo}`, '#ff9600', 18);
+    bossBattleSfx.correct();
+    bossBattleSfx.bossHit();
+    mascotHappy();
+    bossBattleNextQuestion();
+  } else {
+    runtime.hitsWrong++;
+    bossBattleDamagePlayer(20);
+    bossBattleBurst(bubble.x, bubble.y, '#ff4b4b', 22, 5);
+    bossBattleRing(bubble.x, bubble.y, '#ff4b4b', bubble.r);
+    bossBattleFloatText(bubble.x, bubble.y - 26, '-1 ❤', '#ff4b4b', 22);
+    bossBattleSfx.wrong();
+    mascotSad();
+  }
+  bossBattleUpdateHUD();
+}
+
+function bossBattleOnMiss(bullet) {
+  bossBattleDamagePlayer(7);
+  bossBattleFloatText(Math.max(40, Math.min(bossBattleRuntime.W - 40, bullet.x)), Math.min(bossBattleRuntime.H - 50, bullet.y), 'Hụt!', '#ff9600', 15);
+  bossBattleSfx.miss();
+  bossBattleUpdateHUD();
+}
+
+function bossBattleUpdateHUD() {
+  const runtime = bossBattleRuntime;
+  const bossFill = document.getElementById('bossFill');
+  const bossHpTxt = document.getElementById('bossHpTxt');
+  const bossBar = document.getElementById('bossBar');
+  const scoreTxt = document.getElementById('bossScoreTxt');
+  const streakTxt = document.getElementById('bossStreakTxt');
+  const comboEl = document.getElementById('bossCombo');
+  const heartsEl = document.getElementById('bossHeartsMount');
+  if (!bossFill || !bossHpTxt || !heartsEl) return;
+  bossFill.style.width = `${runtime.boss.hp / runtime.boss.maxHp * 100}%`;
+  bossHpTxt.textContent = Math.max(0, Math.round(runtime.boss.hp));
+  bossBar.classList.toggle('low', runtime.boss.hp / runtime.boss.maxHp < 0.3);
+  scoreTxt.textContent = runtime.score.toLocaleString('vi-VN');
+  streakTxt.textContent = runtime.player.combo > 0 ? `x${runtime.player.combo}` : '0';
+  comboEl.textContent = runtime.player.combo > 1 ? `🔥 x${runtime.player.combo}` : '';
+  comboEl.classList.toggle('show', runtime.player.combo > 1);
+  const ratio = Math.max(0, runtime.player.hp / runtime.player.maxHp);
+  const total = 5;
+  const filled = ratio * total;
+  heartsEl.innerHTML = Array.from({ length: total }, (_, index) => {
+    const fill = Math.max(0, Math.min(1, filled - index));
+    return `<span class="boss-heart"><svg class="h-bg" viewBox="0 0 24 24"><path d="${BOSS_HEART_PATH}"/></svg><span class="h-fill" style="width:${fill * 100}%"><svg viewBox="0 0 24 24"><path d="${BOSS_HEART_PATH}"/></svg></span></span>`;
+  }).join('');
+  heartsEl.classList.toggle('low', runtime.player.hp / runtime.player.maxHp <= 0.4 && runtime.player.hp > 0);
+}
+
+function bossBattleUpdateQuestionCard() {
+  const runtime = bossBattleRuntime;
+  const questionNum = document.getElementById('bossQuestionNum');
+  const questionText = document.getElementById('bossQuestionText');
+  if (!runtime.current || !questionNum || !questionText) return;
+  questionNum.textContent = `Câu ${(runtime.qIndex % runtime.questions.length) + 1} / ${runtime.questions.length}`;
+  questionText.textContent = runtime.current.prompt;
+  questionText.classList.remove('pop');
+  void questionText.offsetWidth;
+  questionText.classList.add('pop');
+}
+
+function bossBattleLoop(timestamp) {
+  const runtime = bossBattleRuntime;
+  const dt = Math.min(40, timestamp - (runtime.lastTs || timestamp));
+  runtime.lastTs = timestamp;
+  runtime.now = timestamp;
+  bossBattleUpdate(dt);
+  bossBattleRender();
+  runtime.raf = requestAnimationFrame(bossBattleLoop);
+}
+
+function bossBattleUpdate(dt) {
+  const runtime = bossBattleRuntime;
+  const step = dt / 16.667;
+  runtime.blobs.forEach(blob => {
+    blob.x += blob.vx * step;
+    blob.y += blob.vy * step;
+    if (blob.x < -blob.r) blob.x = runtime.W + blob.r;
+    if (blob.x > runtime.W + blob.r) blob.x = -blob.r;
+    if (blob.y < -blob.r) blob.y = runtime.H + blob.r;
+    if (blob.y > runtime.H + blob.r) blob.y = -blob.r;
+  });
+  runtime.stars.forEach(star => {
+    star.y += star.s * step;
+    if (star.y > runtime.H) { star.y = 0; star.x = Math.random() * runtime.W; }
+  });
+
+  if (runtime.phase === 'playing') {
+    runtime.player.angle = Math.atan2(runtime.my - runtime.player.y, runtime.mx - runtime.player.x);
+    if (runtime.firing) bossBattleShoot();
+    const rageFactor = 1 - runtime.boss.hp / runtime.boss.maxHp;
+    const speedMultiplier = 1 + rageFactor * 0.95;
+    runtime.boss.y = runtime.boss.baseY + Math.sin(runtime.now * 0.0015) * 8;
+    runtime.boss.sx = runtime.boss.shake ? (Math.random() - 0.5) * runtime.boss.shake : 0;
+    runtime.boss.sy = runtime.boss.shake ? (Math.random() - 0.5) * runtime.boss.shake : 0;
+
+    runtime.bubbles.forEach(bubble => {
+      bubble.x += bubble.vx * step * speedMultiplier;
+      bubble.y += bubble.vy * step * speedMultiplier;
+      bubble.wob += 0.05 * step;
+      if (bubble.x < runtime.pad + bubble.r) { bubble.x = runtime.pad + bubble.r; bubble.vx = Math.abs(bubble.vx); }
+      if (bubble.x > runtime.W - runtime.pad - bubble.r) { bubble.x = runtime.W - runtime.pad - bubble.r; bubble.vx = -Math.abs(bubble.vx); }
+      if (bubble.y < runtime.topY + bubble.r) { bubble.y = runtime.topY + bubble.r; bubble.vy = Math.abs(bubble.vy); }
+      if (bubble.y > runtime.H - runtime.bottomPad - bubble.r) { bubble.y = runtime.H - runtime.bottomPad - bubble.r; bubble.vy = -Math.abs(bubble.vy); }
+    });
+
+    for (let i = runtime.bullets.length - 1; i >= 0; i--) {
+      const bullet = runtime.bullets[i];
+      bullet.trail.push({ x: bullet.x, y: bullet.y });
+      if (bullet.trail.length > 9) bullet.trail.shift();
+      bullet.x += bullet.vx * step;
+      bullet.y += bullet.vy * step;
+      let hit = false;
+      for (let j = runtime.bubbles.length - 1; j >= 0; j--) {
+        const bubble = runtime.bubbles[j];
+        if (Math.hypot(bullet.x - bubble.x, bullet.y - bubble.y) < bullet.r + bubble.r * 0.86) {
+          hit = true;
+          bossBattleOnBubbleHit(bubble);
+          runtime.bubbles.splice(j, 1);
+          break;
+        }
+      }
+      if (hit) {
+        runtime.bullets.splice(i, 1);
+        continue;
+      }
+      if (bullet.x < -30 || bullet.x > runtime.W + 30 || bullet.y < -30 || bullet.y > runtime.H + 30) {
+        runtime.bullets.splice(i, 1);
+        bossBattleOnMiss(bullet);
+      }
+    }
+
+    if (runtime.bubbles.length < 6 && runtime.now - runtime.lastSpawn > 360) {
+      bossBattleSpawnBubble(false);
+      runtime.lastSpawn = runtime.now;
+    }
+
+    if (runtime.boss.hp <= 0) bossVictory(runtime.level);
+    else if (runtime.player.hp <= 0) bossDefeat(runtime.level);
+  }
+
+  runtime.boss.hitFlash *= Math.pow(0.86, step);
+  runtime.boss.shake *= Math.pow(0.82, step);
+  runtime.player.muzzle *= Math.pow(0.80, step);
+  runtime.player.flash *= Math.pow(0.90, step);
+  runtime.shake *= Math.pow(0.86, step);
+
+  for (let i = runtime.particles.length - 1; i >= 0; i--) {
+    const particle = runtime.particles[i];
+    if (particle.ring) {
+      particle.r += 4.2 * step;
+      particle.life -= dt;
+      if (particle.life <= 0) runtime.particles.splice(i, 1);
+      continue;
+    }
+    particle.x += particle.vx * step;
+    particle.y += particle.vy * step;
+    particle.vy += particle.grav * step;
+    particle.vx *= Math.pow(0.98, step);
+    particle.life -= dt;
+    if (particle.life <= 0) runtime.particles.splice(i, 1);
+  }
+
+  for (let i = runtime.texts.length - 1; i >= 0; i--) {
+    const text = runtime.texts[i];
+    text.y -= 0.7 * step;
+    text.life -= dt;
+    if (text.life <= 0) runtime.texts.splice(i, 1);
+  }
+
+  const rageEl = document.getElementById('bossRage');
+  const lowHpEl = document.getElementById('bossLowHp');
+  if (rageEl) rageEl.style.opacity = (runtime.phase === 'playing' && runtime.boss.hp / runtime.boss.maxHp < 0.3) ? (0.3 + Math.sin(runtime.now * 0.01) * 0.14) : 0;
+  if (lowHpEl) lowHpEl.style.opacity = (runtime.phase === 'playing' && runtime.player.hp / runtime.player.maxHp <= 0.4) ? (0.35 + Math.sin(runtime.now * 0.012) * 0.2) : 0;
+}
+
+function bossBattleRender() {
+  const runtime = bossBattleRuntime;
+  if (!runtime.ctx) return;
+  const ctx = runtime.ctx;
+  const offsetX = runtime.shake ? (Math.random() - 0.5) * runtime.shake : 0;
+  const offsetY = runtime.shake ? (Math.random() - 0.5) * runtime.shake : 0;
+  ctx.clearRect(0, 0, runtime.W, runtime.H);
+  ctx.save();
+  ctx.translate(offsetX, offsetY);
+  bossBattleDrawBg(ctx);
+  if (runtime.phase !== 'start' && runtime.phase !== 'idle') bossBattleDrawBoss(ctx);
+  bossBattleDrawBubbles(ctx);
+  bossBattleDrawBullets(ctx);
+  bossBattleDrawParticles(ctx);
+  if (runtime.phase === 'playing' || runtime.phase === 'won' || runtime.phase === 'lost') bossBattleDrawPlayer(ctx);
+  bossBattleDrawTexts(ctx);
+  ctx.restore();
+
+  if (runtime.phase === 'playing') {
+    ctx.save();
+    ctx.translate(runtime.mx, runtime.my);
+    ctx.strokeStyle = 'rgba(28,176,246,0.9)';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 13, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-20, 0); ctx.lineTo(-7, 0);
+    ctx.moveTo(7, 0); ctx.lineTo(20, 0);
+    ctx.moveTo(0, -20); ctx.lineTo(0, -7);
+    ctx.moveTo(0, 7); ctx.lineTo(0, 20);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(28,176,246,0.9)';
+    ctx.beginPath();
+    ctx.arc(0, 0, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function bossBattleDrawBg(ctx) {
+  const runtime = bossBattleRuntime;
+  runtime.blobs.forEach(blob => {
+    const alpha = blob.a * (0.65 + 0.35 * Math.sin(runtime.now * 0.0008 + blob.tw));
+    const gradient = ctx.createRadialGradient(blob.x, blob.y, 1, blob.x, blob.y, Math.max(2, blob.r));
+    gradient.addColorStop(0, bossBattleHexA(blob.c, alpha));
+    gradient.addColorStop(1, bossBattleHexA(blob.c, 0));
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(blob.x, blob.y, blob.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  runtime.stars.forEach(star => {
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = '#c4cde0';
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
+
+function bossBattleDrawBoss(ctx) {
+  const runtime = bossBattleRuntime;
+  const boss = runtime.boss;
+  const x = boss.x + boss.sx;
+  const y = boss.y + boss.sy;
+  const t = runtime.now * 0.001;
+  const ratio = boss.hp / boss.maxHp;
+  const enrage = 1 - ratio;
+  const calm = ratio > 0.34;
+  const bodyColor = calm ? '#ce82ff' : '#ff6b6b';
+  const bodyDark = calm ? '#a560e8' : '#ea2b2b';
+  const ringColor = calm ? '206,130,255' : '255,75,75';
+
+  const auraRadius = Math.max(40, 140 + Math.sin(t * 2) * 8 + enrage * 26);
+  const aura = ctx.createRadialGradient(x, y, 20, x, y, auraRadius);
+  aura.addColorStop(0, `rgba(${ringColor},0.28)`);
+  aura.addColorStop(1, `rgba(${ringColor},0)`);
+  ctx.fillStyle = aura;
+  ctx.beginPath();
+  ctx.arc(x, y, auraRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.save();
+  ctx.translate(x, y);
+  for (let i = 0; i < 2; i++) {
+    ctx.save();
+    ctx.rotate(t * (i ? -0.35 : 0.5));
+    ctx.strokeStyle = `rgba(${ringColor},0.4)`;
+    ctx.lineWidth = 3;
+    ctx.setLineDash([5, 15]);
+    ctx.beginPath();
+    ctx.arc(0, 0, Math.max(20, 98 + i * 18), 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+  const radius = 68;
+  ctx.fillStyle = bodyDark;
+  ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(-30, -radius * 0.62); ctx.lineTo(-50, -radius * 1.18); ctx.lineTo(-16, -radius * 0.8); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(30, -radius * 0.62); ctx.lineTo(50, -radius * 1.18); ctx.lineTo(16, -radius * 0.8); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = bodyDark;
+  ctx.beginPath(); ctx.ellipse(0, 9, radius, radius * 0.92, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = bodyColor;
+  ctx.beginPath(); ctx.ellipse(0, 0, radius, radius * 0.92, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.22)';
+  ctx.beginPath(); ctx.ellipse(-radius * 0.3, -radius * 0.4, radius * 0.5, radius * 0.32, -0.4, 0, Math.PI * 2); ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = bodyDark;
+  ctx.beginPath(); ctx.ellipse(0, 0, radius, radius * 0.92, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,90,120,0.4)';
+  ctx.beginPath(); ctx.arc(-40, 16, 9, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(40, 16, 9, 0, Math.PI * 2); ctx.fill();
+
+  const dx = runtime.player.x - x;
+  const dy = runtime.player.y - y;
+  const len = Math.hypot(dx, dy) || 1;
+  const px = dx / len * 5;
+  const py = dy / len * 5;
+  [-22, 22].forEach(eyeX => {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.ellipse(eyeX, -8, 16, 19, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#3c1d6e';
+    ctx.beginPath(); ctx.arc(eyeX + px, -4 + py, 7.5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(eyeX + px - 2, -6 + py, 2.5, 0, Math.PI * 2); ctx.fill();
+  });
+  ctx.strokeStyle = bodyDark;
+  ctx.lineWidth = 6;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(-38, -26); ctx.lineTo(-13, -12);
+  ctx.moveTo(38, -26); ctx.lineTo(13, -12);
+  ctx.stroke();
+  ctx.fillStyle = '#3c1d6e';
+  ctx.beginPath(); ctx.ellipse(0, 33, 21, 13, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  for (let i = -2; i <= 2; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * 8 - 4, 22);
+    ctx.lineTo(i * 8 + 4, 22);
+    ctx.lineTo(i * 8, 31);
+    ctx.closePath();
+    ctx.fill();
+  }
+  if (boss.hitFlash > 0.02) {
+    ctx.globalAlpha = Math.min(0.8, boss.hitFlash);
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.ellipse(0, 0, radius, radius * 0.92, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+}
+
+function bossBattleDrawBubbles(ctx) {
+  bossBattleRuntime.bubbles.forEach(bubble => {
+    const scale = 1 + Math.sin(bubble.wob) * 0.04;
+    const radius = bubble.r * scale;
+    ctx.save();
+    ctx.shadowColor = bubble.hue;
+    ctx.shadowBlur = 14;
+    ctx.shadowOffsetY = 4;
+    const gradient = ctx.createRadialGradient(bubble.x - radius * 0.3, bubble.y - radius * 0.35, 2, bubble.x, bubble.y, radius);
+    gradient.addColorStop(0, '#ffffff');
+    gradient.addColorStop(1, '#f3f4f6');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(bubble.x, bubble.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = bubble.hue;
+    ctx.stroke();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255,255,255,0.65)';
+    ctx.beginPath();
+    ctx.arc(bubble.x, bubble.y, Math.max(2, radius - 5), 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.beginPath();
+    ctx.ellipse(bubble.x - radius * 0.32, bubble.y - radius * 0.36, radius * 0.3, radius * 0.18, -0.6, 0, Math.PI * 2);
+    ctx.fill();
+    const textLayout = bossBattleFitBubbleText(ctx, bubble.text, radius);
+    ctx.font = `800 ${textLayout.fontSize}px Nunito`;
+    ctx.fillStyle = '#3c3c3c';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const textBlockOffset = ((textLayout.lines.length - 1) * textLayout.lineHeight) / 2;
+    textLayout.lines.forEach((line, index) => {
+      const y = bubble.y + 1 - textBlockOffset + index * textLayout.lineHeight;
+      ctx.fillText(line, bubble.x, y);
+    });
+    ctx.restore();
+  });
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+}
+
+function bossBattleDrawBullets(ctx) {
+  bossBattleRuntime.bullets.forEach(bullet => {
+    bullet.trail.forEach((point, index) => {
+      const alpha = (index / bullet.trail.length) * 0.45;
+      ctx.fillStyle = `rgba(255,150,0,${alpha})`;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, bullet.r * (index / bullet.trail.length), 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.save();
+    ctx.shadowColor = '#ff9600';
+    ctx.shadowBlur = 12;
+    const gradient = ctx.createRadialGradient(bullet.x, bullet.y, 1, bullet.x, bullet.y, bullet.r);
+    gradient.addColorStop(0, '#ffffff');
+    gradient.addColorStop(0.5, '#ffce00');
+    gradient.addColorStop(1, '#ff8a00');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(bullet.x, bullet.y, bullet.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function bossBattleDrawParticles(ctx) {
+  bossBattleRuntime.particles.forEach(particle => {
+    const alpha = Math.max(0, particle.life / particle.max);
+    if (particle.ring) {
+      ctx.strokeStyle = particle.color;
+      ctx.globalAlpha = alpha * 0.8;
+      ctx.lineWidth = 3 * alpha + 1;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = particle.color;
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+  ctx.globalAlpha = 1;
+}
+
+function bossBattleDrawTexts(ctx) {
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  bossBattleRuntime.texts.forEach(text => {
+    const alpha = Math.max(0, text.life / text.max);
+    ctx.globalAlpha = alpha;
+    ctx.font = `900 ${text.size}px Nunito`;
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+    ctx.strokeText(text.text, text.x, text.y);
+    ctx.fillStyle = text.color;
+    ctx.fillText(text.text, text.x, text.y);
+  });
+  ctx.globalAlpha = 1;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+}
+
+function bossBattleDrawPlayer(ctx) {
+  const player = bossBattleRuntime.player;
+  ctx.save();
+  ctx.translate(player.x, player.y);
+  ctx.fillStyle = 'rgba(60,60,72,0.16)';
+  ctx.beginPath();
+  ctx.ellipse(0, 40, 56, 15, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.save();
+  ctx.translate(0, -20);
+  ctx.rotate(player.angle + Math.PI / 2);
+  ctx.fillStyle = '#3c3c3c';
+  bossBattleRoundRect(ctx, -8, -52, 16, 52, 7);
+  ctx.fill();
+  ctx.fillStyle = '#5a5a5a';
+  bossBattleRoundRect(ctx, -6, -49, 12, 46, 5);
+  ctx.fill();
+  ctx.fillStyle = '#2a2a2a';
+  bossBattleRoundRect(ctx, -11, -54, 22, 9, 4);
+  ctx.fill();
+  if (player.muzzle > 0.05) {
+    ctx.globalAlpha = Math.min(1, player.muzzle);
+    const flash = ctx.createRadialGradient(0, -56, 1, 0, -56, 26);
+    flash.addColorStop(0, '#fff');
+    flash.addColorStop(0.4, '#ffce00');
+    flash.addColorStop(1, 'rgba(255,150,0,0)');
+    ctx.fillStyle = flash;
+    ctx.beginPath();
+    ctx.arc(0, -56, 26, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+  const radius = 42;
+  ctx.fillStyle = '#58a700';
+  bossBattleRoundRect(ctx, -radius, -radius + 9, radius * 2, radius * 1.7, radius);
+  ctx.fill();
+  ctx.fillStyle = '#58cc02';
+  bossBattleRoundRect(ctx, -radius, -radius, radius * 2, radius * 1.7, radius);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.22)';
+  bossBattleRoundRect(ctx, -radius * 0.55, radius * 0.15, radius * 1.1, radius * 0.9, radius * 0.55);
+  ctx.fill();
+  const dx = bossBattleRuntime.mx - player.x;
+  const dy = bossBattleRuntime.my - player.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const eyeX = dx / len * 3;
+  const eyeY = dy / len * 3;
+  [-13, 13].forEach(offset => {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.ellipse(offset, -4, 11, 13, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#3c3c3c';
+    ctx.beginPath(); ctx.arc(offset + eyeX, eyeY, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(offset + eyeX - 1.5, eyeY - 1.6, 1.7, 0, Math.PI * 2); ctx.fill();
+  });
+  ctx.strokeStyle = '#2f5e00';
+  ctx.lineWidth = 3.5;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.arc(0, 18, 11, 0.15 * Math.PI, 0.85 * Math.PI);
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(255,120,140,0.4)';
+  ctx.beginPath(); ctx.arc(-27, 12, 6, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(27, 12, 6, 0, Math.PI * 2); ctx.fill();
+  if (player.flash > 0.05) {
+    ctx.globalAlpha = Math.min(0.5, player.flash);
+    ctx.fillStyle = '#ff4b4b';
+    bossBattleRoundRect(ctx, -radius, -radius, radius * 2, radius * 1.7, radius);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+}
+
+function bossBattleShowEnd(win) {
+  const runtime = bossBattleRuntime;
+  runtime.phase = win ? 'won' : 'lost';
+  runtime.firing = false;
+  const overlay = document.getElementById('bossEndOverlay');
+  const title = document.getElementById('bossEndTitle');
+  const subtitle = document.getElementById('bossEndSub');
+  const mascot = document.getElementById('bossEndMascot');
+  const desc = document.getElementById('bossEndDesc');
+  const buttons = document.getElementById('bossEndButtons');
+  document.getElementById('bossFinalScore').textContent = runtime.score.toLocaleString('vi-VN');
+  document.getElementById('bossFinalAcc').textContent = `${runtime.shotsFired ? Math.round(runtime.hitsCorrect / runtime.shotsFired * 100) : 100}%`;
+  document.getElementById('bossFinalCombo').textContent = `x${runtime.maxCombo}`;
+  document.getElementById('bossFinalHits').textContent = `${runtime.hitsCorrect} / ${runtime.hitsWrong}`;
+  if (win) {
+    title.textContent = 'HOÀN THÀNH!';
+    title.className = 'boss-result-title win';
+    subtitle.textContent = 'Boss đã bị hạ gục';
+    mascot.textContent = '🏆';
+    desc.innerHTML = `Tuyệt vời! Bạn đã đánh bại <b>${runtime.level.boss.name}</b> và hoàn thành Level ${runtime.level.id}.`;
+    buttons.innerHTML = `
+      <button class="boss-btn green" onclick="goToNextLevel(${runtime.level.id})">LEVEL TIẾP THEO</button>
+      <button class="boss-btn purple" onclick="exitBoss()">BẢN ĐỒ</button>
+    `;
+  } else {
+    title.textContent = 'THUA RỒI!';
+    title.className = 'boss-result-title lose';
+    subtitle.textContent = 'Bạn đã hết tim';
+    mascot.textContent = '😵';
+    desc.innerHTML = `${runtime.level.boss.name} vẫn còn trụ vững. Ôn lại bài học rồi thử lại nhé!`;
+    buttons.innerHTML = `
+      <button class="boss-btn blue" onclick="startBoss(${runtime.level.id})">CHƠI LẠI</button>
+      <button class="boss-btn purple" onclick="exitBoss(); openLevel(${runtime.level.id})">ÔN LESSON</button>
+    `;
+  }
+  overlay.classList.remove('hidden');
+}
+
+function bossBattleDestroy() {
+  bossBattleUnbindInput();
+  cancelAnimationFrame(bossBattleRuntime.raf);
+  bossBattleRuntime.raf = 0;
+  bossBattleRuntime.phase = 'idle';
+  bossBattleRuntime.firing = false;
+}
+
+function startBoss(levelId) {
+  stopCelebrationSfx();
+  stopBossLoops();
+  STATE.currentLevel = levelId;
+  STATE.currentLesson = null;
+  STATE.bossResolutionLock = false;
+  STATE.bossQuestions = bossBattleBuildQuestions(levelId);
+  STATE.bossHP = 100;
+  STATE.bossHearts = 3;
+  STATE.bossQuestionIdx = 0;
+  STATE.activeBossWeakPointIdx = 0;
+  STATE.bossShotPending = false;
+  document.getElementById('appShell').classList.add('boss-theme');
+  document.getElementById('boss-particles').style.display = 'none';
+  mascotSay('Boss Battle! Ngắm chuẩn và bắn trúng đáp án đúng nhé.');
+  bossBattleMount(LEVELS[levelId - 1]);
+}
+
+function renderBossQuestion(level) {
+  if (!document.getElementById('bossArena')) {
+    bossBattleMount(level);
+    return;
+  }
+  bossBattleRuntime.level = level;
+  bossBattleRuntime.questions = bossBattleBuildQuestions(level.id);
+  bossBattleInitState();
+  bossBattleUpdateHUD();
+  bossBattleUpdateQuestionCard();
+}
+
+function bossDefeat(level) {
+  if (STATE.bossResolutionLock) return;
+  STATE.bossResolutionLock = true;
+  bossBattleRuntime.player.hp = 0;
+  bossBattleRuntime.phase = 'lost';
+  bossBattleSfx.lose();
+  mascotSay('Boss vẫn còn máu! Ôn lại rồi thử tiếp nhé.');
+  bossBattleShowEnd(false);
+}
+
+function bossVictory(level) {
+  if (STATE.bossResolutionLock) return;
+  STATE.bossResolutionLock = true;
+  bossBattleRuntime.boss.hp = 0;
+  bossBattleRuntime.phase = 'won';
+  if (!bossBattleRuntime.rewardsGranted) {
+    STATE.completedLevels[level.id] = true;
+    addXP(100);
+    addCoin(20);
+    saveState();
+    bossBattleRuntime.rewardsGranted = true;
+  }
+  playSfx('victory', { stopFirst: true });
+  const duration = 2200;
+  const endTime = Date.now() + duration;
+  (function frame() {
+    confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 } });
+    confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 } });
+    if (Date.now() < endTime) requestAnimationFrame(frame);
+  })();
+  bossBattleSfx.win();
+  mascotSay('Đỉnh của chóp! Boss bị hạ rồi!');
+  bossBattleShowEnd(true);
+}
+
+function goToNextLevel(currentLevelId) {
+  exitBoss();
+  if (currentLevelId < 17) openLevel(currentLevelId + 1);
+  else {
+    showScreen('map');
+    mascotSay('Bạn đã hoàn thành 17 Level!');
+  }
+}
+
+function exitBoss() {
+  stopCelebrationSfx();
+  stopBossLoops();
+  bossBattleDestroy();
+  document.getElementById('appShell').classList.remove('boss-theme');
+  document.getElementById('boss-particles').style.display = 'none';
+  STATE.bossResolutionLock = false;
+  showScreen('map');
+  renderLevelMap();
+}
+
 init();
 </script>
 </body>
 </html>
+
